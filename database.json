@@ -67,3 +67,4 @@ async function globalInquiry() {
         alert("SİSTEM HATASI: " + e.message + "\n\nİpucu: JSON dosyasındaki virgülleri ve tırnakları kontrol et.");
     }
 }
+
