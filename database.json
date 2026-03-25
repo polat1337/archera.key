@@ -4,7 +4,7 @@ from pydantic import BaseModel
 
 app = FastAPI()
 
-# CORS Ayarları - Hata almamak için her şeye izin veriyoruz
+# CORS Ayarlari - Browser baglantisi icin
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -13,7 +13,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Veri Modelleri (Input formatı)
+# Veri Modelleri
 class QueryModel(BaseModel):
     query: str
     owner: str
@@ -27,41 +27,40 @@ class AuthModel(BaseModel):
 def home():
     return {"status": "ARCHERA SYSTEM ONLINE", "mode": "Shadow V4"}
 
-# SORGULAMA MOTORU - Senin JSON yapınla %100 uyumlu
+# SORGULAMA MOTORU - Tamamen Ingilizce Karakterler
 @app.post("/api/v4/sorgu")
 async def run_osint(data: QueryModel):
     target_user = data.query.replace("@", "").strip()
     
-    # JSON yapısı: Virgülleri ve tırnakları tek tek kontrol ettim.
     return {
         "status": "success",
         "targets": [
             {
                 "username": target_user,
                 "name": f"{target_user.capitalize()} Analiz Edildi",
-                "location": "Suruç / Merkez",
+                "location": "Suruc / Merkez",
                 "leaks": [
                     {
                         "type": "Durum",
-                        "data": "Bağlantı Başarılı"
+                        "data": "Baglanti Basarili"
                     },
                     {
                         "type": "Sistem",
-                        "data": "Veri okuma işlemi sorunsuz"
+                        "data": "Veri okuma islemi sorunsuz"
                     }
                 ],
                 "stories": [
                     "https://via.placeholder.com/150"
                 ],
-                "ai_report": f"{target_user} kullanıcısı için sistem stabil ve veri akışı aktif. ARCHERA v4 derin tarama modunda."
+                "ai_report": f"{target_user} kullanicisi icin sistem stabil ve veri akisi aktif. ARCHERA v4 derin tarama modunda."
             }
         ]
     }
 
-# YÖNETİM MERKEZİ: HESAP BAĞLAMA
+# YONETIM MERKEZI: HESAP BAGLAMA
 @app.post("/api/v4/auth/link")
 async def link_account(data: AuthModel):
     return {
         "status": "success",
-        "message": f"{data.username} hesabı başarıyla tünellendi."
+        "message": f"{data.username} hesabi basariyla tunellendi."
     }
