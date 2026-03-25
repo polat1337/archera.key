@@ -3,52 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SUROSINT | UNIFIED DATA CENTER</title>
+    <title>SUROSINT | DATA CENTER</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root { --primary: #ff0000; --bg: #000; --surface: #0a0a0a; --border: #1a1a1a; --text: #e0e0e0; }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; }
-
-        /* AUTH GATE */
         #auth-gate { position: fixed; inset: 0; background: #000; display: flex; align-items: center; justify-content: center; z-index: 99999; }
         .auth-card { width: 90%; max-width: 380px; padding: 40px; background: var(--surface); border: 1px solid var(--border); text-align: center; }
         .auth-input { width: 100%; background: #000; border: 1px solid #222; color: var(--primary); padding: 15px; text-align: center; font-family: 'JetBrains Mono'; font-size: 1.5rem; letter-spacing: 5px; outline: none; margin-bottom: 20px; }
         .btn-main { width: 100%; background: var(--primary); color: #fff; border: none; padding: 15px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
-
-        /* PANEL MİMARİSİ */
         #panel { display: none; height: 100vh; grid-template-columns: 260px 1fr; }
         .sidebar { background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
-        .sidebar-header { padding: 30px; border-bottom: 1px solid var(--border); font-weight: 900; letter-spacing: 2px; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .sidebar-header { padding: 30px; border-bottom: 1px solid var(--border); font-weight: 900; color: #fff; display: flex; align-items: center; gap: 10px; }
         .sidebar-header img { width: 30px; border-radius: 50%; border: 1px solid var(--primary); }
         .nav-item { padding: 18px 25px; display: flex; align-items: center; gap: 15px; color: #555; text-decoration: none; font-size: 13px; font-weight: 700; transition: 0.2s; border-right: 3px solid transparent; cursor: pointer; }
         .nav-item:hover, .nav-item.active { color: var(--primary); background: rgba(255,0,0,0.02); border-right-color: var(--primary); }
-
-        /* CONTENT */
         .workspace { padding: 40px; overflow-y: auto; background: radial-gradient(circle at top right, #0d0000 0%, #000 100%); }
-        .tab-content { display: none; animation: fadeIn 0.4s ease; }
-        .tab-content.active { display: block; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* WIDGETS */
         .search-container { background: #0d0d0d; border: 1px solid #1a1a1a; padding: 10px; display: flex; gap: 10px; margin-bottom: 30px; }
         .search-container input { background: transparent; border: none; color: #fff; padding: 10px; flex-grow: 1; outline: none; font-family: 'JetBrains Mono'; }
         .data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
         .card { background: #080808; border: 1px solid #151515; padding: 20px; border-top: 2px solid var(--primary); }
         .card-label { font-size: 11px; color: #444; font-weight: 800; margin-bottom: 10px; display: block; }
         .card-value { font-family: 'JetBrains Mono'; font-size: 14px; color: #fff; }
-
-        /* STORY VAULT STYLE */
         .story-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px; margin-top: 20px; }
-        .story-item { aspect-ratio: 9/16; background: #111; border: 1px solid #222; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #333; }
+        .story-item { aspect-ratio: 9/16; background: #111; border: 1px solid #222; border-radius: 8px; overflow: hidden; }
         .story-item img { width: 100%; height: 100%; object-fit: cover; }
-
         @media (max-width: 900px) {
             #panel { grid-template-columns: 1fr; }
-            .sidebar { position: fixed; bottom: 0; width: 100%; height: 70px; flex-direction: row; z-index: 1000; border-right: none; border-top: 1px solid var(--border); }
+            .sidebar { position: fixed; bottom: 0; width: 100%; height: 70px; flex-direction: row; z-index: 1000; border-top: 1px solid var(--border); }
             .sidebar-header { display: none; }
-            .nav-item { flex-direction: column; padding: 10px; font-size: 9px; flex-grow: 1; border-right: none; border-top: 3px solid transparent; justify-content: center; }
+            .nav-item { flex-direction: column; padding: 10px; font-size: 9px; flex-grow: 1; border-top: 3px solid transparent; justify-content: center; }
             .nav-item.active { border-top-color: var(--primary); }
             .workspace { padding: 20px; padding-bottom: 90px; }
         }
@@ -81,7 +70,7 @@
             <div id="intel" class="tab-content active">
                 <h1 style="font-weight: 900; margin-bottom: 30px;">MERKEZİ SORGULAMA</h1>
                 <div class="search-container">
-                    <input type="text" id="masterSearch" placeholder="Kullanıcı adı veya isim giriniz...">
+                    <input type="text" id="masterSearch" placeholder="Kullanıcı adı giriniz...">
                     <button onclick="globalInquiry()" class="btn-main" style="width: auto; padding: 0 30px;">HEDEFİ TARA</button>
                 </div>
                 <div id="intel-results" style="display:none;" class="data-grid">
@@ -90,32 +79,10 @@
                     <div class="card"><span class="card-label">DURUM</span><div class="card-value" style="color:#0f0">AKTİF İZLEME</div></div>
                 </div>
             </div>
-
-            <div id="leak" class="tab-content">
-                <h1>VERİ SIZINTISI (LEAK)</h1>
-                <div class="data-grid" id="leak-results" style="margin-top:20px;">
-                    <div class="card"><span class="card-label">SIZINTI DURUMU</span><div class="card-value">Veri taranmadı...</div></div>
-                </div>
-            </div>
-
-            <div id="vault" class="tab-content">
-                <h1>STORY VAULT ARŞİVİ</h1>
-                <div class="story-gallery" id="vault-results">
-                    <p style="color:#333">Arşivlenmiş hikaye bulunamadı.</p>
-                </div>
-            </div>
-
-            <div id="list" class="tab-content">
-                <h1>TAKİP HAVUZU</h1>
-                <div class="card" style="margin-top:20px;"><div class="card-value" id="track-results">Hedef seçilmedi.</div></div>
-            </div>
-
-            <div id="ai" class="tab-content">
-                <h1>SURUC AI ANALİZ ÜNİTESİ</h1>
-                <div class="card" style="margin-top:20px; border-left: 3px solid var(--primary);">
-                    <div class="card-value" id="ai-results" style="line-height: 1.6; color: #aaa;">Analiz motoru veri bekliyor...</div>
-                </div>
-            </div>
+            <div id="leak" class="tab-content"><h1 style="margin-bottom:20px;">VERİ SIZINTISI</h1><div class="data-grid" id="leak-results"></div></div>
+            <div id="vault" class="tab-content"><h1 style="margin-bottom:20px;">STORY VAULT ARŞİVİ</h1><div class="story-gallery" id="vault-results"></div></div>
+            <div id="list" class="tab-content"><h1 style="margin-bottom:20px;">TAKİP HAVUZU</h1><div class="card"><div class="card-value" id="track-results">Hedef seçilmedi.</div></div></div>
+            <div id="ai" class="tab-content"><h1 style="margin-bottom:20px;">SURUC AI ANALİZ</h1><div class="card" style="border-left: 3px solid var(--primary);"><div class="card-value" id="ai-results" style="line-height: 1.6; color: #aaa;">Veri bekleniyor...</div></div></div>
         </main>
     </div>
 
@@ -135,41 +102,26 @@
         }
 
         async function globalInquiry() {
-            const query = document.getElementById('masterSearch').value.toLowerCase();
+            const query = document.getElementById('masterSearch').value.trim().toLowerCase();
             if(!query) return;
 
             try {
-                const response = await fetch('database.json');
+                const response = await fetch('database.json?v=' + Date.now());
+                if (!response.ok) throw new Error("Dosya bulunamadı.");
                 const data = await response.json();
-                const target = data.targets.find(t => t.username.toLowerCase() === query || t.name.toLowerCase().includes(query));
+                const target = data.targets.find(t => t.username.toLowerCase() === query);
 
                 if(target) {
-                    // 1. Hedef Analiz Tabı
                     document.getElementById('intel-results').style.display = 'grid';
                     document.getElementById('val-name').innerText = target.name.toUpperCase();
                     document.getElementById('val-loc').innerText = target.location;
-
-                    // 2. Leak Tabı
-                    const leakHtml = target.leaks.map(l => `<div class="card"><span class="card-label">${l.type}</span><div class="card-value">${l.data}</div></div>`).join('');
-                    document.getElementById('leak-results').innerHTML = leakHtml;
-
-                    // 3. Story Vault Tabı
-                    const storyHtml = target.stories.map(s => `<div class="story-item"><img src="${s}" onerror="this.src='https://via.placeholder.com/150?text=No+Image'"></div>`).join('');
-                    document.getElementById('vault-results').innerHTML = storyHtml || '<p>Hikaye yok.</p>';
-
-                    // 4. Takip Listesi
-                    document.getElementById('track-results').innerText = `Hedef "${target.name}" başarıyla havuza eklendi ve senkronize edildi.`;
-
-                    // 5. Suruc AI
+                    document.getElementById('leak-results').innerHTML = target.leaks.map(l => `<div class="card"><span class="card-label">${l.type}</span><div class="card-value">${l.data}</div></div>`).join('');
+                    document.getElementById('vault-results').innerHTML = target.stories.map(s => `<div class="story-item"><img src="${s}" onerror="this.src='https://via.placeholder.com/150?text=Hata'"></div>`).join('');
+                    document.getElementById('track-results').innerText = target.name + " şu an sistem takibinde.";
                     document.getElementById('ai-results').innerText = target.ai_report;
-
-                    alert(target.name + " için tüm modüller güncellendi.");
-                } else {
-                    alert("Hedef bulunamadı.");
-                }
-            } catch (e) {
-                alert("database.json bulunamadı veya hatalı.");
-            }
+                    alert("Senkronizasyon Başarılı.");
+                } else { alert("Hedef bulunamadı."); }
+            } catch (e) { alert("Sistem Hatası: database.json dosyasını kontrol et."); }
         }
     </script>
 </body>
