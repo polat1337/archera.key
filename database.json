@@ -1,18 +1,26 @@
-{
-  "targets": [
-    {
-      "username": "hedef_kullanici_63",
-      "name": "Hedef Şahıs Adı",
-      "location": "Suruç / Merkez",
-      "leaks": [
-        {"type": "E-Posta", "data": "h****@gmail.com"},
-        {"type": "Dijital İz", "data": "IP: 176.xxx.xx.xx"}
-      ],
-      "stories": [
-        "https://resim-linki.com/story1.jpg",
-        "https://resim-linki.com/story2.jpg"
-      ],
-      "ai_report": "Hedefin sosyal etkileşimleri Suruç merkezli yoğunlaşıyor. Dijital ayak izleri son 24 saatte aktif."
+async function globalInquiry() {
+    const query = document.getElementById('masterSearch').value.toLowerCase();
+    if(!query) return;
+
+    try {
+        const response = await fetch('database.json');
+        
+        // Dosya bulunamadıysa uyarı ver
+        if (!response.ok) {
+            throw new Error("database.json dosyası sunucuda bulunamadı! (404)");
+        }
+
+        const data = await response.json();
+        const target = data.targets.find(t => t.username.toLowerCase() === query || t.name.toLowerCase().includes(query));
+
+        if(target) {
+            // ... (diğer kodlar aynı kalacak)
+            alert(target.name + " verileri yüklendi.");
+        } else {
+            alert("Sistemde bu kullanıcı adına sahip bir veri yok.");
+        }
+    } catch (e) {
+        // Hatanın detayını ekrana basar
+        alert("SİSTEM HATASI: " + e.message);
     }
-  ]
-}
+    }
