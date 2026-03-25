@@ -3,173 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SUROSINT | DIGITAL DATA CENTER</title>
+    <title>SUROSINT | DATA CENTER</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300;700&display=swap');
+        :root {
+            --primary: #ff0000;
+            --bg: #050505;
+            --surface: #0d0d0d;
+            --card: rgba(20, 20, 20, 0.8);
+            --border: rgba(255, 0, 0, 0.15);
+            --text-main: #e0e0e0;
+            --text-dim: #666;
+            --glow: rgba(255, 0, 0, 0.4);
+        }
 
-        :root { --accent: #ff0000; --bg: #000000; --surface: rgba(10, 10, 10, 0.98); --glow: rgba(255, 0, 0, 0.6); --border: #330000; }
-        
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; cursor: crosshair; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
         
         body { 
-            background: var(--bg); color: #fff; font-family: 'JetBrains Mono', monospace; margin: 0; overflow: hidden;
-            background-image: 
-                radial-gradient(circle at 50% 50%, #1a0000 0%, #000 100%),
-                linear-gradient(rgba(255,0,0,0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,0,0,0.05) 1px, transparent 1px);
-            background-size: 100% 100%, 40px 40px, 40px 40px;
+            background: var(--bg); 
+            color: var(--text-main); 
+            font-family: 'Inter', sans-serif; 
+            margin: 0; 
+            overflow: hidden;
+            background-image: radial-gradient(circle at 2px 2px, rgba(255,0,0,0.05) 1px, transparent 0);
+            background-size: 32px 32px;
         }
 
-        /* SCANLINE EFEKTİ */
-        body::before {
-            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 9999; background-size: 100% 4px, 3px 100%; pointer-events: none;
+        /* GİRİŞ EKRANI - PRESTİJ TASARIM */
+        #auth-gate { 
+            position: fixed; inset: 0; z-index: 10000;
+            background: #000; display: flex; align-items: center; justify-content: center;
         }
-
-        /* GİRİŞ EKRANI */
-        #auth-gate { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 10001; background: #000; }
-        .gate-content { text-align: center; padding: 50px; border: 1px solid var(--border); background: rgba(5,5,5,0.9); box-shadow: 0 0 50px rgba(255,0,0,0.2); border-radius: 2px; position: relative; }
-        .gate-content::after { content: ''; position: absolute; inset: -5px; border: 1px solid var(--accent); opacity: 0.3; animation: glitch 2s infinite; }
-        
-        @keyframes glitch { 0% { clip-path: inset(10% 0 30% 0); } 50% { clip-path: inset(40% 0 10% 0); } 100% { clip-path: inset(10% 0 30% 0); } }
-
-        .auth-input { 
-            background: transparent; border: none; border-bottom: 2px solid var(--accent); color: var(--accent); 
-            font-size: 2rem; width: 250px; text-align: center; outline: none; font-family: 'Orbitron', sans-serif;
-            letter-spacing: 10px; margin-bottom: 30px;
+        .auth-container {
+            width: 100%; max-width: 400px; padding: 40px; text-align: center;
+            border: 1px solid var(--border); background: var(--surface);
+            box-shadow: 0 20px 50px rgba(0,0,0,1); border-radius: 4px;
         }
-
-        /* ANA PANEL */
-        #panel { display: none; height: 100vh; grid-template-columns: 300px 1fr; }
-
-        /* SİDEBAR - ELITE */
-        .sidebar { background: var(--surface); border-right: 2px solid var(--border); display: flex; flex-direction: column; box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
-        .sidebar-header { padding: 40px 20px; border-bottom: 1px solid var(--border); text-align: center; }
-        .sidebar-logo { width: 90px; height: 90px; border: 2px solid var(--accent); padding: 5px; box-shadow: 0 0 20px var(--glow); margin-bottom: 15px; }
-        .nav-link { 
-            padding: 20px 30px; color: #555; text-decoration: none; display: flex; align-items: center; gap: 15px; 
-            font-size: 13px; font-weight: bold; transition: 0.4s; border-bottom: 1px solid rgba(255,0,0,0.05);
+        .auth-logo { width: 80px; height: 80px; border-radius: 50%; margin-bottom: 20px; border: 1px solid var(--primary); padding: 5px; }
+        .auth-input {
+            width: 100%; background: #000; border: 1px solid #222; color: var(--primary);
+            padding: 15px; text-align: center; font-family: 'Space Mono', monospace;
+            font-size: 1.5rem; letter-spacing: 8px; outline: none; margin-bottom: 20px; transition: 0.3s;
         }
-        .nav-link i { font-size: 18px; text-shadow: 0 0 5px currentColor; }
-        .nav-link:hover, .nav-link.active { color: var(--accent); background: rgba(255,0,0,0.05); box-shadow: inset 5px 0 0 var(--accent); }
+        .auth-input:focus { border-color: var(--primary); box-shadow: 0 0 15px var(--glow); }
 
-        /* WORKSPACE */
-        .workspace { padding: 50px; overflow-y: auto; }
-        .module { display: none; animation: emerge 0.8s cubic-bezier(0.075, 0.82, 0.165, 1); }
-        .module.active { display: block; }
-        @keyframes emerge { from { opacity: 0; transform: scale(0.98) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        /* ANA PANEL MİMARİSİ */
+        #panel { display: none; height: 100vh; grid-template-columns: 280px 1fr; }
 
-        /* SURUC VERI MERKEZI KOMPONENTLERI */
-        .header-title { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; color: var(--accent); margin-bottom: 40px; text-shadow: 0 0 20px var(--glow); }
-        
-        .search-terminal { background: #080808; border: 1px solid var(--border); padding: 30px; position: relative; overflow: hidden; }
-        .search-terminal::before { content: "DATA_STREAM"; position: absolute; top: 5px; right: 10px; font-size: 10px; color: #222; }
-        
-        .terminal-input { background: #000; border: 1px solid #222; color: #fff; padding: 15px; width: 70%; font-family: 'JetBrains Mono'; outline: none; border-radius: 0; }
-        .terminal-input:focus { border-color: var(--accent); }
-        
-        .matrix-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-top: 40px; }
-        .data-node { background: rgba(15,15,15,0.8); border: 1px solid #1a1a1a; padding: 25px; position: relative; border-left: 3px solid var(--accent); }
-        .node-label { color: #444; font-size: 11px; text-transform: uppercase; margin-bottom: 10px; display: block; }
-        .node-value { color: #fff; font-size: 16px; border-bottom: 1px solid #111; padding-bottom: 5px; }
+        /* SİDEBAR - KURUMSAL */
+        .sidebar { background: var(--surface); border-right: 1px solid #1a1a1a; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 40px 24px; border-bottom: 1px solid #1a1a1a; }
+        .sidebar-header img { width: 40px; vertical-align: middle; margin-right: 12px; }
+        .brand-text { font-weight: 800; font-size: 1.2rem; color: #fff; letter-spacing: 2px; }
 
-        /* RESPONSIVE */
-        @media (max-width: 900px) {
+        .nav-group { padding: 20px 0; flex-grow: 1; }
+        .nav-item {
+            padding: 14px 24px; display: flex; align-items: center; gap: 16px;
+            color: var(--text-dim); text-decoration: none; font-size: 13px; font-weight: 600;
+            transition: 0.2s; border-left: 3px solid transparent;
+        }
+        .nav-item i { font-size: 16px; width: 20px; }
+        .nav-item:hover, .nav-item.active { color: var(--primary); background: rgba(255,0,0,0.03); border-left-color: var(--primary); }
+
+        /* İÇERİK ALANI */
+        .main-content { padding: 60px; overflow-y: auto; background: linear-gradient(180deg, #080808 0%, #050505 100%); }
+        .section-title { font-size: 2rem; font-weight: 800; margin-bottom: 8px; color: #fff; }
+        .section-subtitle { color: var(--text-dim); font-size: 14px; margin-bottom: 40px; text-transform: uppercase; letter-spacing: 2px; }
+
+        /* VERİ KARTLARI */
+        .search-box {
+            background: #111; border: 1px solid #1a1a1a; padding: 8px; border-radius: 8px;
+            display: flex; align-items: center; margin-bottom: 40px;
+        }
+        .search-box input {
+            background: transparent; border: none; color: #fff; padding: 12px 20px;
+            flex-grow: 1; outline: none; font-family: 'Space Mono', monospace;
+        }
+        .btn-search {
+            background: var(--primary); color: #fff; border: none; padding: 12px 30px;
+            border-radius: 6px; font-weight: 700; cursor: pointer; transition: 0.3s;
+        }
+        .btn-search:hover { filter: brightness(1.2); transform: translateY(-1px); }
+
+        .grid-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+        .card {
+            background: var(--card); border: 1px solid #1a1a1a; border-radius: 12px; padding: 24px;
+            position: relative; overflow: hidden; backdrop-filter: blur(10px);
+        }
+        .card::before {
+            content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, var(--primary), transparent);
+        }
+        .card-label { font-size: 11px; color: var(--text-dim); text-transform: uppercase; font-weight: 700; margin-bottom: 16px; display: block; }
+        .data-point { margin-bottom: 15px; }
+        .data-key { font-size: 12px; color: #444; margin-bottom: 4px; }
+        .data-val { font-family: 'Space Mono', monospace; font-size: 14px; color: #fff; }
+
+        /* RESPONSIVE DÜZENLEME */
+        @media (max-width: 1024px) {
             #panel { grid-template-columns: 1fr; }
-            .sidebar { position: fixed; bottom: 0; width: 100%; height: 70px; flex-direction: row; z-index: 1000; overflow-x: auto; }
-            .sidebar-header, .sidebar-logo { display: none; }
-            .nav-link { padding: 10px 20px; border: none; flex-direction: column; font-size: 10px; gap: 5px; }
-            .workspace { padding: 20px; padding-bottom: 100px; }
-            .header-title { font-size: 1.5rem; }
+            .sidebar { position: fixed; bottom: 0; width: 100%; height: 70px; flex-direction: row; z-index: 1000; }
+            .sidebar-header { display: none; }
+            .nav-group { display: flex; width: 100%; justify-content: space-around; padding: 0; }
+            .nav-item { flex-direction: column; padding: 10px; font-size: 10px; border: none; }
+            .main-content { padding: 30px; padding-bottom: 100px; }
         }
     </style>
 </head>
 <body>
 
     <div id="auth-gate">
-        <div class="gate-content">
-            <img src="24841.jpg" class="sidebar-logo" style="margin-bottom: 30px;">
-            <h1 style="font-family: 'Orbitron'; color: var(--accent); letter-spacing: 5px;">SYSTEM SECURED</h1>
-            <input type="password" id="access-key" class="auth-input" placeholder="****">
-            <br>
-            <button onclick="unlock()" style="background:var(--accent); color:#000; border:none; padding:15px 40px; font-weight:bold; cursor:pointer; font-family:'Orbitron'">LOG_IN</button>
+        <div class="auth-container">
+            <img src="24841.jpg" class="auth-logo">
+            <h2 style="font-weight: 800; color: #fff; margin-bottom: 8px;">ERİŞİM KONTROLÜ</h2>
+            <p style="color: #444; font-size: 12px; margin-bottom: 30px;">LÜTFEN GEÇERLİ KİMLİK ANAHTARINI GİRİNİZ</p>
+            <input type="password" id="key" class="auth-input" placeholder="••••">
+            <button onclick="unlock()" class="btn-search" style="width: 100%;">SİSTEME GİRİŞ</button>
         </div>
     </div>
 
     <div id="panel">
         <aside class="sidebar">
             <div class="sidebar-header">
-                <img src="24841.jpg" class="sidebar-logo">
-                <div style="font-family: 'Orbitron'; color: var(--accent); font-size: 1.2rem; letter-spacing: 3px;">SUROSINT</div>
-                <div style="font-size: 9px; color: #333;">VERİ MERKEZİ V0.5</div>
+                <img src="24841.jpg" alt="Logo">
+                <span class="brand-text">SUROSINT</span>
             </div>
-            <nav>
-                <a href="#" class="nav-link active" onclick="showModule('intel')"><i class="fas fa-crosshairs"></i> HEDEF ANALİZ</a>
-                <a href="#" class="nav-link" onclick="showModule('leak')"><i class="fas fa-biohazard"></i> VERİ SIZINTISI</a>
-                <a href="#" class="nav-link" onclick="showModule('vault')"><i class="fas fa-file-shield"></i> STORY ARŞİV</a>
-                <a href="#" class="nav-link" onclick="showModule('list')"><i class="fas fa-users-viewfinder"></i> TAKİP HAVUZU</a>
-                <a href="#" class="nav-link" onclick="showModule('ai')"><i class="fas fa-brain"></i> SURUC AI</a>
-            </nav>
+            <div class="nav-group">
+                <a href="#" class="nav-item active" onclick="tab('intel')"><i class="fas fa-bullseye"></i> HEDEF SORGU</a>
+                <a href="#" class="nav-item" onclick="tab('leak')"><i class="fas fa-database"></i> VERİ SIZINTISI</a>
+                <a href="#" class="nav-item" onclick="tab('vault')"><i class="fas fa-archive"></i> STORY VAULT</a>
+                <a href="#" class="nav-item" onclick="tab('track')"><i class="fas fa-user-tag"></i> TAKİP LİSTESİ</a>
+                <a href="#" class="nav-item" onclick="tab('ai')"><i class="fas fa-microchip"></i> SURUC AI</a>
+            </div>
         </aside>
 
-        <main class="workspace">
-            <div id="intel" class="module active">
-                <h2 class="header-title">SURUÇ VERİ MERKEZİ</h2>
-                
-                <div class="search-terminal">
-                    <input type="text" id="target" class="terminal-input" placeholder="DEEP_SEARCH: İsim veya Kullanıcı Adı...">
-                    <button onclick="runSearch()" style="background:var(--accent); color:#000; border:none; padding:15px 30px; font-weight:bold; cursor:pointer; position:absolute; right:30px;">HEDEFİ TARA</button>
+        <main class="main-content">
+            <div id="intel" class="tab-content active">
+                <h1 class="section-title">SURUÇ VERİ MERKEZİ</h1>
+                <p class="section-subtitle">Bağlantılı İstihbarat ve Analiz Paneli v0.5</p>
+
+                <div class="search-box">
+                    <input type="text" id="targetInput" placeholder="Hedef isim veya dijital kimlik giriniz...">
+                    <button class="btn-search" onclick="runInquiry()">SORGULA</button>
                 </div>
 
-                <div id="results" style="display:none;" class="matrix-container">
-                    <div class="data-node">
-                        <span class="node-label">Sistem Kaydı</span>
-                        <div class="node-value" id="res-name">Taranıyor...</div>
+                <div id="resultMatrix" style="display: none;" class="grid-layout">
+                    <div class="card">
+                        <span class="card-label">KİMLİK BİLGİLERİ</span>
+                        <div class="data-point">
+                            <div class="data-key">BELİRLENEN HEDEF</div>
+                            <div class="data-val" id="res-name">-</div>
+                        </div>
+                        <div class="data-point">
+                            <div class="data-key">BÖLGESEL KAYIT</div>
+                            <div class="data-val">SURUÇ / ŞANLIURFA</div>
+                        </div>
                     </div>
-                    <div class="data-node">
-                        <span class="node-label">Konum Koordinatları</span>
-                        <div class="node-value">Suruç / 36.9764° N, 38.4242° E</div>
+                    <div class="card">
+                        <span class="card-label">SİSTEM DURUMU</span>
+                        <div class="data-point">
+                            <div class="data-key">TAKİP MODU</div>
+                            <div class="data-val" style="color: #00ff00;">AKTİF İZLEME</div>
+                        </div>
+                        <div class="data-point">
+                            <div class="data-key">VERİ KAYNAĞI</div>
+                            <div class="data-val">LOCAL_DATABASE_v63</div>
+                        </div>
                     </div>
-                    <div class="data-node">
-                        <span class="node-label">Dijital Durum</span>
-                        <div class="node-value" style="color:#00ff00">AKTİF İZLEME_LOG_ON</div>
-                    </div>
-                    <div class="data-node">
-                        <span class="node-label">Suruc AI Öngörü</span>
-                        <div class="node-value">Veri Paketi İşleniyor...</div>
+                    <div class="card">
+                        <span class="card-label">SURUC AI ANALİZİ</span>
+                        <div class="data-point">
+                            <div class="data-key">DAVRANIŞ ÖNGÖRÜSÜ</div>
+                            <div class="data-val">VERİ BEKLENİYOR...</div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <div id="leak" class="module"><h2>VERİ SIZINTISI HARİTASI</h2></div>
-            <div id="vault" class="module"><h2>STORY VAULT ARŞİVİ</h2></div>
-            <div id="list" class="module"><h2>10.000+ TAKİP LİSTESİ</h2></div>
-            <div id="ai" class="module"><h2>SURUC AI CORE</h2></div>
+            <div id="leak" class="tab-content" style="display:none;"><h2>VERİ SIZINTISI ANALİZİ</h2></div>
+            <div id="vault" class="tab-content" style="display:none;"><h2>STORY VAULT ARŞİVİ</h2></div>
+            <div id="track" class="tab-content" style="display:none;"><h2>AKTİF TAKİP HAVUZU</h2></div>
+            <div id="ai" class="tab-content" style="display:none;"><h2>SURUC AI CORE</h2></div>
         </main>
     </div>
 
     <script>
         function unlock() {
-            if(document.getElementById('access-key').value === 'baba') {
+            if(document.getElementById('key').value === 'baba') {
                 document.getElementById('auth-gate').style.display = 'none';
                 document.getElementById('panel').style.display = 'grid';
-            } else { alert('YETKİSİZ ERİŞİM: MÜHÜR KIRILAMADI.'); }
+            } else { alert('ERİŞİM REDDEDİLDİ.'); }
         }
 
-        function showModule(id) {
-            document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+        function tab(id) {
+            document.querySelectorAll('.tab-content').forEach(c => c.style.display = 'none');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(id).style.display = 'block';
             event.currentTarget.classList.add('active');
         }
 
-        function runSearch() {
-            const val = document.getElementById('target').value;
+        function runInquiry() {
+            const val = document.getElementById('targetInput').value;
             if(val) {
-                document.getElementById('results').style.display = 'grid';
-                document.getElementById('res-name').innerText = "HEDEF_ID: " + val.toUpperCase();
+                document.getElementById('resultMatrix').style.display = 'grid';
+                document.getElementById('res-name').innerText = val.toUpperCase();
             }
         }
     </script>
