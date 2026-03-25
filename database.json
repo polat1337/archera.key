@@ -1,12 +1,69 @@
-{
-  "targets": [
-    {
-      "username": "hedef1",
-      "name": "Hedef Bir",
-      "location": "Suruç",
-      "leaks": [],
-      "stories": [],
-      "ai_report": "Analiz tamam."
+async function globalInquiry() {
+    // Girişi temizle (Boşlukları sil, küçük harfe çevir)
+    const query = document.getElementById('masterSearch').value.trim().toLowerCase();
+    const resultArea = document.getElementById('intel-results');
+    
+    if(!query) return alert("Lütfen bir hedef giriniz.");
+
+    try {
+        console.log("Veritabanı aranıyor...");
+        
+        // Önbelleği temizlemek için zaman damgası ekliyoruz (?v=...)
+        const response = await fetch('database.json?v=' + new Date().getTime());
+        
+        if (!response.ok) {
+            throw new Error("database.json dosyası bulunamadı! Dosya adını ve konumunu kontrol et.");
+        }
+
+        const data = await response.json();
+        
+        // Debug için konsola yazdır (F12 ile bakabilirsin)
+        console.log("Gelen Veri:", data);
+
+        // Hedef bulma (Hem kullanıcı adı hem isim kontrolü)
+        const target = data.targets.find(t => 
+            t.username.toLowerCase() === query || 
+            t.name.toLowerCase().includes(query)
+        );
+
+        if(target) {
+            // VERİLERİ DOLDUR
+            resultArea.style.display = 'grid';
+            document.getElementById('val-name').innerText = target.name.toUpperCase();
+            document.getElementById('val-loc').innerText = target.location;
+
+            // Leak Tabı Güncelleme
+            const leakContainer = document.getElementById('leak-results');
+            if(target.leaks && target.leaks.length > 0) {
+                leakContainer.innerHTML = target.leaks.map(l => `
+                    <div class="card"><span class="card-label">${l.type}</span><div class="card-value">${l.data}</div></div>
+                `).join('');
+            } else {
+                leakContainer.innerHTML = '<div class="card"><div class="card-value">Sızıntı kaydı bulunamadı.</div></div>';
+            }
+
+            // Story Vault Güncelleme
+            const vaultContainer = document.getElementById('vault-results');
+            if(target.stories && target.stories.length > 0) {
+                vaultContainer.innerHTML = target.stories.map(s => `
+                    <div class="story-item"><img src="${s}" onerror="this.src='https://via.placeholder.com/150?text=Hata'"></div>
+                `).join('');
+            } else {
+                vaultContainer.innerHTML = '<p style="color:#444">Arşivlenmiş hikaye yok.</p>';
+            }
+
+            // AI Analiz Güncelleme
+            document.getElementById('ai-results').innerText = target.ai_report || "Analiz verisi mevcut değil.";
+            
+            // Takip Listesi
+            document.getElementById('track-results').innerText = `${target.name} şu an sistem takibinde.`;
+
+            alert("VERİ MERKEZİ: " + target.name + " senkronize edildi.");
+        } else {
+            alert("HATA: '" + query + "' kullanıcısı veritabanında kayıtlı değil.");
+        }
+    } catch (e) {
+        console.error(e);
+        alert("SİSTEM HATASI: " + e.message + "\n\nİpucu: JSON dosyasındaki virgülleri ve tırnakları kontrol et.");
     }
-  ]
 }
