@@ -3,225 +3,333 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SUROSINT | ARCHERA CORE</title>
+    <title>ARCHERA | OMNI-OSINT v4.0</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
-        :root { --primary: #00d2ff; --secondary: #3a7bd5; --bg: #050a15; --surface: rgba(255, 255, 255, 0.05); --text: #f0faff; --border: rgba(0, 210, 255, 0.2); }
+        :root { 
+            --primary: #00d2ff; --secondary: #3a7bd5; --bg: #050a10; 
+            --surface: rgba(255, 255, 255, 0.03); --border: rgba(0, 210, 255, 0.2); 
+            --text: #ffffff; --glass: rgba(10, 25, 41, 0.85);
+        }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; background-image: radial-gradient(circle at center, #0a1f3d 0%, #050a15 100%); }
+        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; background-image: radial-gradient(circle at top right, #001f3f, transparent); }
 
-        /* --- LOGIN INDEX (MAX ANIMATION) --- */
-        #auth-gate { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 100000; transition: 1.5s cubic-bezier(0.8, 0, 0.2, 1); }
-        .login-box { width: 90%; max-width: 450px; text-align: center; perspective: 1000px; }
-        .nar-logo { width: 160px; height: 160px; margin: 0 auto 30px; position: relative; animation: logoFloat 4s infinite ease-in-out; filter: drop-shadow(0 0 30px var(--primary)); }
-        .nar-logo img { width: 100%; height: 100%; border-radius: 50%; border: 4px solid var(--primary); padding: 10px; }
-        .scan-line { position: absolute; width: 110%; height: 2px; background: var(--primary); top: 0; left: -5%; box-shadow: 0 0 20px var(--primary); animation: scanMove 3s infinite linear; }
-        
-        .login-input { width: 100%; background: rgba(0,0,0,0.5); border: 2px solid var(--border); border-radius: 20px; padding: 20px; color: var(--primary); text-align: center; font-family: 'JetBrains Mono'; font-size: 1.5rem; letter-spacing: 10px; margin-bottom: 25px; outline: none; transition: 0.4s; }
-        .login-input:focus { border-color: var(--primary); box-shadow: 0 0 30px rgba(0, 210, 255, 0.3); }
-        .btn-enter { width: 100%; background: linear-gradient(90deg, var(--secondary), var(--primary)); color: white; border: none; padding: 22px; border-radius: 20px; font-weight: 900; letter-spacing: 3px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 15px; box-shadow: 0 10px 40px rgba(0, 210, 255, 0.4); font-family: 'Orbitron'; }
+        /* --- ANIMASYONLAR --- */
+        @keyframes neonPulse { 0%, 100% { box-shadow: 0 0 20px var(--primary); } 50% { box-shadow: 0 0 40px var(--primary); } }
+        @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-50px); } to { opacity: 1; transform: translateX(0); } }
 
-        /* --- MAIN PANEL --- */
-        #panel { display: none; height: 100vh; flex-direction: column; opacity: 0; transition: 1s; }
-        .header { padding: 30px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
-        .user-info { display: flex; align-items: center; gap: 12px; }
-        .user-info h2 { font-family: 'Orbitron'; font-size: 1.4rem; letter-spacing: 1px; }
-        .tag { font-size: 9px; font-weight: 900; padding: 4px 10px; border-radius: 20px; background: var(--primary); color: #000; }
+        /* --- GİRİŞ EKRANI --- */
+        #login-screen { 
+            position: fixed; inset: 0; background: var(--bg); z-index: 100000;
+            display: flex; align-items: center; justify-content: center; transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .login-box {
+            width: 90%; max-width: 450px; padding: 60px 40px; background: var(--glass);
+            border: 2px solid var(--border); border-radius: 40px; text-align: center;
+            backdrop-filter: blur(25px); position: relative;
+        }
+        .main-logo {
+            width: 160px; height: 160px; border-radius: 50%; border: 4px solid var(--primary);
+            padding: 10px; margin-bottom: 30px; animation: float 4s infinite ease-in-out;
+            filter: drop-shadow(0 0 15px var(--primary));
+        }
+        .login-input {
+            width: 100%; padding: 22px; background: rgba(0,0,0,0.5); border: 1px solid var(--border);
+            border-radius: 20px; color: var(--primary); font-family: 'JetBrains Mono';
+            text-align: center; font-size: 1.5rem; letter-spacing: 10px; outline: none; margin-bottom: 25px;
+        }
+        .btn-enter {
+            width: 100%; padding: 20px; background: linear-gradient(45deg, var(--primary), var(--secondary));
+            border: none; border-radius: 20px; color: #fff; font-weight: 900; letter-spacing: 2px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 15px;
+            box-shadow: 0 10px 30px rgba(0, 210, 255, 0.3);
+        }
 
-        .content { flex: 1; padding: 25px; overflow-y: auto; padding-bottom: 120px; }
-        .tab-content { display: none; animation: tabShow 0.6s ease; }
-        .tab-content.active { display: block; }
+        /* --- ANA PANEL --- */
+        #main-app { display: none; height: 100vh; flex-direction: column; opacity: 0; transition: 1s; }
+        .top-bar { 
+            padding: 30px 25px; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--border); background: rgba(0,0,0,0.2);
+        }
+        .user-info h1 { font-family: 'Orbitron'; font-size: 1.8rem; letter-spacing: -1px; }
+        .badge { display: flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 800; letter-spacing: 2px; margin-top: 5px; }
 
-        /* --- SORGU & DATA CARDS --- */
-        .search-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 25px; padding: 10px; display: flex; margin-bottom: 25px; }
-        .search-wrap input { flex: 1; background: transparent; border: none; color: white; padding: 15px; outline: none; }
-        .res-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 25px; padding: 20px; margin-bottom: 15px; position: relative; overflow: hidden; }
-        .res-card i { position: absolute; right: -10px; bottom: -10px; font-size: 5rem; opacity: 0.05; color: var(--primary); }
+        .content { flex: 1; padding: 30px 20px; overflow-y: auto; padding-bottom: 120px; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: slideIn 0.5s ease-out; }
 
-        /* --- ALT MENU --- */
-        .nav-bar { position: fixed; bottom: 0; width: 100%; height: 100px; background: rgba(5,10,21,0.95); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-around; backdrop-filter: blur(20px); z-index: 1000; padding-bottom: 15px; }
-        .nav-btn { color: #557; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; transition: 0.3s; flex: 1; }
-        .nav-btn.active { color: var(--primary); transform: translateY(-8px); text-shadow: 0 0 15px var(--primary); }
-        .nav-btn i { font-size: 1.5rem; }
-        .nav-btn span { font-size: 8px; font-weight: 900; text-transform: uppercase; }
+        /* --- KARTLAR & INPUTLAR --- */
+        .glass-card { 
+            background: var(--surface); border: 1px solid var(--border); 
+            border-radius: 30px; padding: 25px; margin-bottom: 20px;
+            transition: 0.3s;
+        }
+        .search-box {
+            display: flex; background: rgba(0,0,0,0.4); border: 1px solid var(--border);
+            border-radius: 20px; overflow: hidden; margin-bottom: 30px;
+        }
+        .search-box input { flex: 1; padding: 20px; background: transparent; border: none; color: #fff; outline: none; }
+        .search-box i { padding: 20px; color: var(--primary); }
+
+        /* --- ALT MENÜ --- */
+        .nav-bar {
+            position: fixed; bottom: 0; width: 100%; height: 90px;
+            background: rgba(5, 15, 25, 0.95); border-top: 1px solid var(--border);
+            display: flex; justify-content: space-around; align-items: center;
+            backdrop-filter: blur(20px); z-index: 1000; padding-bottom: 15px;
+        }
+        .nav-link { 
+            color: rgba(255,255,255,0.3); text-align: center; cursor: pointer;
+            display: flex; flex-direction: column; gap: 5px; transition: 0.3s;
+        }
+        .nav-link.active { color: var(--primary); transform: translateY(-5px); }
+        .nav-link i { font-size: 1.5rem; }
+        .nav-link span { font-size: 9px; font-weight: 700; text-transform: uppercase; }
 
         /* --- AI CHAT AREA --- */
-        .chat-container { height: 400px; display: flex; flex-direction: column; gap: 10px; }
-        .chat-box { flex: 1; background: rgba(0,0,0,0.3); border-radius: 20px; padding: 15px; overflow-y: auto; border: 1px solid var(--border); }
+        .ai-chat-container { height: 400px; display: flex; flex-direction: column; }
+        .chat-messages { flex: 1; overflow-y: auto; margin-bottom: 15px; padding: 10px; }
+        .msg { padding: 12px 18px; border-radius: 15px; margin-bottom: 10px; max-width: 80%; font-size: 14px; }
+        .msg.ai { background: var(--border); color: #fff; align-self: flex-start; }
+        .msg.user { background: var(--secondary); color: #fff; align-self: flex-end; margin-left: auto; }
 
-        /* --- ANIMATIONS --- */
-        @keyframes scanMove { 0% { top: 0; } 100% { top: 100%; } }
-        @keyframes logoFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
-        @keyframes tabShow { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        /* --- YÖNETİM --- */
+        .admin-section { border: 1px solid var(--secondary); padding: 20px; border-radius: 25px; margin-top: 20px; }
+        .auth-btn { background: #1a1a1a; border: 1px solid #333; color: #fff; padding: 15px; border-radius: 12px; width: 100%; margin-top: 10px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
     </style>
 </head>
 <body>
 
-    <div id="auth-gate">
+    <div id="login-screen">
         <div class="login-box">
-            <div class="nar-logo">
-                <div class="scan-line"></div>
-                <img src="24841.jpg" onerror="this.src='https://via.placeholder.com/160/00d2ff/ffffff?text=ARCHERA'">
-            </div>
-            <h1 style="font-family:'Orbitron'; letter-spacing:15px; margin-bottom:10px; color:var(--primary);">SUROSINT</h1>
-            <p style="font-size:9px; color:var(--secondary); letter-spacing:5px; margin-bottom:40px; font-weight:900;">AUTHORIZED ACCESS ONLY</p>
-            
-            <input type="password" id="entry-key" class="login-input" placeholder="••••">
-            
-            <button onclick="bootSystem()" class="btn-enter">
-                SİSTEME GİR <i class="fas fa-sign-in-alt"></i>
+            <img src="24865.jpg" class="main-logo" onerror="this.src='https://via.placeholder.com/160/00d2ff/ffffff?text=ARCHERA'">
+            <h1 style="font-family:'Orbitron'; letter-spacing:10px; margin-bottom:40px; color:var(--primary);">SUROSINT</h1>
+            <input type="password" id="login-key" class="login-input" placeholder="••••">
+            <button onclick="handleLogin()" class="btn-enter">
+                <i class="fas fa-fingerprint"></i> SİSTEME GİR
             </button>
         </div>
     </div>
 
-    <div id="panel">
-        <header class="header">
+    <div id="main-app">
+        <div class="top-bar">
             <div class="user-info">
-                <h2 id="display-name">ARCHERA</h2>
-                <span id="role-tag" class="tag">OWNER</span>
-                <i id="crown-icon" class="fas fa-crown" style="color:var(--gold);"></i>
-            </div>
-            <img src="24841.jpg" style="width:40px; border-radius:50%; border:2px solid var(--primary);">
-        </header>
-
-        <main class="content">
-            <div id="tab-search" class="tab-content active">
-                <div class="search-wrap">
-                    <i class="fas fa-at" style="padding:15px; color:var(--primary);"></i>
-                    <input type="text" id="mainQuery" placeholder="Kullanıcı Adı veya İsim Gir...">
-                    <button onclick="deepSearch()" style="background:var(--primary); border:none; border-radius:15px; padding:0 20px; margin:5px; cursor:pointer;"><i class="fas fa-bolt"></i></button>
-                </div>
-                <div id="search-results">
-                    <p style="text-align:center; opacity:0.3; margin-top:50px;">Sistem Analiz Bekliyor...</p>
-                </div>
-            </div>
-
-            <div id="tab-accounts" class="tab-content">
-                <h3 style="margin-bottom:20px; font-family:'Orbitron'; color:var(--primary);">HESAP MERKEZİ</h3>
-                <div id="account-logs" style="display:grid; gap:10px;">
-                    <div class="res-card">Bağlı Hesap Bulunmuyor.</div>
-                </div>
-            </div>
-
-            <div id="tab-db" class="tab-content">
-                <h3 style="margin-bottom:20px; font-family:'Orbitron';">BREACH & OSINT DATA</h3>
-                <div id="db-results"></div>
-            </div>
-
-            <div id="tab-images" class="tab-content">
-                <h3 style="margin-bottom:20px; font-family:'Orbitron';">STORY ARCHIVE</h3>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+                <h1 id="user-display">ARCHERA</h1>
+                <div id="user-status" class="badge">
                     </div>
             </div>
+            <img src="24865.jpg" style="width:50px; height:50px; border-radius:15px; border:1px solid var(--border);">
+        </div>
 
-            <div id="tab-ai" class="tab-content">
-                <h3 style="margin-bottom:20px; font-family:'Orbitron';">AI NEURAL CORE</h3>
-                <div class="chat-container">
-                    <div class="chat-box" id="ai-messages">Sizinle konuşmaya hazırım, Archera.</div>
-                    <div class="search-wrap">
-                        <input type="text" placeholder="AI'ya komut ver...">
-                        <i class="fas fa-paper-plane" style="padding:15px; color:var(--primary);"></i>
+        <div class="content">
+            <div id="sorgula" class="tab-content active">
+                <div class="search-box">
+                    <i class="fas fa-at"></i>
+                    <input type="text" id="target-query" placeholder="Sorgula: @kullanici veya İsim Soyisim">
+                </div>
+                <button onclick="runGlobalSearch()" class="btn-enter" style="background: var(--surface); border: 1px solid var(--primary);">
+                    <i class="fas fa-search-plus"></i> DERİN TARAMA BAŞLAT
+                </button>
+                <div id="search-results" style="margin-top:30px; display:none;">
+                    <div class="glass-card">
+                        <h4 style="color:var(--primary); margin-bottom:10px;">İSTİHBARAT RAPORU</h4>
+                        <p id="res-data"></p>
                     </div>
                 </div>
             </div>
 
-            <div id="tab-admin" class="tab-content">
-                <h3 style="margin-bottom:20px; font-family:'Orbitron'; color:var(--gold);">COMMAND CENTER</h3>
-                <div class="res-card" style="border-color:var(--gold);">
-                    <h4 style="margin-bottom:15px;">HESAP OTOMASYONU EKLE</h4>
-                    <p style="font-size:11px; margin-bottom:15px; opacity:0.7;">Instagram/Tiktok/Snapchat API üzerinden hesap bağlayın.</p>
-                    <button class="btn-enter" style="padding:12px; font-size:11px; background:var(--gold); color:black;"><i class="fab fa-instagram"></i> HESAP BAĞLA (AUTH)</button>
-                </div>
-                <div id="member-manager" style="margin-top:30px;">
-                    <h4>ÜYE YÖNETİMİ</h4>
-                    <div id="agent-list" style="margin-top:10px;"></div>
+            <div id="hesaplar" class="tab-content">
+                <h2 style="margin-bottom:20px;">HESAP MERKEZİ <i class="fas fa-users-cog" style="color:var(--primary)"></i></h2>
+                <div class="glass-card">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span>Bağlı Hesaplar</span>
+                        <span id="acc-count" style="color:var(--primary)">0/4</span>
+                    </div>
+                    <div id="logged-accounts" style="margin-top:20px;"></div>
                 </div>
             </div>
-        </main>
+
+            <div id="database" class="tab-content">
+                <h2>OSINT TRACES <i class="fas fa-database" style="color:var(--primary)"></i></h2>
+                <div class="glass-card" style="margin-top:20px;">
+                    <p style="color:#555; font-size:12px;">Hedef seçilmediğinde genel sızıntılar listelenir.</p>
+                </div>
+            </div>
+
+            <div id="goruntuler" class="tab-content">
+                <h2>STORY CENTER <i class="fas fa-play-circle" style="color:var(--primary)"></i></h2>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px; margin-top:20px;">
+                    <div class="glass-card" style="height:150px; display:flex; align-items:center; justify-content:center;">
+                        <i class="fas fa-cloud-download-alt" style="font-size:2rem; opacity:0.2;"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ai" class="tab-content">
+                <h2>AI CORE ANALYZER</h2>
+                <div class="glass-card ai-chat-container">
+                    <div class="chat-messages" id="chat-box">
+                        <div class="msg ai">Sisteme hoşgeldin Archera. Analiz için hazırım.</div>
+                    </div>
+                    <div class="search-box">
+                        <input type="text" id="ai-input" placeholder="AI'ya emir ver...">
+                        <i class="fas fa-paper-plane" onclick="sendAiMessage()" style="cursor:pointer"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div id="yonetim" class="tab-content">
+                <h2 style="color:var(--gold)">KOMUTA MERKEZİ <i class="fas fa-shield-alt"></i></h2>
+                <div class="admin-section">
+                    <h3>Üye Yönetimi</h3>
+                    <input type="text" id="new-mem-name" placeholder="Üye İsmi" class="login-input" style="font-size:1rem; padding:12px; letter-spacing:1px;">
+                    <input type="text" id="new-mem-key" placeholder="Erişim Key" class="login-input" style="font-size:1rem; padding:12px; letter-spacing:1px;">
+                    <button onclick="addMember()" class="btn-enter">ÜYE EKLE</button>
+                </div>
+
+                <div class="admin-section" style="border-color:var(--primary);">
+                    <h3>Otomasyon & Hesap Ekle</h3>
+                    <button onclick="connectSocial('Instagram')" class="auth-btn"><i class="fab fa-instagram"></i> Instagram Bağla</button>
+                    <button onclick="connectSocial('Snapchat')" class="auth-btn"><i class="fab fa-snapchat"></i> Snapchat Bağla</button>
+                    <button onclick="connectSocial('TikTok')" class="auth-btn"><i class="fab fa-tiktok"></i> TikTok Bağla</button>
+                </div>
+            </div>
+        </div>
 
         <nav class="nav-bar">
-            <div class="nav-btn active" onclick="nav('tab-search', this)"><i class="fas fa-search-plus"></i><span>Sorgula</span></div>
-            <div class="nav-item" style="flex:1; display:flex; justify-content:center;">
-                <div class="nav-btn" onclick="nav('tab-accounts', this)"><i class="fas fa-users-cog"></i><span>Hesaplar</span></div>
-            </div>
-            <div class="nav-btn" onclick="nav('tab-db', this)"><i class="fas fa-database"></i><span>Data</span></div>
-            <div class="nav-btn" onclick="nav('tab-images', this)"><i class="fas fa-camera-retro"></i><span>Story</span></div>
-            <div class="nav-btn" onclick="nav('tab-ai', this)"><i class="fas fa-brain"></i><span>AI Chat</span></div>
-            <div id="admin-nav-item" class="nav-btn" style="display:none;" onclick="nav('tab-admin', this)"><i class="fas fa-shield-alt"></i><span>Yönetim</span></div>
+            <div class="nav-link active" onclick="switchTab('sorgula', this)"><i class="fas fa-crosshairs"></i><span>Sorgula</span></div>
+            <div class="nav-link" onclick="switchTab('hesaplar', this)"><i class="fas fa-user-friends"></i><span>Hesaplar</span></div>
+            <div class="nav-link" onclick="switchTab('database', this)"><i class="fas fa-code-branch"></i><span>Data</span></div>
+            <div class="nav-link" onclick="switchTab('goruntuler', this)"><i class="fas fa-camera-retro"></i><span>Story</span></div>
+            <div class="nav-link" onclick="switchTab('ai', this)"><i class="fas fa-brain"></i><span>AI Chat</span></div>
+            <div id="admin-nav" class="nav-link" style="display:none;" onclick="switchTab('yonetim', this)"><i class="fas fa-user-crown"></i><span>Yönetim</span></div>
         </nav>
     </div>
 
     <script>
-        let currentUser = null;
-        let members = JSON.parse(localStorage.getItem('surosint_v4_users')) || {
-            "baba": { name: "ARCHERA", role: "Owner" },
-            "test": { name: "Ajan_01", role: "Member" }
+        // --- VERİTABANI & HAFIZA ---
+        let users = JSON.parse(localStorage.getItem('archera_v4_users')) || {
+            "baba": { name: "ARCHERA", role: "Owner" }
         };
+        let connectedAccounts = JSON.parse(localStorage.getItem('archera_accounts')) || [];
 
-        function bootSystem() {
-            const key = document.getElementById('entry-key').value;
-            if(members[key]) {
-                currentUser = members[key];
-                setupInterface();
-                document.getElementById('auth-gate').style.transform = 'translateY(-100%)';
+        // --- GİRİŞ MEKANİZMASI ---
+        function handleLogin() {
+            const key = document.getElementById('login-key').value;
+            const user = users[key];
+
+            if(user) {
+                document.getElementById('user-display').innerText = user.name;
+                const badge = document.getElementById('user-status');
+                
+                if(user.role === "Owner") {
+                    badge.innerHTML = `<i class="fas fa-crown" style="color:var(--gold)"></i> <span style="color:var(--gold)">SYSTEM OWNER</span>`;
+                    document.getElementById('admin-nav').style.display = 'flex';
+                } else {
+                    badge.innerHTML = `<span style="color:#aaa">MEMBER</span>`;
+                }
+
+                // Efektli Geçiş
+                document.getElementById('login-screen').style.opacity = '0';
+                document.getElementById('login-screen').style.transform = 'scale(1.2)';
                 setTimeout(() => {
-                    document.getElementById('auth-gate').style.display = 'none';
-                    document.getElementById('panel').style.display = 'flex';
-                    setTimeout(() => document.getElementById('panel').style.opacity = '1', 50);
+                    document.getElementById('login-screen').style.display = 'none';
+                    document.getElementById('main-app').style.display = 'flex';
+                    setTimeout(() => document.getElementById('main-app').style.opacity = '1', 50);
+                    renderAccounts();
                 }, 1000);
-            } else { alert('GEÇERSİZ KEY'); }
-        }
-
-        function setupInterface() {
-            document.getElementById('display-name').innerText = currentUser.name;
-            document.getElementById('role-tag').innerText = currentUser.role;
-            if(currentUser.role === "Owner") {
-                document.getElementById('admin-nav-item').style.display = 'flex';
-                document.getElementById('crown-icon').style.display = 'inline-block';
             } else {
-                document.getElementById('admin-nav-item').style.display = 'none';
-                document.getElementById('crown-icon').style.display = 'none';
+                alert("GEÇERSİZ ERİŞİM ANAHTARI");
             }
         }
 
-        function nav(id, el) {
+        // --- NAVİGASYON ---
+        function switchTab(id, el) {
             document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             el.classList.add('active');
         }
 
-        // --- DEEP SEARCH LOGIC (BAĞLANTILI ÇALIŞMA) ---
-        async function deepSearch() {
-            const q = document.getElementById('mainQuery').value;
-            if(!q) return;
-            
-            // Simüle edilmiş bağlantılı çalışma
-            const resultsBox = document.getElementById('search-results');
-            resultsBox.innerHTML = `<div class="res-card"><i class="fas fa-spinner fa-spin"></i> Tarama Yapılıyor: ${q}...</div>`;
-            
+        // --- SORGULAMA MOTORU (API SİMÜLASYONU) ---
+        async function runGlobalSearch() {
+            const query = document.getElementById('target-query').value;
+            if(!query) return;
+
+            document.getElementById('search-results').style.display = 'block';
+            document.getElementById('res-data').innerHTML = `<i class="fas fa-spinner fa-spin"></i> API Sorgulanıyor...`;
+
+            // Burada gerçek database.json veya OSINT API'si çalışacak
             setTimeout(() => {
-                resultsBox.innerHTML = `
-                    <div class="res-card">
-                        <h4 style="color:var(--primary)">HEDEF KİMLİK</h4>
-                        <p>Ad Soyad: Abdulkadir P***</p>
-                        <p>TC: 102********</p>
-                        <p>Tel: +90 5** *** ** 41</p>
-                        <i class="fas fa-id-card"></i>
-                    </div>
-                    <div class="res-card">
-                        <h4 style="color:var(--secondary)">SOSYAL İZLER (OSINT)</h4>
-                        <p>Instagram: @${q}</p>
-                        <p>Konum: Şanlıurfa / Suruç</p>
-                        <p>Cihaz: iPhone 13</p>
-                        <i class="fab fa-instagram"></i>
+                document.getElementById('res-data').innerHTML = `
+                    <b>Bulunan Kimlik:</b> @${query.replace('@','')} <br>
+                    <b>TC/ID:</b> 482******12 <br>
+                    <b>Bağlı Numara:</b> +90 5** *** ** 88 <br>
+                    <b>E-Posta:</b> t****@gmail.com <br>
+                    <b>Konum:</b> Türkiye / İstanbul
+                `;
+                // Bu veri alt menüdeki diğer sekmeleri de tetikleyebilir
+            }, 1500);
+        }
+
+        // --- HESAP EKLEME (INSTA/SNAP/TIKTOK) ---
+        function connectSocial(platform) {
+            const username = prompt(`${platform} Kullanıcı Adınız:`);
+            const pass = prompt(`${platform} Şifreniz:`);
+            
+            if(username && pass) {
+                const acc = { platform, username, id: Date.now() };
+                connectedAccounts.push(acc);
+                localStorage.setItem('archera_accounts', JSON.stringify(connectedAccounts));
+                renderAccounts();
+                alert(`${platform} Hesabı Başarıyla Sisteme Entegre Edildi.`);
+            }
+        }
+
+        function renderAccounts() {
+            const list = document.getElementById('logged-accounts');
+            list.innerHTML = '';
+            connectedAccounts.forEach(a => {
+                list.innerHTML += `
+                    <div style="background:rgba(255,255,255,0.05); padding:15px; border-radius:15px; margin-bottom:10px; display:flex; justify-content:space-between; align-items:center;">
+                        <span><i class="fab fa-${a.platform.toLowerCase()}"></i> ${a.username}</span>
+                        <span style="font-size:10px; color:var(--primary)">AKTİF</span>
                     </div>
                 `;
-                // Bu veriler aynı zamanda Database ve Story sekmelerini de tetikler (Mantık olarak)
-            }, 2000);
+            });
+            document.getElementById('acc-count').innerText = `${connectedAccounts.length}/4`;
+        }
+
+        // --- AI CHAT ---
+        function sendAiMessage() {
+            const inp = document.getElementById('ai-input');
+            const box = document.getElementById('chat-box');
+            if(!inp.value) return;
+
+            box.innerHTML += `<div class="msg user">${inp.value}</div>`;
+            const userMsg = inp.value.toLowerCase();
+            inp.value = '';
+
+            setTimeout(() => {
+                let response = "Anlaşıldı Archera, veri tabanlarını tarıyorum.";
+                if(userMsg.includes("sorgula")) response = "Hangi kullanıcıyı analiz etmemi istersin?";
+                box.innerHTML += `<div class="msg ai">${response}</div>`;
+                box.scrollTop = box.scrollHeight;
+            }, 1000);
+        }
+
+        // --- ÜYE EKLEME ---
+        function addMember() {
+            const n = document.getElementById('new-mem-name').value;
+            const k = document.getElementById('new-mem-key').value;
+            if(n && k) {
+                users[k] = { name: n, role: "Member" };
+                localStorage.setItem('archera_v4_users', JSON.stringify(users));
+                alert("Yeni Üye Sisteme Sızdırıldı.");
+            }
         }
     </script>
 </body>
