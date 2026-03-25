@@ -49,13 +49,12 @@
 
     <div id="loader">
         <div class="spinner"></div>
-        <p style="margin-top:20px; letter-spacing:3px; font-size:12px; color:var(--accent);">TUNEL KURULUYOR...</p>
+        <p id="loader-text" style="margin-top:20px; letter-spacing:3px; font-size:12px; color:var(--accent);">TUNEL KURULUYOR...</p>
     </div>
 
     <div id="auth-gate">
         <div class="login-box">
             <h1 style="font-family:'Orbitron'; color:var(--accent); margin-bottom:10px;">SUROSINT</h1>
-            <p style="font-size:9px; color:#5b7a9d; margin-bottom:30px;">VIRTUAL INTERFACE V4.2</p>
             <input type="password" id="gate-key" class="key-input" placeholder="PASSKEY">
             <button onclick="initSystem()" class="btn-enter">SISTEME SIZ</button>
         </div>
@@ -67,7 +66,7 @@
                 <img src="24841.jpg" style="width:38px; border-radius:10px; border:1px solid var(--accent);">
                 <span style="font-weight:900;">ARCHERA</span>
             </div>
-            <div style="color:var(--accent); font-size:10px;">STORM-V4</div>
+            <div style="color:var(--accent); font-size:10px;">SHADOW-V4</div>
         </header>
 
         <main class="main-view">
@@ -80,7 +79,7 @@
             </section>
 
             <section id="admin" class="tab-content">
-                <h3 style="margin-bottom:20px; font-family:'Orbitron'; font-size:1rem;">HESAP TUNELI</h3>
+                <h3 style="margin-bottom:20px; font-family:'Orbitron';">HESAP TUNELI</h3>
                 <div class="result-card" style="border-left-color: #e1306c;">
                     <button onclick="handleLoginFlow()" class="btn-enter" style="background:#e1306c;">HESAP EKLE</button>
                 </div>
@@ -102,7 +101,7 @@
                 document.getElementById('auth-gate').style.display = 'none';
                 document.getElementById('panel').style.display = 'flex';
                 setTimeout(() => document.getElementById('panel').style.opacity = '1', 50);
-            } else { alert("YETKISIZ ERISIM."); }
+            } else { alert("HATALI KEY!"); }
         }
 
         function switchTab(id, el) {
@@ -112,15 +111,18 @@
             el.classList.add('active');
         }
 
-        function showLoader(show) { document.getElementById('loader').style.display = show ? 'flex' : 'none'; }
+        function showLoader(show, text = "TUNEL KURULUYOR...") { 
+            document.getElementById('loader').style.display = show ? 'flex' : 'none'; 
+            document.getElementById('loader-text').innerText = text;
+        }
 
-        // --- ASIL MOTOR BURASI ---
+        // --- GÜNCELLENMİŞ GİRİŞ MOTORU ---
         async function handleLoginFlow() {
             const user = prompt("Instagram Kullanıcı Adı:");
             const pass = prompt("Şifre:");
             if(!user || !pass) return;
 
-            showLoader(true);
+            showLoader(true, "INSTAGRAM SIZILIYOR...");
 
             try {
                 const response = await fetch(`${RENDER_URL}/api/v4/auth/link`, {
@@ -128,23 +130,23 @@
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ "username": user, "password": pass, "verification_code": "" })
                 });
-                
                 const res = await response.json();
                 showLoader(false);
 
                 if(res.status === "challenge") {
-                    const code = prompt("Instagram Kod Gönderdi! (SMS veya E-posta):");
-                    if(code) {
-                        showLoader(true);
-                        const resCode = await fetch(`${RENDER_URL}/api/v4/auth/link`, {
+                    // Instagram "Bendim" onayı istediğinde burası çalışır
+                    const dummy = prompt(res.message); 
+                    if(dummy) {
+                        showLoader(true, "ONAY BEKLENIYOR...");
+                        const retry = await fetch(`${RENDER_URL}/api/v4/auth/link`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ "username": user, "password": pass, "verification_code": code })
+                            body: JSON.stringify({ "username": user, "password": pass, "verification_code": "confirmed" })
                         });
-                        const final = await resCode.json();
+                        const final = await retry.json();
                         showLoader(false);
                         if(final.status === "success") {
-                            alert("✅ TUNEL ACILDI!");
+                            alert("✅ TAMAMDIR, TUNEL ACILDI!");
                             document.getElementById('tunnel-status').innerHTML = `<div class="result-card"><b>${user}</b>: BAGLI 🔥</div>`;
                         } else { alert("❌ HATA: " + final.message); }
                     }
@@ -152,11 +154,11 @@
                     alert("✅ GİRİŞ BAŞARILI!");
                     document.getElementById('tunnel-status').innerHTML = `<div class="result-card"><b>${user}</b>: BAGLI 🔥</div>`;
                 } else {
-                    alert("❌ HATA: " + (res.message || "Bilinmeyen Hata"));
+                    alert("❌ HATA: " + res.message);
                 }
             } catch (e) {
                 showLoader(false);
-                alert("❌ SUNUCU CEVAP VERMEDI.");
+                alert("❌ SUNUCU HATASI.");
             }
         }
 
