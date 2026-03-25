@@ -3,83 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SUROSINT | PRESTIGE TERMINAL</title>
+    <title>SUROSINT | ENTERPRISE INTELLIGENCE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&family=Montserrat:wght@700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Outfit:wght@300;600;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #ff3b3b;
-            --bg: #000000;
-            --card-bg: rgba(20, 20, 20, 0.95);
-            --border: rgba(255, 255, 255, 0.1);
-            --radius: 20px; /* İstediğin o yuvarlak köşeler */
+            --primary: #e63946;
+            --bg-dark: #000000;
+            --glass: rgba(15, 15, 15, 0.9);
+            --border-white: rgba(255, 255, 255, 0.08);
+            --rounding: 25px;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
-        body { background: var(--bg); color: #fff; height: 100vh; overflow: hidden; }
+        body { background: var(--bg-dark); color: #fff; height: 100vh; overflow: hidden; }
 
-        /* KURUMSAL GİRİŞ EKRANI */
+        /* KURUMSAL GİRİŞ PANELİ */
         #auth-gate { 
-            position: fixed; inset: 0; background: radial-gradient(circle at center, #1a0505 0%, #000 100%);
+            position: fixed; inset: 0; 
+            background: radial-gradient(circle at center, #150000 0%, #000 100%);
             display: flex; align-items: center; justify-content: center; z-index: 100000;
-            transition: 0.8s ease-in-out;
+            transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         .auth-card { 
-            width: 90%; max-width: 400px; padding: 50px; 
-            background: var(--card-bg); border: 1px solid var(--border);
-            border-radius: 35px; /* Ultra yuvarlak */
-            text-align: center; backdrop-filter: blur(20px);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+            width: 90%; max-width: 420px; padding: 60px 40px; 
+            background: var(--glass); border: 1px solid var(--border-white);
+            border-radius: 40px; text-align: center; backdrop-filter: blur(25px);
+            box-shadow: 0 40px 80px rgba(0,0,0,0.8);
         }
 
-        .auth-logo { 
-            width: 85px; height: 85px; border-radius: 50%; border: 2px solid var(--primary);
-            padding: 5px; margin-bottom: 25px; box-shadow: 0 0 20px rgba(255,59,59,0.2);
-        }
+        .auth-logo { width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--primary); padding: 5px; margin-bottom: 30px; }
+        .auth-title { font-family: 'Montserrat'; font-weight: 800; font-size: 1.6rem; letter-spacing: 4px; margin-bottom: 10px; }
 
-        .auth-title { font-family: 'Montserrat'; font-weight: 800; font-size: 1.5rem; letter-spacing: 2px; margin-bottom: 10px; }
-
-        /* GİRİŞ KUTUSU (YUVRALAK) */
         .auth-input { 
-            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
-            color: var(--primary); padding: 20px; text-align: center; font-family: 'JetBrains Mono';
-            font-size: 1.5rem; letter-spacing: 12px; border-radius: 22px; /* Tam yuvarlak */
-            outline: none; margin-bottom: 30px; transition: 0.3s;
+            width: 100%; background: rgba(255,255,255,0.03); border: 1.5px solid var(--border-white);
+            color: var(--primary); padding: 22px; text-align: center; font-family: 'JetBrains Mono';
+            font-size: 1.6rem; letter-spacing: 10px; border-radius: 25px; outline: none; margin-bottom: 30px; transition: 0.4s;
         }
-        .auth-input:focus { border-color: var(--primary); background: rgba(255,255,255,0.08); box-shadow: 0 0 20px rgba(255,59,59,0.15); }
+        .auth-input:focus { border-color: var(--primary); background: rgba(255,255,255,0.06); }
 
-        /* KURUMSAL ACCESS BUTONU */
-        .btn-access { 
-            width: 100%; background: var(--primary); color: #fff; border: none; padding: 18px;
-            font-weight: 800; text-transform: uppercase; letter-spacing: 2px; border-radius: 22px;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px;
-            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        .btn-corporate { 
+            width: 100%; height: 65px; background: var(--primary); color: #fff; border: none;
+            font-weight: 800; text-transform: uppercase; letter-spacing: 3px; border-radius: 25px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 15px;
+            transition: 0.4s;
         }
-        .btn-access:hover { transform: scale(1.03); box-shadow: 0 10px 25px rgba(255,59,59,0.4); }
+        .btn-corporate:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(230, 57, 70, 0.4); }
 
-        /* PANEL */
+        /* ANA PANEL MİMARİSİ */
         #panel { display: none; height: 100vh; grid-template-columns: 280px 1fr; opacity: 0; transition: 1s; }
-        .sidebar { background: #080808; border-right: 1px solid var(--border); display: flex; flex-direction: column; }
-        .sidebar-header { padding: 40px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--border); }
-        .nav-item { padding: 20px 40px; color: #555; cursor: pointer; display: flex; align-items: center; gap: 15px; font-size: 13px; font-weight: 600; transition: 0.3s; }
-        .nav-item.active { color: #fff; background: rgba(255,59,59,0.05); border-left: 4px solid var(--primary); }
+        
+        .sidebar { background: #080808; border-right: 1px solid var(--border-white); display: flex; flex-direction: column; }
+        .sidebar-header { padding: 45px 30px; border-bottom: 1px solid var(--border-white); font-family: 'Montserrat'; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 15px; }
+        .nav-item { padding: 20px 30px; display: flex; align-items: center; gap: 15px; color: #666; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; transition: 0.3s; cursor: pointer; border-left: 4px solid transparent; }
+        .nav-item:hover, .nav-item.active { color: #fff; background: rgba(255,255,255,0.02); border-left-color: var(--primary); }
 
         .workspace { padding: 60px; overflow-y: auto; }
-        .tab-content { display: none; animation: fadeIn 0.5s ease; }
+        .tab-content { display: none; animation: fadeIn 0.6s ease; }
         .tab-content.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; margin-top: 20px; }
-        .search-box { background: rgba(255,255,255,0.05); border-radius: 15px; display: flex; padding: 5px; margin-bottom: 40px; border: 1px solid var(--border); }
-        .search-box input { background: transparent; border: none; color: #fff; padding: 15px 20px; flex-grow: 1; outline: none; }
+        .search-box { background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-white); padding: 8px; display: flex; gap: 10px; border-radius: 16px; margin-bottom: 50px; }
+        .search-box input { background: transparent; border: none; color: #fff; padding: 15px; flex-grow: 1; outline: none; }
+
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        .card { background: rgba(255,255,255,0.02); border: 1px solid var(--border-white); padding: 25px; border-radius: 20px; border-top: 3px solid var(--primary); }
+        .card-label { font-size: 9px; color: #555; font-weight: 800; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .card-value { font-family: 'JetBrains Mono'; font-size: 15px; color: #fff; }
+
+        .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 15px; }
+        .story-box { aspect-ratio: 9/16; background: #111; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-white); }
+        .story-box img { width: 100%; height: 100%; object-fit: cover; }
 
         @media (max-width: 900px) {
             #panel { grid-template-columns: 1fr; }
-            .sidebar { position: fixed; bottom: 0; width: 100%; height: 75px; flex-direction: row; z-index: 1000; }
+            .sidebar { position: fixed; bottom: 0; width: 100%; height: 75px; flex-direction: row; z-index: 1000; border-top: 1px solid var(--border-white); }
             .sidebar-header { display: none; }
-            .nav-item { flex-direction: column; font-size: 9px; flex-grow: 1; padding: 10px; border-left: none; border-top: 3px solid transparent; }
+            .nav-item { flex-direction: column; font-size: 8px; flex-grow: 1; padding: 10px; border-left: none; border-top: 3.5px solid transparent; }
             .nav-item.active { border-top-color: var(--primary); }
             .workspace { padding: 30px; padding-bottom: 100px; }
         }
@@ -89,43 +91,65 @@
 
     <div id="auth-gate">
         <div class="auth-card">
-            <img src="24841.jpg" class="auth-logo">
+            <img src="24841.jpg" class="auth-logo" onerror="this.src='https://via.placeholder.com/100?text=LOGO'">
             <div class="auth-title">SUROSINT</div>
-            <p style="font-size: 9px; color: #555; letter-spacing: 3px; margin-bottom: 35px; text-transform: uppercase;">Enterprise Intelligence System</p>
-            
+            <p style="font-size: 9px; color: #555; letter-spacing: 4px; margin-bottom: 40px;">CENTRAL INTELLIGENCE</p>
             <input type="password" id="access-key" class="auth-input" placeholder="••••">
-            
-            <button onclick="unlock()" class="btn-access">
-                <i class="fas fa-fingerprint"></i>
-                <span>Kimlik Doğrula</span>
-            </button>
+            <button onclick="unlock()" class="btn-corporate"><i class="fas fa-shield-alt"></i> SİSTEMİ DOĞRULA</button>
         </div>
     </div>
 
     <div id="panel">
         <aside class="sidebar">
-            <div class="sidebar-header"><img src="24841.jpg" style="width:30px; border-radius:50%;"> SUROSINT</div>
+            <div class="sidebar-header"><img src="24841.jpg" style="width:25px; border-radius:50%;"> SUROSINT</div>
             <div class="nav-list">
                 <div class="nav-item active" onclick="showTab('intel', this)"><i class="fas fa-search"></i> ANALİZ</div>
                 <div class="nav-item" onclick="showTab('leak', this)"><i class="fas fa-database"></i> VERİLER</div>
-                <div class="nav-item" onclick="showTab('vault', this)"><i class="fas fa-folder-open"></i> ARŞİV</div>
+                <div class="nav-item" onclick="showTab('vault', this)"><i class="fas fa-archive"></i> ARŞİV</div>
                 <div class="nav-item" onclick="showTab('list', this)"><i class="fas fa-plus-circle"></i> LİSTE</div>
+                <div class="nav-item" onclick="showTab('ai', this)"><i class="fas fa-microchip"></i> AI ANALİZ</div>
             </div>
         </aside>
+
         <main class="workspace">
             <div id="intel" class="tab-content active">
-                <h1 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 10px;">TERMİNAL</h1>
-                <p style="color:var(--primary); font-size: 10px; font-weight: 800; letter-spacing: 5px; margin-bottom: 40px;">SECURE DATA CLEARANCE</p>
+                <h1 style="font-family:'Montserrat'; font-size: 2.2rem; margin-bottom: 5px;">TERMİNAL</h1>
+                <p style="color:var(--primary); font-size: 9px; font-weight: 800; letter-spacing: 5px; margin-bottom: 45px;">SECURE CLEARANCE REQUIRED</p>
                 <div class="search-box">
-                    <input type="text" id="masterSearch" placeholder="Hedef tanımlayın...">
-                    <button onclick="globalInquiry()" class="btn-access" style="width: auto; padding: 0 30px; border-radius: 12px;">Sorgula</button>
+                    <input type="text" id="masterSearch" placeholder="Hedef kullanıcı adını tanımlayın..." autocomplete="off">
+                    <button onclick="globalInquiry()" class="btn-corporate" style="width:auto; height:50px; padding:0 30px; border-radius:12px;">Sorgula</button>
                 </div>
-                <div id="intel-results" style="display:none;" class="card">
-                    <div id="val-name" style="font-size: 20px; font-weight: 800; margin-bottom: 10px;"></div>
-                    <div id="val-loc" style="color: #888;"></div>
+                <div id="intel-results" style="display:none;" class="grid">
+                    <div class="card"><span class="card-label">KİMLİK</span><div class="card-value" id="val-name"></div></div>
+                    <div class="card"><span class="card-label">KONUM</span><div class="card-value" id="val-loc"></div></div>
+                    <div class="card"><span class="card-label">DURUM</span><div class="card-value" style="color:var(--primary);">TAKİPTE</div></div>
                 </div>
             </div>
-            </main>
+
+            <div id="leak" class="tab-content">
+                <h1 style="font-family:'Montserrat'; font-size: 2.2rem;">SIZINTILAR</h1>
+                <p style="color:var(--primary); font-size: 9px; letter-spacing: 5px; margin-bottom: 45px;">DATA BREACH ARCHIVE</p>
+                <div id="leak-results" class="grid"></div>
+            </div>
+
+            <div id="vault" class="tab-content">
+                <h1 style="font-family:'Montserrat'; font-size: 2.2rem;">ARŞİV</h1>
+                <p style="color:var(--primary); font-size: 9px; letter-spacing: 5px; margin-bottom: 45px;">MEDIA CONTENT VAULT</p>
+                <div id="vault-results" class="gallery"></div>
+            </div>
+
+            <div id="ai" class="tab-content">
+                <h1 style="font-family:'Montserrat'; font-size: 2.2rem;">AI ANALİZ</h1>
+                <p style="color:var(--primary); font-size: 9px; letter-spacing: 5px; margin-bottom: 45px;">NEURAL BEHAVIORAL CORE</p>
+                <div class="card"><div class="card-value" id="ai-results">Veri akışı bekleniyor...</div></div>
+            </div>
+
+            <div id="list" class="tab-content">
+                <h1 style="font-family:'Montserrat'; font-size: 2.2rem;">LİSTE</h1>
+                <p style="color:var(--primary); font-size: 9px; letter-spacing: 5px; margin-bottom: 45px;">ACTIVE MONITORING</p>
+                <div class="card"><div class="card-value" id="track-results">Kayıt yok.</div></div>
+            </div>
+        </main>
     </div>
 
     <script>
@@ -137,8 +161,8 @@
                     gate.style.display = 'none';
                     document.getElementById('panel').style.display = 'grid';
                     setTimeout(() => document.getElementById('panel').style.opacity = '1', 50);
-                }, 800);
-            } else { alert('Hatalı Şifre.'); }
+                }, 1000);
+            } else { alert('Erişim Başarısız.'); }
         }
 
         function showTab(id, el) {
@@ -152,16 +176,19 @@
             const query = document.getElementById('masterSearch').value.trim().toLowerCase();
             if(!query) return;
             try {
-                const response = await fetch('database.json?cache=' + Date.now());
+                const response = await fetch('database.json?v=' + Date.now());
                 const data = await response.json();
                 const target = data.targets.find(t => t.username.toLowerCase() === query);
                 if(target) {
-                    document.getElementById('intel-results').style.display = 'block';
+                    document.getElementById('intel-results').style.display = 'grid';
                     document.getElementById('val-name').innerText = target.name.toUpperCase();
                     document.getElementById('val-loc').innerText = target.location;
-                    alert("Veriler Senkronize Edildi.");
-                } else { alert("Hedef Kaydı Yok."); }
-            } catch (e) { alert("Bağlantı Hatası."); }
+                    document.getElementById('leak-results').innerHTML = target.leaks.map(l => `<div class="card"><span class="card-label">${l.type}</span><div class="card-value">${l.data}</div></div>`).join('');
+                    document.getElementById('vault-results').innerHTML = target.stories.map(s => `<div class="story-box"><img src="${s}"></div>`).join('');
+                    document.getElementById('ai-results').innerText = target.ai_report;
+                    document.getElementById('track-results').innerText = target.name + " takibe alındı.";
+                } else { alert("Kayıt bulunamadı."); }
+            } catch (e) { alert("Veritabanı bağlantı hatası."); }
         }
     </script>
 </body>
