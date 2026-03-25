@@ -3,41 +3,131 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SUROSINT | THE VOID</title>
+    <title>SUROSINT v0.5 | OPERASYONEL MERKEZ</title>
     <style>
-        body { background-color: #000; color: #fff; font-family: 'Courier New', monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
-        .logo { width: 180px; filter: drop-shadow(0 0 15px #f00); margin-bottom: 25px; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { opacity: 0.4; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.4; transform: scale(0.98); } }
-        .auth-container { text-align: center; border: 1px solid #1a1a1a; padding: 30px; border-radius: 10px; background: rgba(10, 10, 10, 0.9); }
-        input { background: #000; border: 1px solid #333; color: #f00; padding: 12px; width: 280px; text-align: center; outline: none; transition: 0.4s; letter-spacing: 2px; font-weight: bold; }
-        input:focus { border-color: #f00; box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
-        .status { font-size: 11px; color: #444; margin-top: 20px; text-transform: uppercase; letter-spacing: 1px; }
-        .glow-text { color: #f00; text-shadow: 0 0 10px #f00; letter-spacing: 5px; margin-bottom: 20px; }
+        :root { --accent: #ff0000; --bg: #050505; --surface: #101010; --text: #e0e0e0; }
+        body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; overflow: hidden; }
+        
+        /* GİRİŞ SİSTEMİ */
+        #auth-gate { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 9999; }
+        .gate-logo { width: 120px; margin-bottom: 25px; border-radius: 50%; border: 2px solid var(--accent); box-shadow: 0 0 15px var(--accent); }
+        .auth-input { background: transparent; border: 1px solid #333; color: var(--accent); padding: 12px; width: 250px; text-align: center; font-family: monospace; letter-spacing: 2px; outline: none; transition: 0.3s; }
+        .auth-input:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(255,0,0,0.3); }
+
+        /* ANA KOMUTA PANELİ */
+        #panel { display: none; height: 100vh; grid-template-columns: 280px 1fr; }
+
+        /* NAVİGASYON */
+        .sidebar { background: var(--surface); border-right: 1px solid #222; display: flex; flex-direction: column; }
+        .sidebar-header { padding: 25px; font-weight: bold; color: var(--accent); border-bottom: 1px solid #222; text-align: center; letter-spacing: 1px; }
+        .nav-link { padding: 18px 25px; border-bottom: 1px solid #1a1a1a; cursor: pointer; font-size: 14px; transition: 0.2s; color: #888; }
+        .nav-link:hover { background: #1a1a1a; color: var(--accent); padding-left: 30px; }
+        .nav-link.active { background: #1a1a1a; color: var(--accent); border-left: 4px solid var(--accent); }
+
+        /* ÇALIŞMA ALANI */
+        .workspace { padding: 40px; overflow-y: auto; background-image: radial-gradient(#111 1px, transparent 1px); background-size: 30px 30px; }
+        .module { display: none; }
+        .module.active { display: block; }
+
+        /* SORGU KARTI VE VERİ ALANLARI */
+        .search-container { display: flex; gap: 10px; margin-bottom: 30px; }
+        .input-field { background: #111; border: 1px solid #333; color: white; padding: 12px; flex: 1; outline: none; }
+        .btn-action { background: var(--accent); border: none; color: white; padding: 12px 25px; cursor: pointer; font-weight: bold; }
+        
+        .profile-matrix { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+        .data-card { background: #111; border: 1px solid #222; padding: 20px; position: relative; }
+        .data-card h4 { margin-top: 0; color: var(--accent); font-size: 13px; text-transform: uppercase; }
+        .data-label { color: #555; font-size: 12px; display: block; margin-top: 10px; }
+        .data-value { color: #ccc; font-family: monospace; font-size: 14px; }
+        
+        .status-bar { font-size: 11px; color: #444; margin-top: 40px; border-top: 1px solid #222; padding-top: 10px; }
     </style>
 </head>
 <body>
 
-    <img src="24841.jpg" alt="Nar" class="logo">
+    <div id="auth-gate">
+        <img src="24841.jpg" class="gate-logo">
+        <input type="password" id="key" class="auth-input" placeholder="ERİŞİM ANAHTARI">
+        <button onclick="authenticate()" class="btn-action" style="margin-top: 15px;">SİSTEMİ AÇ</button>
+    </div>
 
-    <div class="auth-container">
-        <h2 class="glow-text">#SUROSINT</h2>
-        <input type="password" id="masterKey" placeholder="[ KEY GİRİNİZ ]" autofocus>
-        <div class="status">Sistem Durumu: #online | Aktif</div>
+    <div id="panel">
+        <aside class="sidebar">
+            <div class="sidebar-header">SUROSINT v0.5</div>
+            <div class="nav-link active" onclick="switchTab('target-search')">HEDEF SORGU</div>
+            <div class="nav-link" onclick="switchTab('leak-map')">LEAK-MAP</div>
+            <div class="nav-link" onclick="switchTab('story-vault')">STORY VAULT</div>
+            <div class="nav-link" onclick="switchTab('tracking')">TAKİP LİSTESİ</div>
+            <div class="nav-link" onclick="switchTab('suruc-ai')">SURUC AI</div>
+        </aside>
+
+        <main class="workspace">
+            <div id="target-search" class="module active">
+                <h3>BAĞLANTILI ANALİZ SİSTEMİ</h3>
+                <div class="search-container">
+                    <input type="text" id="targetName" class="input-field" placeholder="Ad Soyad veya Kullanıcı Adı Giriniz">
+                    <button class="btn-action" onclick="executeSearch()">SORGULA</button>
+                </div>
+
+                <div id="output" style="display: none;">
+                    <div class="profile-matrix">
+                        <div class="data-card">
+                            <h4>Temel Bilgiler</h4>
+                            <span class="data-label">Tam Ad:</span> <div id="res-name" class="data-value">-</div>
+                            <span class="data-label">Dijital ID:</span> <div id="res-id" class="data-value">S-63-XXXX</div>
+                            <span class="data-label">Konum:</span> <div class="data-value">Suruç / Şanlıurfa</div>
+                        </div>
+                        <div class="data-card">
+                            <h4>Dijital Ayak İzi</h4>
+                            <span class="data-label">GSM / Mail:</span> <div id="res-contact" class="data-value">Erişim Bekleniyor...</div>
+                            <span class="data-label">Sızdırılmış Veri:</span> <div id="res-leaks" class="data-value">Tarama Gerekli</div>
+                        </div>
+                        <div class="data-card">
+                            <h4>Psikolojik Profil (AI)</h4>
+                            <span class="data-label">Vibe / Duygu Durumu:</span> <div class="data-value">Analiz Bekleniyor</div>
+                            <span class="data-label">Ruh Hali Grafiği:</span> <div class="data-value">Veri Yetersiz</div>
+                        </div>
+                        <div class="data-card">
+                            <h4>Sosyal Bağ Haritası</h4>
+                            <span class="data-label">Tespit Edilen Bağlantılar:</span> <div class="data-value">0 Bağlantı</div>
+                            <span class="data-label">Shadow Tracking:</span> <div class="data-value">Pasif</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="leak-map" class="module"><h3>LEAK-MAP VERİ TABANI</h3><p>Sızdırılmış e-posta ve şifre koordinatları.</p></div>
+            <div id="story-vault" class="module"><h3>STORY VAULT ARŞİVİ</h3><p>Otomatik kaydedilen hikaye verileri.</p></div>
+            <div id="tracking" class="module"><h3>AKTİF TAKİP LİSTESİ</h3><p>Himaye altındaki 10.000 profilin anlık logları.</p></div>
+            <div id="suruc-ai" class="module"><h3>SURUC AI DEDEKTİF</h3><p>Analiz ve öngörü raporları.</p></div>
+
+            <div class="status-bar">SİSTEM DURUMU: AKTİF | ŞİFRELEME: AES-256 | VERİ TABANI: SUROSINT_LOCAL</div>
+        </main>
     </div>
 
     <script>
-        document.getElementById('masterKey').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                // Şifreyi buraya mühürledik aga
-                if(this.value === "seksileydi") {
-                    alert("* ERİŞİM ONAYLANDI KEYFİNE BAK. ");
-                    // İleride buraya ana panel linkini koyacağız
-                } else {
-                    alert("ERİŞİM REDDEDİLDİ. İHLAL KAYDEDİLDİ.");
-                    this.value = "";
-                }
+        function authenticate() {
+            if(document.getElementById('key').value === "seksileydi") {
+                document.getElementById('auth-gate').style.display = 'none';
+                document.getElementById('panel').style.display = 'grid';
+            } else { alert("YETKİSİZ ERİŞİM."); }
+        }
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            event.currentTarget.classList.add('active');
+        }
+
+        function executeSearch() {
+            const name = document.getElementById('targetName').value;
+            if(name) {
+                document.getElementById('output').style.display = 'block';
+                document.getElementById('res-name').innerText = name.toUpperCase();
+                // Veritabanı entegrasyonu buraya gelecek.
             }
-        });
+        }
     </script>
 </body>
 </html>
