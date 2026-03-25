@@ -3,111 +3,54 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SUROSINT | DATA CENTER</title>
+    <title>SUROSINT | UNIFIED DATA CENTER</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #ff0000;
-            --bg: #000000;
-            --surface: #0a0a0a;
-            --border: #1a1a1a;
-            --text: #e0e0e0;
-            --accent-glow: rgba(255, 0, 0, 0.2);
-        }
-
+        :root { --primary: #ff0000; --bg: #000; --surface: #0a0a0a; --border: #1a1a1a; --text: #e0e0e0; }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        
-        body { 
-            background: var(--bg); 
-            color: var(--text); 
-            font-family: 'Inter', sans-serif; 
-            height: 100vh;
-            overflow: hidden;
-        }
+        body { background: var(--bg); color: var(--text); font-family: 'Inter', sans-serif; height: 100vh; overflow: hidden; }
 
-        /* GİRİŞ EKRANI - FIX */
-        #auth-gate { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; display: flex; align-items: center; justify-content: center;
-            z-index: 99999; /* En üst katman */
-        }
-        .auth-card {
-            width: 90%; max-width: 380px; padding: 40px 30px;
-            background: var(--surface); border: 1px solid var(--border);
-            text-align: center; border-radius: 4px;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.8);
-        }
-        .auth-logo { width: 70px; height: 70px; border-radius: 50%; border: 1px solid var(--primary); margin-bottom: 25px; }
-        
-        .input-group { position: relative; margin-bottom: 25px; }
-        .auth-input {
-            width: 100%; background: #000; border: 1px solid #222; color: var(--primary);
-            padding: 18px; text-align: center; font-family: 'JetBrains Mono', monospace;
-            font-size: 1.4rem; letter-spacing: 6px; outline: none; transition: 0.3s;
-            pointer-events: auto; /* Tıklanabilirliği garanti eder */
-        }
-        .auth-input:focus { border-color: var(--primary); box-shadow: 0 0 20px var(--accent-glow); }
+        /* AUTH GATE */
+        #auth-gate { position: fixed; inset: 0; background: #000; display: flex; align-items: center; justify-content: center; z-index: 99999; }
+        .auth-card { width: 90%; max-width: 380px; padding: 40px; background: var(--surface); border: 1px solid var(--border); text-align: center; }
+        .auth-input { width: 100%; background: #000; border: 1px solid #222; color: var(--primary); padding: 15px; text-align: center; font-family: 'JetBrains Mono'; font-size: 1.5rem; letter-spacing: 5px; outline: none; margin-bottom: 20px; }
+        .btn-main { width: 100%; background: var(--primary); color: #fff; border: none; padding: 15px; font-weight: 800; cursor: pointer; text-transform: uppercase; }
 
-        .btn-entry {
-            width: 100%; background: var(--primary); color: #fff; border: none;
-            padding: 16px; font-weight: 800; font-size: 14px; cursor: pointer;
-            text-transform: uppercase; letter-spacing: 2px; transition: 0.2s;
-        }
-        .btn-entry:hover { filter: brightness(1.2); }
-
-        /* ANA PANEL MİMARİSİ */
+        /* PANEL MİMARİSİ */
         #panel { display: none; height: 100vh; grid-template-columns: 260px 1fr; }
-
-        /* SİDEBAR */
         .sidebar { background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
-        .sidebar-header { padding: 35px 25px; border-bottom: 1px solid var(--border); }
-        .brand { font-weight: 900; font-size: 1.1rem; color: #fff; letter-spacing: 3px; display: flex; align-items: center; gap: 10px; }
-        .brand img { width: 30px; }
-
-        .nav-list { flex-grow: 1; padding: 20px 0; }
-        .nav-item {
-            padding: 15px 25px; display: flex; align-items: center; gap: 15px;
-            color: #666; text-decoration: none; font-size: 13px; font-weight: 600;
-            transition: 0.2s; border-right: 3px solid transparent;
-        }
-        .nav-item i { width: 20px; font-size: 16px; }
+        .sidebar-header { padding: 30px; border-bottom: 1px solid var(--border); font-weight: 900; letter-spacing: 2px; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .sidebar-header img { width: 30px; border-radius: 50%; border: 1px solid var(--primary); }
+        .nav-item { padding: 18px 25px; display: flex; align-items: center; gap: 15px; color: #555; text-decoration: none; font-size: 13px; font-weight: 700; transition: 0.2s; border-right: 3px solid transparent; cursor: pointer; }
         .nav-item:hover, .nav-item.active { color: var(--primary); background: rgba(255,0,0,0.02); border-right-color: var(--primary); }
 
-        /* İÇERİK */
-        .workspace { padding: 50px; overflow-y: auto; background: radial-gradient(circle at top right, #0a0000 0%, #000 100%); }
-        .page-title { font-size: 2.2rem; font-weight: 900; color: #fff; margin-bottom: 10px; }
-        .page-desc { color: #444; font-size: 12px; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 40px; }
+        /* CONTENT */
+        .workspace { padding: 40px; overflow-y: auto; background: radial-gradient(circle at top right, #0d0000 0%, #000 100%); }
+        .tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* SORGULAMA PANELİ */
-        .search-container {
-            background: #0d0d0d; border: 1px solid #1a1a1a; padding: 10px;
-            display: flex; gap: 10px; margin-bottom: 40px; border-radius: 4px;
-        }
-        .search-container input {
-            background: transparent; border: none; color: #fff; padding: 15px;
-            flex-grow: 1; outline: none; font-family: 'JetBrains Mono'; font-size: 14px;
-        }
-
+        /* WIDGETS */
+        .search-container { background: #0d0d0d; border: 1px solid #1a1a1a; padding: 10px; display: flex; gap: 10px; margin-bottom: 30px; }
+        .search-container input { background: transparent; border: none; color: #fff; padding: 10px; flex-grow: 1; outline: none; font-family: 'JetBrains Mono'; }
         .data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
-        .data-card {
-            background: #0a0a0a; border: 1px solid #1a1a1a; padding: 25px;
-            border-top: 2px solid var(--primary);
-        }
-        .card-title { font-size: 11px; color: #444; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; display: block; }
-        .data-label { font-size: 12px; color: #666; margin-bottom: 5px; }
-        .data-value { font-family: 'JetBrains Mono'; color: #fff; font-size: 15px; margin-bottom: 15px; }
+        .card { background: #080808; border: 1px solid #151515; padding: 20px; border-top: 2px solid var(--primary); }
+        .card-label { font-size: 11px; color: #444; font-weight: 800; margin-bottom: 10px; display: block; }
+        .card-value { font-family: 'JetBrains Mono'; font-size: 14px; color: #fff; }
 
-        /* MOBİL RESPONSIVE */
+        /* STORY VAULT STYLE */
+        .story-gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 15px; margin-top: 20px; }
+        .story-item { aspect-ratio: 9/16; background: #111; border: 1px solid #222; border-radius: 8px; overflow: hidden; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #333; }
+        .story-item img { width: 100%; height: 100%; object-fit: cover; }
+
         @media (max-width: 900px) {
             #panel { grid-template-columns: 1fr; }
             .sidebar { position: fixed; bottom: 0; width: 100%; height: 70px; flex-direction: row; z-index: 1000; border-right: none; border-top: 1px solid var(--border); }
             .sidebar-header { display: none; }
-            .nav-list { display: flex; width: 100%; justify-content: space-around; padding: 0; }
-            .nav-item { flex-direction: column; padding: 12px; font-size: 10px; gap: 5px; border-right: none; border-top: 3px solid transparent; }
+            .nav-item { flex-direction: column; padding: 10px; font-size: 9px; flex-grow: 1; border-right: none; border-top: 3px solid transparent; justify-content: center; }
             .nav-item.active { border-top-color: var(--primary); }
-            .workspace { padding: 30px; padding-bottom: 100px; }
-            .page-title { font-size: 1.5rem; }
+            .workspace { padding: 20px; padding-bottom: 90px; }
         }
     </style>
 </head>
@@ -115,102 +58,119 @@
 
     <div id="auth-gate">
         <div class="auth-card">
-            <img src="24841.jpg" class="auth-logo">
-            <h2 style="font-weight: 900; letter-spacing: 2px; margin-bottom: 10px;">GÜVENLİ ERİŞİM</h2>
-            <p style="color: #444; font-size: 11px; margin-bottom: 30px; letter-spacing: 1px;">SURUÇ VERİ MERKEZİ YETKİLENDİRME</p>
-            
-            <div class="input-group">
-                <input type="password" id="access-key" class="auth-input" placeholder="••••" autocomplete="off">
-            </div>
-            
-            <button onclick="checkAccess()" class="btn-entry">Sistemi Aç</button>
+            <img src="24841.jpg" style="width: 60px; margin-bottom: 20px;">
+            <h2 style="margin-bottom: 20px; letter-spacing: 2px;">SURUÇ VERİ MERKEZİ</h2>
+            <input type="password" id="access-key" class="auth-input" placeholder="••••">
+            <button onclick="unlock()" class="btn-main">SİSTEMİ BAŞLAT</button>
         </div>
     </div>
 
     <div id="panel">
         <aside class="sidebar">
-            <div class="sidebar-header">
-                <div class="brand">
-                    <img src="24841.jpg"> SUROSINT
-                </div>
-            </div>
+            <div class="sidebar-header"><img src="24841.jpg"> SUROSINT</div>
             <div class="nav-list">
-                <a href="javascript:void(0)" class="nav-item active" onclick="showTab('intel', this)"><i class="fas fa-search"></i> HEDEF ANALİZ</a>
-                <a href="javascript:void(0)" class="nav-item" onclick="showTab('leak', this)"><i class="fas fa-database"></i> VERİ SIZINTISI</a>
-                <a href="javascript:void(0)" class="nav-item" onclick="showTab('vault', this)"><i class="fas fa-vault"></i> STORY VAULT</a>
-                <a href="javascript:void(0)" class="nav-item" onclick="showTab('list', this)"><i class="fas fa-list-ul"></i> TAKİP LİSTESİ</a>
-                <a href="javascript:void(0)" class="nav-item" onclick="showTab('ai', this)"><i class="fas fa-robot"></i> SURUC AI</a>
+                <div class="nav-item active" onclick="showTab('intel', this)"><i class="fas fa-search"></i> HEDEF ANALİZ</div>
+                <div class="nav-item" onclick="showTab('leak', this)"><i class="fas fa-database"></i> VERİ SIZINTISI</div>
+                <div class="nav-item" onclick="showTab('vault', this)"><i class="fas fa-archive"></i> STORY VAULT</div>
+                <div class="nav-item" onclick="showTab('list', this)"><i class="fas fa-list-ul"></i> TAKİP LİSTESİ</div>
+                <div class="nav-item" onclick="showTab('ai', this)"><i class="fas fa-robot"></i> SURUC AI</div>
             </div>
         </aside>
 
         <main class="workspace">
-            <div id="intel" class="tab-content">
-                <h1 class="page-title">SURUÇ VERİ MERKEZİ</h1>
-                <p class="page-desc">Digital Intelligence & Analytics v0.5</p>
-
+            <div id="intel" class="tab-content active">
+                <h1 style="font-weight: 900; margin-bottom: 30px;">MERKEZİ SORGULAMA</h1>
                 <div class="search-container">
-                    <input type="text" id="targetId" placeholder="Analiz edilecek kimlik veya isim giriniz...">
-                    <button onclick="startInquiry()" class="btn-entry" style="width: auto; padding: 0 30px;">SORGULA</button>
+                    <input type="text" id="masterSearch" placeholder="Kullanıcı adı veya isim giriniz...">
+                    <button onclick="globalInquiry()" class="btn-main" style="width: auto; padding: 0 30px;">HEDEFİ TARA</button>
                 </div>
-
-                <div id="resultArea" style="display: none;" class="data-grid">
-                    <div class="data-card">
-                        <span class="card-title">PROFİL ÖZETİ</span>
-                        <div class="data-label">TANILANAN KİMLİK</div>
-                        <div class="data-value" id="display-name">-</div>
-                        <div class="data-label">BÖLGE</div>
-                        <div class="data-value">SURUÇ / ŞANLIURFA</div>
-                    </div>
-                    <div class="data-card">
-                        <span class="card-title">GÜVENLİK DURUMU</span>
-                        <div class="data-label">İZLEME STATÜSÜ</div>
-                        <div class="data-value" style="color: #00ff00;">AKTİF</div>
-                        <div class="data-label">VERİ TABANI</div>
-                        <div class="data-value">ROOT_ACCESS_v01</div>
-                    </div>
+                <div id="intel-results" style="display:none;" class="data-grid">
+                    <div class="card"><span class="card-label">KİMLİK</span><div class="card-value" id="val-name">-</div></div>
+                    <div class="card"><span class="card-label">KONUM</span><div class="card-value" id="val-loc">-</div></div>
+                    <div class="card"><span class="card-label">DURUM</span><div class="card-value" style="color:#0f0">AKTİF İZLEME</div></div>
                 </div>
             </div>
 
-            <div id="leak" class="tab-content" style="display:none;"><h2>VERİ SIZINTISI HARİTASI</h2></div>
-            <div id="vault" class="tab-content" style="display:none;"><h2>STORY VAULT ARŞİVİ</h2></div>
-            <div id="list" class="tab-content" style="display:none;"><h2>AKTİF TAKİP HAVUZU</h2></div>
-            <div id="ai" class="tab-content" style="display:none;"><h2>SURUC AI CORE UNIT</h2></div>
+            <div id="leak" class="tab-content">
+                <h1>VERİ SIZINTISI (LEAK)</h1>
+                <div class="data-grid" id="leak-results" style="margin-top:20px;">
+                    <div class="card"><span class="card-label">SIZINTI DURUMU</span><div class="card-value">Veri taranmadı...</div></div>
+                </div>
+            </div>
+
+            <div id="vault" class="tab-content">
+                <h1>STORY VAULT ARŞİVİ</h1>
+                <div class="story-gallery" id="vault-results">
+                    <p style="color:#333">Arşivlenmiş hikaye bulunamadı.</p>
+                </div>
+            </div>
+
+            <div id="list" class="tab-content">
+                <h1>TAKİP HAVUZU</h1>
+                <div class="card" style="margin-top:20px;"><div class="card-value" id="track-results">Hedef seçilmedi.</div></div>
+            </div>
+
+            <div id="ai" class="tab-content">
+                <h1>SURUC AI ANALİZ ÜNİTESİ</h1>
+                <div class="card" style="margin-top:20px; border-left: 3px solid var(--primary);">
+                    <div class="card-value" id="ai-results" style="line-height: 1.6; color: #aaa;">Analiz motoru veri bekliyor...</div>
+                </div>
+            </div>
         </main>
     </div>
 
     <script>
-        // ERİŞİM KONTROLÜ
-        function checkAccess() {
-            const key = document.getElementById('access-key').value;
-            if(key === 'baba') {
+        function unlock() {
+            if(document.getElementById('access-key').value === 'baba') {
                 document.getElementById('auth-gate').style.display = 'none';
                 document.getElementById('panel').style.display = 'grid';
-            } else {
-                alert('YETKİSİZ ERİŞİM: ANAHTAR HATALI.');
-            }
+            } else { alert('Giriş reddedildi.'); }
         }
 
-        // TAB SİSTEMİ
         function showTab(id, el) {
-            document.querySelectorAll('.tab-content').forEach(t => t.style.display = 'none');
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(id).style.display = 'block';
+            document.getElementById(id).classList.add('active');
             el.classList.add('active');
         }
 
-        // SORGULAMA FONKSİYONU
-        function startInquiry() {
-            const name = document.getElementById('targetId').value;
-            if(name) {
-                document.getElementById('resultArea').style.display = 'grid';
-                document.getElementById('display-name').innerText = name.toUpperCase();
+        async function globalInquiry() {
+            const query = document.getElementById('masterSearch').value.toLowerCase();
+            if(!query) return;
+
+            try {
+                const response = await fetch('database.json');
+                const data = await response.json();
+                const target = data.targets.find(t => t.username.toLowerCase() === query || t.name.toLowerCase().includes(query));
+
+                if(target) {
+                    // 1. Hedef Analiz Tabı
+                    document.getElementById('intel-results').style.display = 'grid';
+                    document.getElementById('val-name').innerText = target.name.toUpperCase();
+                    document.getElementById('val-loc').innerText = target.location;
+
+                    // 2. Leak Tabı
+                    const leakHtml = target.leaks.map(l => `<div class="card"><span class="card-label">${l.type}</span><div class="card-value">${l.data}</div></div>`).join('');
+                    document.getElementById('leak-results').innerHTML = leakHtml;
+
+                    // 3. Story Vault Tabı
+                    const storyHtml = target.stories.map(s => `<div class="story-item"><img src="${s}" onerror="this.src='https://via.placeholder.com/150?text=No+Image'"></div>`).join('');
+                    document.getElementById('vault-results').innerHTML = storyHtml || '<p>Hikaye yok.</p>';
+
+                    // 4. Takip Listesi
+                    document.getElementById('track-results').innerText = `Hedef "${target.name}" başarıyla havuza eklendi ve senkronize edildi.`;
+
+                    // 5. Suruc AI
+                    document.getElementById('ai-results').innerText = target.ai_report;
+
+                    alert(target.name + " için tüm modüller güncellendi.");
+                } else {
+                    alert("Hedef bulunamadı.");
+                }
+            } catch (e) {
+                alert("database.json bulunamadı veya hatalı.");
             }
         }
-
-        // ENTER TUŞU DESTEĞİ
-        document.getElementById('access-key').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') { checkAccess(); }
-        });
     </script>
 </body>
 </html>
