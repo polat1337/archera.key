@@ -1,19 +1,26 @@
-{
-  "targets": [
-    {
-      "username": "test",
-      "name": "Sistem Test Kullanicisi",
-      "location": "Suruc / Merkez",
-      "leaks": [
-        {
-          "type": "Durum",
-          "data": "Baglanti Basarili"
+ async function runGlobalInquiry() {
+    const q = document.getElementById('master-query').value.trim();
+    if(!q) return;
+
+    try {
+        const response = await fetch("https://surosint.onrender.com/api/v4/sorgu", {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ query: q, owner: "ARCHERA" })
+        });
+        
+        const result = await response.json();
+
+        if(result.status === "success") {
+            const user = result.targets[0]; // Senin JSON yapına göre ilk hedefi alıyoruz
+            
+            // Ekrana basma kısmı (Tasarımına göre burayı uyarla)
+            document.getElementById('display-name').innerText = user.name;
+            document.getElementById('display-ai-report').innerText = user.ai_report;
+            // Leaks döngüsü vb.
+            console.log("Gerçek veri başarıyla çekildi:", user);
         }
-      ],
-      "stories": [
-        "https://via.placeholder.com/150"
-      ],
-      "ai_report": "Sistem su an stabil ve veri okuma islemi sorunsuz calisiyor."
+    } catch (err) {
+        console.error("Sistem Hatası:", err);
     }
-  ]
 }
