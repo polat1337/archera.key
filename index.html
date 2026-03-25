@@ -3,225 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA | OMNI-TERMINAL</title>
+    <title>ARCHERA | OMNI-SYSTEM</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Outfit:wght@300;600;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
-        :root { --primary: #e63946; --gold: #ffcc00; --bg: #000; --surface: rgba(15, 15, 15, 0.98); --border: rgba(255, 255, 255, 0.1); }
+        :root { --primary: #e63946; --gold: #ffcc00; --bg: #000; --surface: rgba(10, 10, 10, 0.98); --border: rgba(255, 255, 255, 0.1); }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: #fff; height: 100vh; overflow: hidden; }
 
-        /* GİRİŞ EKRANI (ULTRA ANİMASYONLU & SEKSİ) */
-        #auth-gate { position: fixed; inset: 0; background: #000; display: flex; align-items: center; justify-content: center; z-index: 100000; transition: 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        .auth-card { width: 90%; max-width: 440px; padding: 60px 40px; background: var(--surface); border: 1px solid var(--border); border-radius: 60px; text-align: center; box-shadow: 0 0 100px rgba(230, 57, 70, 0.2); backdrop-filter: blur(30px); position: relative; }
+        /* ARKA PLAN ANİMASYONU */
+        .scanline { position: fixed; inset: 0; background: linear-gradient(to bottom, transparent 50%, rgba(230, 57, 70, 0.02) 50%); background-size: 100% 4px; pointer-events: none; z-index: 99999; }
+
+        /* GİRİŞ EKRANI (MAX EFEKT) */
+        #auth-gate { position: fixed; inset: 0; background: #000; display: flex; align-items: center; justify-content: center; z-index: 1000000; transition: 1.5s cubic-bezier(0.8, 0, 0.2, 1); }
+        .auth-card { width: 90%; max-width: 450px; padding: 60px 40px; background: rgba(5,5,5,0.9); border: 1px solid var(--border); border-radius: 60px; text-align: center; backdrop-filter: blur(50px); box-shadow: 0 0 100px rgba(230, 57, 70, 0.3); }
         
-        .auth-logo-frame { position: relative; width: 160px; height: 160px; margin: 0 auto 40px; }
-        .auth-logo { width: 100%; height: 100%; border-radius: 50%; border: 4px solid var(--primary); padding: 10px; object-fit: cover; filter: drop-shadow(0 0 25px var(--primary)); animation: pulseLogo 3s infinite ease-in-out; }
-        .auth-ring { position: absolute; inset: -15px; border: 2px dashed var(--primary); border-radius: 50%; opacity: 0.3; animation: spin 20s linear infinite; }
+        .main-logo-wrap { position: relative; width: 160px; height: 160px; margin: 0 auto 40px; animation: glowPulse 2s infinite ease-in-out; }
+        .main-logo { width: 100%; height: 100%; border-radius: 50%; border: 4px solid var(--primary); padding: 8px; object-fit: cover; box-shadow: 0 0 40px var(--primary); }
+        .ring { position: absolute; inset: -15px; border: 2px dashed var(--primary); border-radius: 50%; animation: spin 20s linear infinite; }
+
+        .auth-input { width: 100%; background: #050505; border: 1px solid var(--border); color: var(--primary); padding: 25px; text-align: center; font-family: 'JetBrains Mono'; font-size: 1.8rem; letter-spacing: 15px; border-radius: 30px; margin-bottom: 30px; transition: 0.5s; }
+        .btn-enter { width: 100%; background: var(--primary); color: #fff; border: none; padding: 22px; border-radius: 25px; font-weight: 900; letter-spacing: 3px; display: flex; align-items: center; justify-content: center; gap: 15px; cursor: pointer; filter: drop-shadow(0 5px 15px var(--primary)); }
+
+        /* ANA PANEL */
+        #panel { display: none; height: 100vh; flex-direction: column; opacity: 0; transition: 1.2s; }
+        .workspace { flex: 1; padding: 40px 25px; overflow-y: auto; padding-bottom: 120px; }
+
+        /* ÜST HEADER */
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; border-bottom: 1px solid var(--border); padding-bottom: 20px; }
+        .user-info h2 { font-family: 'Montserrat'; font-size: 2.4rem; letter-spacing: -1px; }
+        .badge { font-size: 10px; font-weight: 900; letter-spacing: 4px; padding: 5px 12px; border-radius: 8px; margin-top: 5px; display: inline-block; }
+        .badge-owner { background: rgba(255, 204, 0, 0.1); color: var(--gold); border: 1px solid var(--gold); }
+        .badge-member { background: rgba(255, 255, 255, 0.05); color: #888; border: 1px solid #444; }
+
+        /* SEKMELER */
+        .tab-pane { display: none; }
+        .tab-pane.active { display: block; animation: zoomFade 0.6s cubic-bezier(0.1, 0.9, 0.2, 1); }
         
-        .auth-input { width: 100%; background: #080808; border: 1px solid var(--border); color: var(--primary); padding: 25px; text-align: center; font-family: 'JetBrains Mono'; font-size: 1.8rem; letter-spacing: 12px; border-radius: 30px; outline: none; margin-bottom: 35px; box-shadow: inset 0 0 15px rgba(230, 57, 70, 0.05); }
-        .btn-gate { width: 100%; background: var(--primary); color: #fff; border: none; padding: 22px; border-radius: 25px; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 15px; box-shadow: 0 15px 40px rgba(230, 57, 70, 0.3); transition: 0.3s; }
-        .btn-gate:active { transform: scale(0.95); }
+        .card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 35px; padding: 25px; margin-bottom: 20px; transition: 0.4s; position: relative; overflow: hidden; }
+        .card::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 4px; background: var(--primary); opacity: 0.6; }
 
-        /* PANEL ANA YAPI */
-        #panel { display: none; height: 100vh; flex-direction: column; opacity: 0; transition: 1s; }
-        .workspace { flex: 1; padding: 40px 25px; overflow-y: auto; padding-bottom: 130px; }
-
-        /* ÜST HEADER (DİNAMİK) */
-        .top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid var(--border); }
-        .user-info h1 { font-family: 'Montserrat'; font-size: 2.2rem; font-weight: 900; letter-spacing: -1.5px; }
-        .badge { display: flex; align-items: center; gap: 8px; margin-top: 5px; font-size: 11px; font-weight: 900; letter-spacing: 3px; }
-
-        /* SEKMELER & İÇERİK */
-        .tab-pane { display: none; animation: tabEnter 0.6s cubic-bezier(0.2, 0.8, 0.2, 1); }
-        .tab-pane.active { display: block; }
-        @keyframes tabEnter { from { opacity: 0; transform: translateY(30px); filter: blur(10px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
-
-        .prime-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 25px; border-radius: 35px; margin-bottom: 20px; position: relative; }
-        .prime-card::after { content: ""; position: absolute; left: 0; top: 20%; height: 60%; width: 3px; background: var(--primary); box-shadow: 0 0 15px var(--primary); }
-
-        /* ALT NAV (BOL LOGOLU & IŞIKLI) */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 100px; background: rgba(5, 5, 5, 0.95); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; backdrop-filter: blur(40px); z-index: 1000; padding-bottom: 25px; }
-        .nav-link { color: #444; text-align: center; flex: 1; cursor: pointer; transition: 0.4s; display: flex; flex-direction: column; align-items: center; gap: 8px; }
-        .nav-link.active { color: var(--primary); transform: translateY(-12px); filter: drop-shadow(0 0 10px var(--primary)); }
-        .nav-link i { font-size: 1.6rem; }
-        .nav-link span { font-size: 8px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+        /* ALT NAV (SEKSİ) */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 100px; background: rgba(5, 5, 5, 0.98); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 10000; padding-bottom: 25px; backdrop-filter: blur(30px); }
+        .nav-item { color: #444; text-align: center; flex: 1; cursor: pointer; transition: 0.4s; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+        .nav-item.active { color: var(--primary); transform: translateY(-12px); }
+        .nav-item i { font-size: 1.6rem; }
+        .nav-item span { font-size: 8px; font-weight: 900; text-transform: uppercase; }
 
         /* ANİMASYONLAR */
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes pulseLogo { 0%, 100% { transform: scale(1); filter: drop-shadow(0 0 25px var(--primary)); } 50% { transform: scale(1.05); filter: drop-shadow(0 0 45px var(--primary)); } }
-
-        /* INPUT & BUTTONS */
-        .osint-input { width: 100%; background: #0a0a0a; border: 1px solid var(--border); padding: 20px; border-radius: 20px; color: #fff; text-align: center; outline: none; margin-bottom: 20px; transition: 0.3s; }
-        .osint-input:focus { border-color: var(--primary); }
+        @keyframes glowPulse { 0%, 100% { filter: drop-shadow(0 0 20px rgba(230, 57, 70, 0.4)); } 50% { filter: drop-shadow(0 0 40px rgba(230, 57, 70, 0.8)); } }
+        @keyframes zoomFade { from { opacity: 0; scale: 0.95; } to { opacity: 1; scale: 1; } }
     </style>
 </head>
 <body>
 
+    <div class="scanline"></div>
+
     <div id="auth-gate">
         <div class="auth-card">
-            <div class="auth-logo-frame">
-                <div class="auth-ring"></div>
-                <img src="24841.jpg" class="auth-logo" onerror="this.src='https://via.placeholder.com/160'">
+            <div class="main-logo-wrap">
+                <div class="ring"></div>
+                <img src="24841.jpg" class="main-logo" onerror="this.src='https://via.placeholder.com/160'">
             </div>
-            <h1 style="font-family:'Montserrat'; letter-spacing:10px; margin-bottom:10px;">ARCHERA</h1>
-            <p style="font-size:9px; color:#444; letter-spacing:4px; margin-bottom:40px; font-weight:900;">SECURE LOGIN TERMINAL</p>
-            
-            <input type="password" id="entry-key" class="auth-input" placeholder="••••">
-            
-            <button onclick="ignite()" class="btn-gate">
-                <img src="24841.jpg" style="width:25px; border-radius:5px;"> SİSTEME GİR
+            <h1 style="font-family:'Montserrat'; letter-spacing:12px; margin-bottom:40px;">SUROSINT</h1>
+            <input type="password" id="access-key" class="auth-input" placeholder="••••">
+            <button onclick="bootSystem()" class="btn-enter">
+                <img src="24841.jpg" style="width:25px; border-radius:50%;"> SİSTEME GİRİŞ YAP
             </button>
         </div>
     </div>
 
     <div id="panel">
         <main class="workspace">
-            <div class="top-bar">
+            <div class="header">
                 <div class="user-info">
-                    <h1 id="display-name">ARCHERA</h1>
-                    <div id="display-role" class="badge"></div>
+                    <h2 id="current-user-name">---</h2>
+                    <div id="user-badge" class="badge">---</div>
                 </div>
-                <img src="24841.jpg" style="width:55px; height:55px; border-radius:20px; border:1px solid var(--border);">
+                <div style="position:relative;">
+                    <img src="24841.jpg" style="width:50px; border-radius:15px; border:1px solid var(--border);">
+                </div>
             </div>
 
-            <div id="search" class="tab-pane active">
-                <div class="prime-card">
-                    <h3 style="margin-bottom:15px; font-size:12px; letter-spacing:2px; color:var(--primary);">HEDEF ANALİZÖRÜ</h3>
-                    <input type="text" id="targetQuery" class="osint-input" placeholder="@kullanici_adi veya İsim Soyisim">
-                    <button onclick="runInquiry()" class="btn-gate"><i class="fas fa-microchip"></i> VERİLERİ TOPLA</button>
+            <div id="intel" class="tab-pane active">
+                <div class="card" style="border-left-color: var(--primary);">
+                    <input type="text" id="main-search" placeholder="@username veya Ad Soyad..." style="width:100%; background:transparent; border:none; color:#fff; font-size:1.2rem; text-align:center; outline:none;">
                 </div>
-                <div id="search-results" style="display:none; margin-top:20px;">
-                    <div class="prime-card" style="border-left-color:var(--gold);">
-                        <div id="res-content" style="font-family:'JetBrains Mono'; font-size:13px; line-height:1.8;"></div>
-                    </div>
+                <button onclick="globalSearch()" class="btn-enter" style="background:var(--primary);">
+                    <i class="fas fa-search-dollar"></i> VERİLERİ TOPLA
+                </button>
+                
+                <div id="intel-output" style="margin-top:30px; display:none;">
+                    <div class="card"><i class="fas fa-id-card"></i> ADI: <span id="res-name"></span></div>
+                    <div class="card"><i class="fas fa-fingerprint"></i> TC: <span id="res-tc"></span></div>
+                    <div class="card"><i class="fas fa-phone"></i> GSM: <span id="res-gsm"></span></div>
+                    <div class="card"><i class="fas fa-map-marker-alt"></i> KONUM: <span id="res-loc"></span></div>
                 </div>
             </div>
 
             <div id="accounts" class="tab-pane">
-                <h2 style="margin-bottom:25px;"><i class="fas fa-users-cog"></i> HESAP YÖNETİMİ</h2>
-                <div class="prime-card">
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span>Takip Edilen Toplam:</span>
-                        <span style="color:var(--primary); font-weight:900; font-size:1.4rem;">10.421</span>
-                    </div>
+                <h3 style="margin-bottom:20px; letter-spacing:2px;">FOLLOWING ACCOUNTS</h3>
+                <div class="card" style="display:flex; justify-content:space-between; align-items:center;">
+                    <span><i class="fab fa-instagram"></i> Master Account List</span>
+                    <b style="color:var(--primary);">10.420 Kişi</b>
                 </div>
-                </div>
+                <div id="acc-list"></div>
+            </div>
 
-            <div id="db" class="tab-pane">
-                <h2 style="margin-bottom:25px;"><i class="fas fa-database"></i> OSINT DATABASE</h2>
-                <div class="prime-card">Sistem dijital ayak izlerini tarıyor...</div>
+            <div id="database" class="tab-pane">
+                <h3 style="margin-bottom:20px; letter-spacing:2px;">OSINT FOOTPRINTS</h3>
+                <div id="db-output" class="card">Sorgu bekleniyor...</div>
             </div>
 
             <div id="media" class="tab-pane">
-                <h2 style="margin-bottom:25px;"><i class="fas fa-camera-retro"></i> STORY MERKEZİ</h2>
-                <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
-                    <div class="prime-card" style="height:150px; background:url('24841.jpg') center/cover;"></div>
+                <h3 style="margin-bottom:20px; letter-spacing:2px;">STORY MERKEZİ</h3>
+                <div id="media-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+                    <div class="card" style="height:150px; display:flex; align-items:center; justify-content:center; border-style:dashed;">Boş</div>
                 </div>
             </div>
 
             <div id="ai" class="tab-pane">
-                <h2 style="margin-bottom:25px;"><i class="fas fa-brain"></i> AI CORE</h2>
-                <div class="prime-card">Archera AI emirlerini bekliyor...</div>
+                <h3 style="margin-bottom:20px; letter-spacing:2px;">AI CORE ANALYZER</h3>
+                <div class="card" id="ai-chat-box" style="height:300px; overflow-y:auto; font-family:'JetBrains Mono'; font-size:12px;">
+                    <span style="color:var(--primary)">[SYSTEM]:</span> Analiz için bir hedef sorgulayın.
+                </div>
             </div>
 
             <div id="admin" class="tab-pane">
-                <h2 style="color:var(--gold); margin-bottom:25px;"><i class="fas fa-user-shield"></i> COMMAND CENTER</h2>
-                <div class="prime-card" style="border-left-color:var(--gold);">
-                    <input type="text" id="new-n" class="osint-input" placeholder="Ajan Adı">
-                    <input type="text" id="new-k" class="osint-input" placeholder="Giriş Şifresi">
-                    <button onclick="saveAgent()" class="btn-gate" style="background:var(--gold); color:#000;">YETKİ TANIMLA</button>
+                <h3 style="color:var(--gold); margin-bottom:20px;">COMMAND CENTER</h3>
+                <div class="card" style="border-color:var(--gold);">
+                    <input type="text" id="adm-n" placeholder="İsim" style="width:100%; background:transparent; border:none; color:#fff; margin-bottom:10px;">
+                    <input type="text" id="adm-k" placeholder="Erişim Key" style="width:100%; background:transparent; border:none; color:#fff; margin-bottom:15px;">
+                    <button onclick="saveUser()" class="btn-enter" style="background:var(--gold); color:#000;">YENİ ÜYE EKLE</button>
                 </div>
-                <div id="agent-list"></div>
+                <div id="member-list"></div>
             </div>
         </main>
 
         <nav class="bottom-nav">
-            <div class="nav-link active" onclick="go('search', this)"><i class="fas fa-satellite"></i><span>Sorgula</span></div>
-            <div class="nav-link" onclick="go('accounts', this)"><i class="fas fa-users"></i><span>Hesaplar</span></div>
-            <div class="nav-link" onclick="go('db', this)"><i class="fas fa-fingerprint"></i><span>Data</span></div>
-            <div class="nav-link" onclick="go('media', this)"><i class="fas fa-images"></i><span>Story</span></div>
-            <div class="nav-link" onclick="go('ai', this)"><i class="fas fa-robot"></i><span>Ai Chat</span></div>
-            <div id="adm-nav" class="nav-link" style="display:none;" onclick="go('admin', this)"><i class="fas fa-shield-alt"></i><span>Yönetim</span></div>
+            <div class="nav-item active" onclick="tab('intel', this)"><i class="fas fa-crosshairs"></i><span>Sorgula</span></div>
+            <div class="nav-item" onclick="tab('accounts', this)"><i class="fas fa-users-viewfinder"></i><span>Hesaplar</span></div>
+            <div class="nav-item" onclick="tab('database', this)"><i class="fas fa-database"></i><span>Data</span></div>
+            <div class="nav-item" onclick="tab('media', this)"><i class="fas fa-photo-film"></i><span>Story</span></div>
+            <div class="nav-item" onclick="tab('ai', this)"><i class="fas fa-brain"></i><span>AI Chat</span></div>
+            <div id="adm-nav" class="nav-item" style="display:none;" onclick="tab('admin', this)"><i class="fas fa-user-shield"></i><span>Yönetim</span></div>
         </nav>
     </div>
 
     <script>
-        let registry = JSON.parse(localStorage.getItem('archera_reg')) || {
+        let session = JSON.parse(localStorage.getItem('surosint_v4')) || {
             "baba": { name: "ARCHERA", role: "Owner" }
         };
 
-        function ignite() {
-            const key = document.getElementById('entry-key').value;
-            if(registry[key]) {
-                const user = registry[key];
-                document.getElementById('display-name').innerText = user.name;
+        let currentTarget = null;
+
+        function bootSystem() {
+            const k = document.getElementById('access-key').value;
+            if(session[k]) {
+                const u = session[k];
+                document.getElementById('current-user-name').innerText = u.name;
+                const b = document.getElementById('user-badge');
+                b.innerText = u.role.toUpperCase();
+                b.className = u.role === 'Owner' ? 'badge badge-owner' : 'badge badge-member';
                 
-                if(user.role === "Owner") {
-                    document.getElementById('display-role').innerHTML = '<i class="fas fa-crown" style="color:var(--gold)"></i> SYSTEM OWNER';
+                if(u.role === 'Owner') {
                     document.getElementById('adm-nav').style.display = 'flex';
-                    renderAgents();
-                } else {
-                    document.getElementById('display-role').innerHTML = 'MEMBER';
+                    renderMembers();
                 }
 
-                document.getElementById('auth-gate').style.transform = 'translateY(-100%)';
+                document.getElementById('auth-gate').style.opacity = '0';
+                document.getElementById('auth-gate').style.transform = 'scale(1.5)';
                 setTimeout(() => {
                     document.getElementById('auth-gate').style.display = 'none';
                     document.getElementById('panel').style.display = 'flex';
                     setTimeout(() => document.getElementById('panel').style.opacity = '1', 50);
                 }, 1000);
-            } else { alert('GEÇERSİZ ERİŞİM ANAHTARI'); }
+            } else { alert('ACCESS DENIED'); }
         }
 
-        function go(id, el) {
+        function tab(id, el) {
             document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             el.classList.add('active');
         }
 
-        async function runInquiry() {
-            const q = document.getElementById('targetQuery').value.trim();
-            if(!q) return;
-            // Burası senin database.json veya API kısmın kanka
-            document.getElementById('search-results').style.display = 'block';
-            document.getElementById('res-content').innerHTML = `
-                <span style="color:var(--primary)">[+] ANALİZ BAŞLATILDI...</span><br>
-                AD SOYAD: YÜKLENİYOR...<br>
-                TC NO: ************<br>
-                GSM: +90 (5**) *** ** **<br>
-                KONUM: TESPİT EDİLİYOR...
-            `;
+        // BAĞLANTILI SORGULAMA (Context Engine)
+        async function globalSearch() {
+            const query = document.getElementById('main-search').value.trim();
+            if(!query) return;
+
+            // Efekt: Tarama simülasyonu
+            document.getElementById('intel-output').style.display = 'block';
+            document.getElementById('res-name').innerText = "Aranıyor...";
+
+            try {
+                const res = await fetch('database.json?v=' + Date.now());
+                const data = await res.json();
+                const target = data.targets.find(t => t.username.toLowerCase() === query.replace('@','').toLowerCase() || t.name.toLowerCase().includes(query.toLowerCase()));
+
+                if(target) {
+                    currentTarget = target; // Bağlantılı çalışma için hedefi hafızaya al
+                    
+                    // 1. Sorgula Ekranı Güncelle
+                    document.getElementById('res-name').innerText = target.name.toUpperCase();
+                    document.getElementById('res-tc').innerText = target.tc || "********";
+                    document.getElementById('res-gsm').innerText = target.phone || "Gizli";
+                    document.getElementById('res-loc').innerText = target.location || "Tespit Edilemedi";
+
+                    // 2. Database Sekmesini Güncelle (Bağlantılı)
+                    document.getElementById('db-output').innerHTML = `
+                        <p><b>Şifre İzi:</b> ${target.username}123*</p>
+                        <p><b>E-Posta:</b> ${target.username.slice(0,3)}...@gmail.com</p>
+                    `;
+
+                    // 3. AI Chat Güncelle
+                    document.getElementById('ai-chat-box').innerHTML += `<p><span style="color:var(--gold)">[AI]:</span> ${target.name} için risk analizi tamamlandı. Sosyal medya ayak izleri toplandı.</p>`;
+                    
+                } else { alert("Hedef veri tabanında bulunamadı."); }
+            } catch (e) { alert("Sistem hatası: database.json eksik."); }
         }
 
-        function saveAgent() {
-            const n = document.getElementById('new-n').value;
-            const k = document.getElementById('new-k').value;
+        function saveUser() {
+            const n = document.getElementById('adm-n').value;
+            const k = document.getElementById('adm-k').value;
             if(n && k) {
-                registry[k] = { name: n, role: "Member" };
-                localStorage.setItem('archera_reg', JSON.stringify(registry));
-                renderAgents();
-                alert('Yeni üye kaydedildi.');
+                session[k] = { name: n, role: "Member" };
+                localStorage.setItem('surosint_v4', JSON.stringify(session));
+                renderMembers();
+                alert('Üye Kaydedildi.');
             }
         }
 
-        function renderAgents() {
-            const list = document.getElementById('agent-list');
+        function renderMembers() {
+            const list = document.getElementById('member-list');
             list.innerHTML = '';
-            for(let k in registry) {
-                list.innerHTML += `<div class="prime-card" style="padding:15px; display:flex; justify-content:space-between;">
-                    <span>${registry[k].name} (${registry[k].role})</span>
-                    ${k !== 'baba' ? `<i class="fas fa-trash" style="color:red" onclick="delAgent('${k}')"></i>` : ''}
+            for(let k in session) {
+                list.innerHTML += `<div class="card" style="display:flex; justify-content:space-between; border-left-color: ${session[k].role === 'Owner' ? 'var(--gold)' : '#444'}">
+                    <span>${session[k].name} (${session[k].role})</span>
+                    ${k !== 'baba' ? `<i class="fas fa-trash" style="color:red" onclick="delUser('${k}')"></i>` : ''}
                 </div>`;
             }
         }
 
-        function delAgent(k) {
-            delete registry[k];
-            localStorage.setItem('archera_reg', JSON.stringify(registry));
-            renderAgents();
+        function delUser(k) {
+            delete session[k];
+            localStorage.setItem('surosint_v4', JSON.stringify(session));
+            renderMembers();
         }
     </script>
 </body>
