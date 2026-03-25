@@ -3,121 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SUROSINT | OWNER EDITION</title>
+    <title>SUROSINT | ADMIN CONTROL</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Outfit:wght@300;600;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
-        :root {
-            --primary: #e63946;
-            --gold: #ffcc00;
-            --bg: #000000;
-            --surface: rgba(22, 22, 22, 0.98);
-            --border: rgba(255, 255, 255, 0.1);
-        }
-
+        :root { --primary: #e63946; --gold: #ffcc00; --bg: #000000; --surface: rgba(22, 22, 22, 0.98); --border: rgba(255, 255, 255, 0.1); }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: #fff; height: 100vh; overflow: hidden; }
 
         /* GİRİŞ EKRANI */
-        #auth-gate { 
-            position: fixed; inset: 0; background: radial-gradient(circle at center, #1a0000 0%, #000 100%);
-            display: flex; align-items: center; justify-content: center; z-index: 100000; transition: 0.8s;
-        }
-        .auth-card { width: 88%; max-width: 400px; padding: 50px 35px; background: var(--surface); border: 1px solid var(--border); border-radius: 40px; text-align: center; backdrop-filter: blur(30px); }
-        .main-logo { width: 90px; height: 90px; border-radius: 50%; border: 2px solid var(--primary); padding: 5px; margin-bottom: 25px; }
+        #auth-gate { position: fixed; inset: 0; background: radial-gradient(circle at center, #1a0000 0%, #000 100%); display: flex; align-items: center; justify-content: center; z-index: 100000; transition: 0.8s; }
+        .auth-card { width: 88%; max-width: 400px; padding: 50px 35px; background: var(--surface); border: 1px solid var(--border); border-radius: 40px; text-align: center; }
         .auth-input { width: 100%; background: rgba(255,255,255,0.03); border: 1.5px solid var(--border); color: var(--primary); padding: 20px; text-align: center; font-family: 'JetBrains Mono'; font-size: 1.6rem; letter-spacing: 12px; border-radius: 25px; outline: none; margin-bottom: 30px; }
-        .btn-premium { width: 100%; background: var(--primary); color: #fff; border: none; padding: 16px; border-radius: 18px; font-weight: 800; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .btn-premium { width: 100%; background: var(--primary); color: #fff; border: none; padding: 18px; border-radius: 20px; font-weight: 800; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; cursor: pointer; }
 
         /* ANA PANEL */
         #panel { display: none; height: 100vh; flex-direction: column; opacity: 0; transition: 1s; }
         .workspace { flex: 1; padding: 30px 25px; overflow-y: auto; padding-bottom: 110px; }
 
-        /* OWNER PROFILE SECTION (YENİ) */
-        .owner-profile {
-            background: linear-gradient(135deg, rgba(230, 57, 70, 0.1) 0%, rgba(20, 20, 20, 0.9) 100%);
-            border: 1px solid var(--border);
-            border-radius: 30px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            margin-bottom: 30px;
-            position: relative;
-            overflow: hidden;
-        }
-        .owner-profile::after {
-            content: '\f521'; font-family: 'Font Awesome 6 Free'; font-weight: 900;
-            position: absolute; right: -10px; bottom: -10px; font-size: 80px; color: rgba(255, 204, 0, 0.05); transform: rotate(-20deg);
-        }
-        .owner-avatar-wrap { position: relative; }
-        .owner-avatar { width: 70px; height: 70px; border-radius: 20px; border: 2px solid var(--gold); object-fit: cover; }
-        .crown-icon { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); color: var(--gold); font-size: 18px; filter: drop-shadow(0 0 5px var(--gold)); }
-        
-        .owner-info h3 { font-family: 'Montserrat'; font-size: 1.2rem; margin-bottom: 2px; display: flex; align-items: center; gap: 8px; }
+        /* OWNER/USER PROFİLİ */
+        .owner-profile { background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border); border-radius: 30px; padding: 25px; display: flex; align-items: center; gap: 20px; margin-bottom: 30px; position: relative; }
+        .owner-avatar-wrap { position: relative; width: 65px; height: 65px; }
+        .owner-avatar { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+        .crown-icon { position: absolute; top: -18px; left: 50%; transform: translateX(-50%); color: var(--gold); font-size: 24px; filter: drop-shadow(0 0 8px var(--gold)); animation: crownFloat 2s infinite ease-in-out; }
+        @keyframes crownFloat { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(-5px); } }
+        .owner-info h3 { font-family: 'Montserrat'; font-size: 1.2rem; display: flex; align-items: center; gap: 8px; }
         .owner-badge { background: var(--gold); color: #000; font-size: 8px; font-weight: 900; padding: 2px 8px; border-radius: 5px; text-transform: uppercase; }
-        .owner-status { font-size: 10px; color: #888; letter-spacing: 1px; }
 
-        /* DİĞER BÖLÜMLER AYNI KALDI */
-        .header-section { margin-bottom: 25px; display: flex; align-items: center; gap: 12px; }
-        .header-logo { width: 35px; height: 35px; border-radius: 50%; border: 1px solid var(--primary); }
-        .header-text h1 { font-family: 'Montserrat'; font-size: 1.5rem; }
-        .header-text p { color: var(--primary); font-size: 7px; font-weight: 800; letter-spacing: 3px; }
+        /* YÖNETİM PANELİ KARTI */
+        .admin-controls { display: flex; flex-direction: column; gap: 10px; }
+        .admin-input { background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 15px; border-radius: 15px; color: #fff; outline: none; font-size: 13px; }
+        .user-list-item { background: rgba(255,255,255,0.03); padding: 15px; border-radius: 15px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
 
+        /* STANDART ARAYÜZ ELEMANLARI */
         .search-area { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 25px; padding: 15px; margin-bottom: 30px; }
         .search-area input { width: 100%; background: transparent; border: none; color: #fff; padding: 12px; font-size: 14px; outline: none; text-align: center; }
-        
         .grid { display: grid; gap: 15px; }
         .card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 20px; border-radius: 25px; border-left: 4px solid var(--primary); }
-        .card-label { font-size: 8px; color: #666; font-weight: 800; text-transform: uppercase; margin-bottom: 5px; display: block; }
-        .card-value { font-family: 'JetBrains Mono'; font-size: 14px; }
-
-        .vault-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-        .story-item { aspect-ratio: 9/16; background: #111; border-radius: 15px; overflow: hidden; border: 1px solid var(--border); }
-        .story-item img { width: 100%; height: 100%; object-fit: cover; }
-
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 85px; background: rgba(10, 10, 10, 0.98); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; backdrop-filter: blur(20px); z-index: 1000; padding-bottom: 10px; }
         .nav-link { color: #444; text-align: center; flex: 1; cursor: pointer; transition: 0.3s; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .nav-link i { font-size: 1.3rem; }
-        .nav-link span { font-size: 7px; font-weight: 800; text-transform: uppercase; }
         .nav-link.active { color: var(--primary); }
-
         .tab-pane { display: none; }
         .tab-pane.active { display: block; animation: tabSlideUp 0.5s ease; }
-        @keyframes tabSlideUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes tabSlideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
     <div id="auth-gate">
         <div class="auth-card">
-            <img src="24841.jpg" class="main-logo" onerror="this.src='https://via.placeholder.com/100?text=SURO'">
-            <h2 class="auth-title">SUROSINT</h2>
-            <p style="font-size: 9px; color: #555; letter-spacing: 4px; margin-bottom: 35px; text-transform: uppercase;">Owner Identification</p>
+            <img src="24841.jpg" style="width:80px; border-radius:50%; border:2px solid var(--primary); padding:4px; margin-bottom:20px;">
+            <h2 style="font-family:'Montserrat'; letter-spacing:3px; margin-bottom:30px;">SUROSINT</h2>
             <input type="password" id="access-key" class="auth-input" placeholder="••••">
-            <button onclick="unlock()" class="btn-premium"><i class="fas fa-key"></i> SİSTEMİ AÇ</button>
+            <button onclick="unlock()" class="btn-premium">SİSTEMİ DOĞRULA</button>
         </div>
     </div>
 
     <div id="panel">
         <main class="workspace">
-            
             <div class="owner-profile">
                 <div class="owner-avatar-wrap">
                     <i class="fas fa-crown crown-icon"></i>
-                    <img src="24841.jpg" class="owner-avatar">
+                    <img id="user-pfp" src="24841.jpg" class="owner-avatar">
                 </div>
                 <div class="owner-info">
-                    <h3>archera <span class="owner-badge">Owner</span></h3>
-                    <p class="owner-status"><i class="fas fa-circle" style="color:#00ff00; font-size:8px;"></i> System Administrator</p>
-                </div>
-            </div>
-
-            <div class="header-section">
-                <img src="24841.jpg" class="header-logo">
-                <div class="header-text">
-                    <h1>SUROSINT</h1>
-                    <p>Terminal v1.9 (Owner Edition)</p>
+                    <h3><span id="user-name">---</span> <span id="user-badge" class="owner-badge">USER</span></h3>
+                    <p style="font-size: 10px; color: #666;"><i class="fas fa-circle" style="color:#00ff00; font-size:8px;"></i> Session Active</p>
                 </div>
             </div>
 
@@ -127,36 +79,105 @@
                     <button onclick="globalInquiry()" class="btn-premium">SORGULA</button>
                 </div>
                 <div id="intel-results" style="display:none;" class="grid">
-                    <div class="card"><span class="card-label">KİMLİK</span><div class="card-value" id="val-name"></div></div>
-                    <div class="card"><span class="card-label">KONUM</span><div class="card-value" id="val-loc"></div></div>
+                    <div class="card"><div id="val-name"></div></div>
+                    <div class="card"><div id="val-loc"></div></div>
                 </div>
             </div>
 
-            <div id="leak" class="tab-pane"><h2 style="margin-bottom:20px; font-family:'Montserrat';">DATABASE</h2><div id="leak-results" class="grid"></div></div>
-            <div id="vault" class="tab-pane"><h2 style="margin-bottom:20px; font-family:'Montserrat';">STORIES</h2><div id="vault-results" class="vault-grid"></div></div>
-            <div id="ai" class="tab-pane"><h2 style="margin-bottom:20px; font-family:'Montserrat';">AI CORE</h2><div class="card"><div class="card-value" id="ai-results">...</div></div></div>
-            <div id="list" class="tab-pane"><h2 style="margin-bottom:20px; font-family:'Montserrat';">TRACKING</h2><div class="card"><div class="card-value" id="track-results">...</div></div></div>
+            <div id="settings" class="tab-pane">
+                <h2 style="margin-bottom:20px; font-family:'Montserrat';">YÖNETİM</h2>
+                <div class="card" style="border-left-color: var(--gold);">
+                    <p style="font-size: 10px; color: #888; margin-bottom: 15px;">YENİ ÜYE EKLE</p>
+                    <div class="admin-controls">
+                        <input type="text" id="new-user-name" class="admin-input" placeholder="İsim">
+                        <input type="text" id="new-user-key" class="admin-input" placeholder="Şifre">
+                        <button onclick="addUser()" class="btn-premium" style="background:var(--gold); color:#000;">EKLE</button>
+                    </div>
+                </div>
+                <h3 style="margin: 20px 0 10px; font-size: 12px; letter-spacing: 2px;">AKTİF ÜYELER</h3>
+                <div id="user-list-container"></div>
+            </div>
+            
+            <div id="leak" class="tab-pane"><h2>VERİTABANI</h2></div>
+            <div id="vault" class="tab-pane"><h2>STORY ARŞİVİ</h2></div>
         </main>
 
         <nav class="bottom-nav">
             <div class="nav-link active" onclick="showTab('intel', this)"><i class="fas fa-crosshairs"></i><span>Analiz</span></div>
             <div class="nav-link" onclick="showTab('leak', this)"><i class="fas fa-database"></i><span>Veri</span></div>
             <div class="nav-link" onclick="showTab('vault', this)"><i class="fas fa-images"></i><span>Story</span></div>
-            <div class="nav-link" onclick="showTab('ai', this)"><i class="fas fa-brain"></i><span>AI</span></div>
-            <div class="nav-link" onclick="showTab('list', this)"><i class="fas fa-plus"></i><span>Liste</span></div>
+            <div id="admin-nav" class="nav-link" style="display:none;" onclick="showTab('settings', this)"><i class="fas fa-user-gear"></i><span>Yönetim</span></div>
         </nav>
     </div>
 
     <script>
+        // Üyeleri tarayıcı hafızasından çek veya varsayılanı oluştur
+        let users = JSON.parse(localStorage.getItem('surosint_users')) || {
+            "baba": { name: "Abdulkadir", role: "Owner", pfp: "24841.jpg" }
+        };
+
+        let currentUser = null;
+
+        function saveUsers() {
+            localStorage.setItem('surosint_users', JSON.stringify(users));
+            renderUserList();
+        }
+
         function unlock() {
-            if(document.getElementById('access-key').value === 'baba') {
+            const key = document.getElementById('access-key').value;
+            if(users[key]) {
+                currentUser = users[key];
+                document.getElementById('user-name').innerText = currentUser.name;
+                document.getElementById('user-badge').innerText = currentUser.role;
+                document.getElementById('user-pfp').src = currentUser.pfp || "24841.jpg";
+
+                // Eğer Owner ise Yönetim sekmesini göster
+                if(currentUser.role === "Owner") {
+                    document.getElementById('admin-nav').style.display = 'flex';
+                    renderUserList();
+                }
+
                 document.getElementById('auth-gate').style.opacity = '0';
                 setTimeout(() => {
                     document.getElementById('auth-gate').style.display = 'none';
                     document.getElementById('panel').style.display = 'flex';
                     setTimeout(() => document.getElementById('panel').style.opacity = '1', 50);
                 }, 800);
-            } else { alert('YETKİSİZ GİRİŞ DENEMESİ'); }
+            } else { alert('GEÇERSİZ KEY'); }
+        }
+
+        function addUser() {
+            const name = document.getElementById('new-user-name').value;
+            const key = document.getElementById('new-user-key').value;
+            if(name && key) {
+                users[key] = { name: name, role: "Agent", pfp: "https://via.placeholder.com/100" };
+                saveUsers();
+                document.getElementById('new-user-name').value = '';
+                document.getElementById('new-user-key').value = '';
+                alert('Üye eklendi!');
+            }
+        }
+
+        function deleteUser(key) {
+            if(key === "baba") return alert("Owner silinemez!");
+            delete users[key];
+            saveUsers();
+        }
+
+        function renderUserList() {
+            const container = document.getElementById('user-list-container');
+            container.innerHTML = '';
+            for(let key in users) {
+                container.innerHTML += `
+                    <div class="user-list-item">
+                        <div>
+                            <div style="font-size:14px; font-weight:800;">${users[key].name}</div>
+                            <div style="font-size:10px; color:#555;">Key: ${key}</div>
+                        </div>
+                        ${key !== 'baba' ? `<i class="fas fa-trash" style="color:var(--primary);" onclick="deleteUser('${key}')"></i>` : '<i class="fas fa-lock" style="color:var(--gold);"></i>'}
+                    </div>
+                `;
+            }
         }
 
         function showTab(id, el) {
@@ -177,10 +198,6 @@
                     document.getElementById('intel-results').style.display = 'grid';
                     document.getElementById('val-name').innerText = target.name.toUpperCase();
                     document.getElementById('val-loc').innerText = target.location;
-                    document.getElementById('leak-results').innerHTML = target.leaks.map(l => `<div class="card"><span class="card-label">${l.type}</span><div class="card-value">${l.data}</div></div>`).join('');
-                    document.getElementById('vault-results').innerHTML = target.stories.map(s => `<div class="story-item"><img src="${s}"></div>`).join('');
-                    document.getElementById('ai-results').innerText = target.ai_report;
-                    document.getElementById('track-results').innerText = target.name + " eklendi.";
                 } else { alert("Kayıt yok."); }
             } catch (e) { alert("Hata."); }
         }
