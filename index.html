@@ -3,190 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SUROSINT v0.5 | LEVIATHAN CORE</title>
+    <title>SUROSINT | DIGITAL DATA CENTER</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --accent: #ff0000; --bg: #010101; --surface: rgba(10, 10, 10, 0.95); --card: rgba(20, 20, 20, 0.8); --text: #ffffff; --border: rgba(255, 0, 0, 0.3); --glow: #ff4d4d; }
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=JetBrains+Mono:wght@300;700&display=swap');
+
+        :root { --accent: #ff0000; --bg: #000000; --surface: rgba(10, 10, 10, 0.98); --glow: rgba(255, 0, 0, 0.6); --border: #330000; }
+        
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; cursor: crosshair; }
         
         body { 
-            background: var(--bg); color: var(--text); font-family: 'JetBrains Mono', monospace; margin: 0; overflow: hidden; 
-            background-image: linear-gradient(rgba(255, 0, 0, 0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 0, 0, 0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
+            background: var(--bg); color: #fff; font-family: 'JetBrains Mono', monospace; margin: 0; overflow: hidden;
+            background-image: 
+                radial-gradient(circle at 50% 50%, #1a0000 0%, #000 100%),
+                linear-gradient(rgba(255,0,0,0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,0,0,0.05) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
         }
 
-        /* GİRİŞ EKRANI (MATRIX EFFECT & NEON) */
-        #access-gate { position: fixed; inset: 0; background: radial-gradient(circle at center, #1a0000 0%, #010101 100%); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 10000; padding: 20px; }
-        .gate-logo { width: 130px; height: 130px; border-radius: 50%; border: 3px solid var(--accent); box-shadow: 0 0 50px var(--glow); margin-bottom: 25px; object-fit: cover; animation: logoPulse 2s infinite; }
-        @keyframes logoPulse { 0% { transform: scale(1); box-shadow: 0 0 30px var(--glow); } 50% { transform: scale(1.05); box-shadow: 0 0 70px var(--glow); } 100% { transform: scale(1); box-shadow: 0 0 30px var(--glow); } }
+        /* SCANLINE EFEKTİ */
+        body::before {
+            content: " "; display: block; position: absolute; top: 0; left: 0; bottom: 0; right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 9999; background-size: 100% 4px, 3px 100%; pointer-events: none;
+        }
+
+        /* GİRİŞ EKRANI */
+        #auth-gate { position: fixed; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 10001; background: #000; }
+        .gate-content { text-align: center; padding: 50px; border: 1px solid var(--border); background: rgba(5,5,5,0.9); box-shadow: 0 0 50px rgba(255,0,0,0.2); border-radius: 2px; position: relative; }
+        .gate-content::after { content: ''; position: absolute; inset: -5px; border: 1px solid var(--accent); opacity: 0.3; animation: glitch 2s infinite; }
         
-        .auth-box { width: 100%; max-width: 400px; text-align: center; backdrop-filter: blur(15px); padding: 40px; border-radius: 25px; border: 1px solid var(--border); background: rgba(0,0,0,0.7); box-shadow: 0 15px 50px rgba(255,0,0,0.2); }
-        .auth-input { width: 100%; background: #000; border: 1px solid var(--border); color: var(--accent); padding: 18px; border-radius: 12px; text-align: center; font-family: 'Courier New', monospace; font-size: 1.3rem; letter-spacing: 6px; outline: none; margin-bottom: 25px; transition: 0.3s; }
-        .auth-input:focus { border-color: var(--glow); box-shadow: 0 0 20px var(--glow); }
+        @keyframes glitch { 0% { clip-path: inset(10% 0 30% 0); } 50% { clip-path: inset(40% 0 10% 0); } 100% { clip-path: inset(10% 0 30% 0); } }
 
-        /* ANA PANEL (LEVIATHAN MİMARİSİ) */
-        #panel { display: none; height: 100vh; flex-direction: row; }
+        .auth-input { 
+            background: transparent; border: none; border-bottom: 2px solid var(--accent); color: var(--accent); 
+            font-size: 2rem; width: 250px; text-align: center; outline: none; font-family: 'Orbitron', sans-serif;
+            letter-spacing: 10px; margin-bottom: 30px;
+        }
 
-        /* SİDEBAR (OPERASYONEL MENÜ) */
-        .sidebar { width: 300px; background: var(--surface); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; backdrop-filter: blur(20px); transition: 0.3s; }
-        .sidebar-brand { padding: 40px 20px; text-align: center; border-bottom: 1px solid var(--border); position: relative; }
-        .sidebar-logo { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--accent); margin-bottom: 15px; box-shadow: 0 0 20px rgba(255,0,0,0.4); }
-        .brand-name { color: var(--accent); font-weight: 900; letter-spacing: 4px; font-size: 1.2rem; text-transform: uppercase; text-shadow: 0 0 10px var(--glow); }
-        
-        .nav-link { padding: 18px 28px; cursor: pointer; display: flex; align-items: center; gap: 18px; transition: 0.3s; color: #999; font-size: 14px; border-left: 4px solid transparent; font-weight: 600; }
-        .nav-link i { font-size: 20px; width: 25px; text-align: center; transition: 0.3s; }
-        .nav-link:hover, .nav-link.active { background: rgba(255,0,0,0.12); color: var(--accent); border-left: 4px solid var(--accent); text-shadow: 0 0 5px var(--glow); }
-        .nav-link.active i { transform: scale(1.1); color: var(--glow); }
+        /* ANA PANEL */
+        #panel { display: none; height: 100vh; grid-template-columns: 300px 1fr; }
 
-        /* WORKSPACE (DİJİTAL SAVAŞ ALANI) */
-        .workspace { flex-grow: 1; overflow-y: auto; padding: 40px; position: relative; }
-        .module { display: none; animation: moduleFadeIn 0.6s ease; }
+        /* SİDEBAR - ELITE */
+        .sidebar { background: var(--surface); border-right: 2px solid var(--border); display: flex; flex-direction: column; box-shadow: 10px 0 30px rgba(0,0,0,0.5); }
+        .sidebar-header { padding: 40px 20px; border-bottom: 1px solid var(--border); text-align: center; }
+        .sidebar-logo { width: 90px; height: 90px; border: 2px solid var(--accent); padding: 5px; box-shadow: 0 0 20px var(--glow); margin-bottom: 15px; }
+        .nav-link { 
+            padding: 20px 30px; color: #555; text-decoration: none; display: flex; align-items: center; gap: 15px; 
+            font-size: 13px; font-weight: bold; transition: 0.4s; border-bottom: 1px solid rgba(255,0,0,0.05);
+        }
+        .nav-link i { font-size: 18px; text-shadow: 0 0 5px currentColor; }
+        .nav-link:hover, .nav-link.active { color: var(--accent); background: rgba(255,0,0,0.05); box-shadow: inset 5px 0 0 var(--accent); }
+
+        /* WORKSPACE */
+        .workspace { padding: 50px; overflow-y: auto; }
+        .module { display: none; animation: emerge 0.8s cubic-bezier(0.075, 0.82, 0.165, 1); }
         .module.active { display: block; }
-        @keyframes moduleFadeIn { from { opacity: 0; filter: blur(15px); transform: translateY(20px); } to { opacity: 1; filter: blur(0); transform: translateY(0); } }
+        @keyframes emerge { from { opacity: 0; transform: scale(0.98) translateY(20px); } to { opacity: 1; transform: scale(1) translateY(0); } }
 
-        /* SORGU MERKEZİ TASARIMI */
-        .search-wrapper { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 30px; margin-bottom: 40px; backdrop-filter: blur(10px); box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
-        .input-group { display: flex; gap: 15px; flex-wrap: wrap; }
-        .input-field { background: #000; border: 1px solid var(--border); color: white; padding: 18px 25px; border-radius: 12px; flex-grow: 1; outline: none; font-size: 15px; transition: 0.3s; }
-        .input-field:focus { border-color: var(--glow); box-shadow: 0 0 15px rgba(255,0,0,0.2); }
-        .btn-action { background: linear-gradient(135deg, #ff0000 0%, #880000 100%); border: none; color: white; padding: 18px 35px; border-radius: 12px; cursor: pointer; font-weight: 800; font-size: 15px; text-transform: uppercase; letter-spacing: 1px; transition: 0.3s; box-shadow: 0 5px 20px rgba(255,0,0,0.4); display: flex; align-items: center; gap: 10px; }
-        .btn-action:hover { transform: translateY(-3px) scale(1.03); box-shadow: 0 10px 30px rgba(255,0,0,0.6); }
+        /* SURUC VERI MERKEZI KOMPONENTLERI */
+        .header-title { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; color: var(--accent); margin-bottom: 40px; text-shadow: 0 0 20px var(--glow); }
+        
+        .search-terminal { background: #080808; border: 1px solid var(--border); padding: 30px; position: relative; overflow: hidden; }
+        .search-terminal::before { content: "DATA_STREAM"; position: absolute; top: 5px; right: 10px; font-size: 10px; color: #222; }
+        
+        .terminal-input { background: #000; border: 1px solid #222; color: #fff; padding: 15px; width: 70%; font-family: 'JetBrains Mono'; outline: none; border-radius: 0; }
+        .terminal-input:focus { border-color: var(--accent); }
+        
+        .matrix-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 25px; margin-top: 40px; }
+        .data-node { background: rgba(15,15,15,0.8); border: 1px solid #1a1a1a; padding: 25px; position: relative; border-left: 3px solid var(--accent); }
+        .node-label { color: #444; font-size: 11px; text-transform: uppercase; margin-bottom: 10px; display: block; }
+        .node-value { color: #fff; font-size: 16px; border-bottom: 1px solid #111; padding-bottom: 5px; }
 
-        /* PROFİL MATRİSİ VE AI ENTEGRASYONU */
-        .matrix-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; margin-top: 30px; }
-        .data-card { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 25px; backdrop-filter: blur(8px); box-shadow: 0 12px 35px rgba(0,0,0,0.6); position: relative; overflow: hidden; }
-        .data-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,0,0,0.05) 0%, transparent 100%); opacity: 0.5; }
-        .card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; color: var(--accent); font-weight: bold; font-size: 0.95rem; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid var(--border); padding-bottom: 12px; text-shadow: 0 0 5px var(--glow); }
-        .card-header i { font-size: 18px; color: var(--glow); }
-
-        .data-row { margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.02); padding-bottom: 8px; }
-        .label { font-size: 12px; color: #666; text-transform: uppercase; font-weight: bold; }
-        .value { font-size: 15px; color: #ddd; font-weight: 600; letter-spacing: 0.5px; }
-        .status-active { color: #00ff00; font-weight: bold; animation: statusBlink 1.5s infinite; }
-        @keyframes statusBlink { 0% { opacity: 1; } 50% { opacity: 0.4; } 100% { opacity: 1; } }
-
-        /* MOBİL UYUMLULUK (CRITICAL FIX) */
-        @media (max-width: 1024px) {
-            .sidebar { width: 260px; }
-        }
-        @media (max-width: 768px) {
-            #panel { flex-direction: column; }
-            .sidebar { width: 100%; height: auto; border-right: none; border-bottom: 1px solid var(--border); }
-            .sidebar-brand { padding: 20px; flex-direction: row; align-items: center; justify-content: center; gap: 15px; }
-            .sidebar-logo { width: 50px; height: 50px; margin-bottom: 0; }
-            .brand-name { font-size: 1rem; }
-            .nav-link { padding: 14px 20px; font-size: 13px; justify-content: center; border-left: none; border-bottom: 3px solid transparent; }
-            .nav-link.active { border-left: none; border-bottom: 3px solid var(--accent); }
-            .workspace { padding: 25px; }
-            .matrix-grid { grid-template-columns: 1fr; }
-            body { overflow-y: auto; }
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            #panel { grid-template-columns: 1fr; }
+            .sidebar { position: fixed; bottom: 0; width: 100%; height: 70px; flex-direction: row; z-index: 1000; overflow-x: auto; }
+            .sidebar-header, .sidebar-logo { display: none; }
+            .nav-link { padding: 10px 20px; border: none; flex-direction: column; font-size: 10px; gap: 5px; }
+            .workspace { padding: 20px; padding-bottom: 100px; }
+            .header-title { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
 
-    <div id="access-gate">
-        <div class="auth-box">
-            <img src="24841.jpg" class="gate-logo" alt="SUROSINT">
-            <h1 style="color:var(--accent); letter-spacing: 10px; font-size: 2.2rem; margin-bottom: 8px; text-shadow: 0 0 15px var(--glow);">SUROSINT</h1>
-            <p style="color: #666; font-size: 12px; margin-bottom: 35px; letter-spacing: 3px; text-transform: uppercase;">DIGITAL LEVIATHAN CORE v0.5</p>
-            <input type="password" id="key" class="auth-input" placeholder="ACCESS KEY">
-            <button onclick="authenticate()" class="btn-action" style="width:100%; justify-content: center;">
-                <i class="fas fa-satellite-dish"></i> SİSTEMİ BAŞLAT
-            </button>
+    <div id="auth-gate">
+        <div class="gate-content">
+            <img src="24841.jpg" class="sidebar-logo" style="margin-bottom: 30px;">
+            <h1 style="font-family: 'Orbitron'; color: var(--accent); letter-spacing: 5px;">SYSTEM SECURED</h1>
+            <input type="password" id="access-key" class="auth-input" placeholder="****">
+            <br>
+            <button onclick="unlock()" style="background:var(--accent); color:#000; border:none; padding:15px 40px; font-weight:bold; cursor:pointer; font-family:'Orbitron'">LOG_IN</button>
         </div>
     </div>
 
     <div id="panel">
         <aside class="sidebar">
-            <div class="sidebar-brand">
-                <img src="24841.jpg" class="sidebar-logo" alt="LOGO">
-                <div class="brand-name">SUROSINT</div>
-                <div style="font-size: 10px; color: #444; margin-top: 5px; text-transform: uppercase; letter-spacing: 1px;">SURUÇ INTEL UNIT</div>
+            <div class="sidebar-header">
+                <img src="24841.jpg" class="sidebar-logo">
+                <div style="font-family: 'Orbitron'; color: var(--accent); font-size: 1.2rem; letter-spacing: 3px;">SUROSINT</div>
+                <div style="font-size: 9px; color: #333;">VERİ MERKEZİ V0.5</div>
             </div>
-            <div class="nav-link active" onclick="switchTab('target-search')"><i class="fas fa-crosshairs"></i> HEDEF SORGU</div>
-            <div class="nav-link" onclick="switchTab('leak-map')"><i class="fas fa-map-location-dot"></i> LEAK-MAP</div>
-            <div class="nav-link" onclick="switchTab('story-vault')"><i class="fas fa-vault"></i> STORY VAULT</div>
-            <div class="nav-link" onclick="switchTab('tracking')"><i class="fas fa-user-check"></i> TAKİP LİSTESİ</div>
-            <div class="nav-link" onclick="switchTab('suruc-ai')"><i class="fas fa-microchip"></i> SURUC AI</div>
+            <nav>
+                <a href="#" class="nav-link active" onclick="showModule('intel')"><i class="fas fa-crosshairs"></i> HEDEF ANALİZ</a>
+                <a href="#" class="nav-link" onclick="showModule('leak')"><i class="fas fa-biohazard"></i> VERİ SIZINTISI</a>
+                <a href="#" class="nav-link" onclick="showModule('vault')"><i class="fas fa-file-shield"></i> STORY ARŞİV</a>
+                <a href="#" class="nav-link" onclick="showModule('list')"><i class="fas fa-users-viewfinder"></i> TAKİP HAVUZU</a>
+                <a href="#" class="nav-link" onclick="showModule('ai')"><i class="fas fa-brain"></i> SURUC AI</a>
+            </nav>
         </aside>
 
         <main class="workspace">
-            <div id="target-search" class="module active">
-                <h2 style="margin-top:0; color:var(--accent); letter-spacing: 2px; text-shadow: 0 0 10px var(--glow); text-transform: uppercase;"><i class="fas fa-satellite"></i> SURUÇ OPERASYON MERKEZİ</h2>
-                <div class="search-wrapper">
-                    <div class="card-header"><i class="fas fa-search-plus"></i> HEDEF BELİRLEME</div>
-                    <div class="input-group">
-                        <input type="text" id="targetName" class="input-field" placeholder="Ad, Soyad veya Kullanıcı Adı Giriniz...">
-                        <button class="btn-action" onclick="executeSearch()">
-                            <i class="fas fa-crosshairs"></i> SORGULA
-                        </button>
-                    </div>
+            <div id="intel" class="module active">
+                <h2 class="header-title">SURUÇ VERİ MERKEZİ</h2>
+                
+                <div class="search-terminal">
+                    <input type="text" id="target" class="terminal-input" placeholder="DEEP_SEARCH: İsim veya Kullanıcı Adı...">
+                    <button onclick="runSearch()" style="background:var(--accent); color:#000; border:none; padding:15px 30px; font-weight:bold; cursor:pointer; position:absolute; right:30px;">HEDEFİ TARA</button>
                 </div>
 
-                <div id="output" style="display: none;">
-                    <div class="matrix-grid">
-                        <div class="data-card">
-                            <div class="card-header"><i class="fas fa-id-badge"></i> UNIFIED PROFILE</div>
-                            <div class="data-row"><span class="label">HEDEF</span><div id="res-name" class="value" style="color:var(--accent);">-</div></div>
-                            <div class="data-row"><span class="label">DURUM</span><div class="status-active">AKTİF İZLEME</div></div>
-                            <div class="data-row"><span class="label">BÖLGE</span><div class="value">SURUÇ / MERKEZ</div></div>
-                            <div class="data-row"><span class="label">UID</span><div class="value">S-UID-63-XXXX</div></div>
-                        </div>
-                        <div class="data-card">
-                            <div class="card-header"><i class="fas fa-fingerprint"></i> DİJİTAL AYAK İZİ</div>
-                            <div class="data-row"><span class="label">GSM Entegrasyonu</span><div class="value">BEKLENİYOR...</div></div>
-                            <div class="data-row"><span class="label">Leak-Map Kaydı</span><div class="value">Taranıyor...</div></div>
-                            <div class="data-row"><span class="label">Story Arşivi</span><div class="value">Erişiliyor...</div></div>
-                        </div>
-                        <div class="data-card">
-                            <div class="card-header"><i class="fas fa-brain"></i> SURUC AI ANALİZ</div>
-                            <div class="data-row"><span class="label">Anlık Vibe</span><div class="value">Duygu Analizi Aktif</div></div>
-                            <div class="data-row"><span class="label">Duygu Grafiği</span><div class="value">%0 NÖTR</div></div>
-                            <div class="data-row"><span class="label">Triangulation</span><div class="value">Bağlantı Aranıyor</div></div>
-                        </div>
-                        <div class="data-card">
-                            <div class="card-header"><i class="fas fa-network-wired"></i> SOSYAL AĞ ANALİZİ</div>
-                            <div class="data-row"><span class="label">Bağlantılı Kişiler</span><div class="value">0 TESPİT</div></div>
-                            <div class="data-row"><span class="label">Shadow Tracking</span><div class="value">Pasif</div></div>
-                        </div>
+                <div id="results" style="display:none;" class="matrix-container">
+                    <div class="data-node">
+                        <span class="node-label">Sistem Kaydı</span>
+                        <div class="node-value" id="res-name">Taranıyor...</div>
+                    </div>
+                    <div class="data-node">
+                        <span class="node-label">Konum Koordinatları</span>
+                        <div class="node-value">Suruç / 36.9764° N, 38.4242° E</div>
+                    </div>
+                    <div class="data-node">
+                        <span class="node-label">Dijital Durum</span>
+                        <div class="node-value" style="color:#00ff00">AKTİF İZLEME_LOG_ON</div>
+                    </div>
+                    <div class="data-node">
+                        <span class="node-label">Suruc AI Öngörü</span>
+                        <div class="node-value">Veri Paketi İşleniyor...</div>
                     </div>
                 </div>
             </div>
 
-            <div id="leak-map" class="module"><h2><i class="fas fa-map-location-dot"></i> LEAK-MAP</h2><p style="color:#666">Sızdırılmış veritabanı koordinatları nükleer bir asaletle nükleer bir "Mühürleniyor"...</p></div>
-            <div id="story-vault" class="module"><h2><i class="fas fa-vault"></i> STORY VAULT</h2><p style="color:#666">Anlık hikaye yakalama motoru nükleer bir hırsla nükleer bir "Ateşlendi".</p></div>
-            <div id="tracking" class="module"><h2><i class="fas fa-user-check"></i> TAKİP LİSTESİ</h2><p style="color:#666">10.000 kişilik hedef havuzu taranıyor.</p></div>
-            <div id="suruc-ai" class="module"><h2><i class="fas fa-microchip"></i> SURUC AI</h2><p style="color:#666">Yapay zeka analizleri için veri bekleniyor.</p></div>
+            <div id="leak" class="module"><h2>VERİ SIZINTISI HARİTASI</h2></div>
+            <div id="vault" class="module"><h2>STORY VAULT ARŞİVİ</h2></div>
+            <div id="list" class="module"><h2>10.000+ TAKİP LİSTESİ</h2></div>
+            <div id="ai" class="module"><h2>SURUC AI CORE</h2></div>
         </main>
     </div>
 
     <script>
-        function authenticate() {
-            const key = document.getElementById('key').value;
-            if(key === "baba") {
-                document.getElementById('access-gate').style.display = 'none';
-                document.getElementById('panel').style.display = 'flex';
-            } else {
-                alert("ERİŞİM ENGELLENDİ: GEÇERSİZ ANAHTAR MÜHÜRÜ.");
-            }
+        function unlock() {
+            if(document.getElementById('access-key').value === 'baba') {
+                document.getElementById('auth-gate').style.display = 'none';
+                document.getElementById('panel').style.display = 'grid';
+            } else { alert('YETKİSİZ ERİŞİM: MÜHÜR KIRILAMADI.'); }
         }
 
-        function switchTab(tabId) {
+        function showModule(id) {
             document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
             document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
+            document.getElementById(id).classList.add('active');
             event.currentTarget.classList.add('active');
         }
 
-        function executeSearch() {
-            const name = document.getElementById('targetName').value;
-            if(name) {
-                document.getElementById('output').style.display = 'block';
-                document.getElementById('res-name').innerText = name.toUpperCase();
+        function runSearch() {
+            const val = document.getElementById('target').value;
+            if(val) {
+                document.getElementById('results').style.display = 'grid';
+                document.getElementById('res-name').innerText = "HEDEF_ID: " + val.toUpperCase();
             }
         }
     </script>
 </body>
-                            </html>
-            
+</html>
