@@ -2,15 +2,18 @@
   "targets": [
     {
       "username": "test",
-      "name": "Test Kullanıcısı",
-      "location": "Suruç / Şanlıurfa",
+      "name": "Sistem Test Kullanicisi",
+      "location": "Suruc / Merkez",
       "leaks": [
-        {"type": "Durum", "data": "Sistem Aktif"}
+        {
+          "type": "Durum",
+          "data": "Baglanti Basarili"
+        }
       ],
       "stories": [
         "https://via.placeholder.com/150"
       ],
-      "ai_report": "Bu bir test kaydıdır. Sistem düzgün çalışıyor."
+      "ai_report": "Sistem su an stabil ve veri okuma islemi sorunsuz calisiyor."
     }
   ]
 }
