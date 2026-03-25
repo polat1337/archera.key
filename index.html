@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SUROSINT | THE VOID</title>
+    <style>
+        body { background-color: #000; color: #fff; font-family: 'Courier New', monospace; display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100vh; margin: 0; overflow: hidden; }
+        .logo { width: 180px; filter: drop-shadow(0 0 15px #f00); margin-bottom: 25px; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 0.4; transform: scale(0.98); } 50% { opacity: 1; transform: scale(1); } 100% { opacity: 0.4; transform: scale(0.98); } }
+        .auth-container { text-align: center; border: 1px solid #1a1a1a; padding: 30px; border-radius: 10px; background: rgba(10, 10, 10, 0.9); }
+        input { background: #000; border: 1px solid #333; color: #f00; padding: 12px; width: 280px; text-align: center; outline: none; transition: 0.4s; letter-spacing: 2px; font-weight: bold; }
+        input:focus { border-color: #f00; box-shadow: 0 0 20px rgba(255, 0, 0, 0.5); }
+        .status { font-size: 11px; color: #444; margin-top: 20px; text-transform: uppercase; letter-spacing: 1px; }
+        .glow-text { color: #f00; text-shadow: 0 0 10px #f00; letter-spacing: 5px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <img src="24841.png" alt="Nar" class="logo">
+
+    <div class="auth-container">
+        <h2 class="glow-text">SUROSINT</h2>
+        <input type="password" id="masterKey" placeholder="[ OMEGA KEY REQUIRED ]" autofocus>
+        <div class="status">Sistem Durumu: #PlanaSadıkKal | Aktif</div>
+    </div>
+
+    <script>
+        document.getElementById('masterKey').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                // Şifreyi buraya mühürledik aga
+                if(this.value === "KADIR-ALPHA-2026") {
+                    alert("ERİŞİM ONAYLANDI. HOŞ GELDİN TİTAN.");
+                    // İleride buraya ana panel linkini koyacağız
+                } else {
+                    alert("ERİŞİM REDDEDİLDİ. İHLAL KAYDEDİLDİ.");
+                    this.value = "";
+                }
+            }
+        });
+    </script>
+</body>
+</html>
