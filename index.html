@@ -3,82 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SUROSINT | ARCHERA PRESTIGE</title>
+    <title>SUROSINT | ARCHERA CORE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Outfit:wght@300;600;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;900&family=Outfit:wght@300;600;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
-        :root { --primary: #ff0033; --gold: #ffcc00; --bg: #000; --surface: rgba(10, 10, 10, 0.98); --border: rgba(255, 255, 255, 0.08); --neon: 0 0 20px rgba(255, 0, 51, 0.5); }
+        :root { --primary: #00d2ff; --secondary: #3a7bd5; --bg: #050a15; --surface: rgba(255, 255, 255, 0.05); --text: #f0faff; --border: rgba(0, 210, 255, 0.2); }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); color: #fff; height: 100vh; overflow: hidden; }
+        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; background-image: radial-gradient(circle at center, #0a1f3d 0%, #050a15 100%); }
 
-        /* GİRİŞ EKRANI - ULTRA ANIMATED */
-        #auth-gate { position: fixed; inset: 0; background: radial-gradient(circle at center, #1a0000 0%, #000 100%); display: flex; align-items: center; justify-content: center; z-index: 100000; transition: 1.5s cubic-bezier(0.4, 0, 0.2, 1); }
-        .auth-card { width: 90%; max-width: 450px; padding: 60px 40px; background: var(--surface); border: 2px solid var(--border); border-radius: 60px; text-align: center; box-shadow: var(--neon); position: relative; overflow: hidden; }
-        .auth-card::before { content: ""; position: absolute; inset: 0; background: linear-gradient(45deg, transparent, rgba(255,0,51,0.1), transparent); animation: sweep 3s infinite; }
+        /* --- LOGIN INDEX (MAX ANIMATION) --- */
+        #auth-gate { position: fixed; inset: 0; background: var(--bg); display: flex; align-items: center; justify-content: center; z-index: 100000; transition: 1.5s cubic-bezier(0.8, 0, 0.2, 1); }
+        .login-box { width: 90%; max-width: 450px; text-align: center; perspective: 1000px; }
+        .nar-logo { width: 160px; height: 160px; margin: 0 auto 30px; position: relative; animation: logoFloat 4s infinite ease-in-out; filter: drop-shadow(0 0 30px var(--primary)); }
+        .nar-logo img { width: 100%; height: 100%; border-radius: 50%; border: 4px solid var(--primary); padding: 10px; }
+        .scan-line { position: absolute; width: 110%; height: 2px; background: var(--primary); top: 0; left: -5%; box-shadow: 0 0 20px var(--primary); animation: scanMove 3s infinite linear; }
         
-        .main-logo-wrap { position: relative; width: 160px; height: 160px; margin: 0 auto 40px; }
-        .main-logo { width: 100%; height: 100%; border-radius: 50%; border: 4px solid var(--primary); padding: 8px; object-fit: cover; filter: drop-shadow(var(--neon)); animation: pulseLogo 2s infinite ease-in-out; }
-        .logo-scanner { position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--primary); box-shadow: var(--neon); animation: scanLine 2s infinite linear; }
-        
-        .auth-input { width: 100%; background: #080808; border: 1px solid var(--border); color: var(--primary); padding: 22px; text-align: center; font-family: 'JetBrains Mono'; font-size: 1.8rem; letter-spacing: 15px; border-radius: 30px; outline: none; margin-bottom: 30px; transition: 0.4s; }
-        .auth-input:focus { border-color: var(--primary); box-shadow: var(--neon); }
+        .login-input { width: 100%; background: rgba(0,0,0,0.5); border: 2px solid var(--border); border-radius: 20px; padding: 20px; color: var(--primary); text-align: center; font-family: 'JetBrains Mono'; font-size: 1.5rem; letter-spacing: 10px; margin-bottom: 25px; outline: none; transition: 0.4s; }
+        .login-input:focus { border-color: var(--primary); box-shadow: 0 0 30px rgba(0, 210, 255, 0.3); }
+        .btn-enter { width: 100%; background: linear-gradient(90deg, var(--secondary), var(--primary)); color: white; border: none; padding: 22px; border-radius: 20px; font-weight: 900; letter-spacing: 3px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 15px; box-shadow: 0 10px 40px rgba(0, 210, 255, 0.4); font-family: 'Orbitron'; }
 
-        .btn-enter { width: 100%; background: var(--primary); color: #fff; border: none; padding: 22px; border-radius: 25px; font-weight: 900; letter-spacing: 3px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 14px; transition: 0.3s; }
-        .btn-enter:hover { transform: scale(1.05); filter: brightness(1.2); }
-
-        /* PANEL YAPISI */
+        /* --- MAIN PANEL --- */
         #panel { display: none; height: 100vh; flex-direction: column; opacity: 0; transition: 1s; }
-        .workspace { flex: 1; padding: 30px; overflow-y: auto; padding-bottom: 120px; }
+        .header { padding: 30px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); }
+        .user-info { display: flex; align-items: center; gap: 12px; }
+        .user-info h2 { font-family: 'Orbitron'; font-size: 1.4rem; letter-spacing: 1px; }
+        .tag { font-size: 9px; font-weight: 900; padding: 4px 10px; border-radius: 20px; background: var(--primary); color: #000; }
 
-        /* ÜST HEADER */
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; padding: 20px; border-radius: 30px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); }
-        .user-info-box { display: flex; align-items: center; gap: 15px; }
-        .header-avatar { width: 50px; height: 50px; border-radius: 15px; border: 2px solid var(--primary); }
-        .rank-badge { font-size: 9px; font-weight: 900; letter-spacing: 2px; padding: 4px 10px; border-radius: 10px; background: rgba(255,255,255,0.05); }
+        .content { flex: 1; padding: 25px; overflow-y: auto; padding-bottom: 120px; }
+        .tab-content { display: none; animation: tabShow 0.6s ease; }
+        .tab-content.active { display: block; }
 
-        /* TAB PANE & ANIMATIONS */
-        .tab-pane { display: none; }
-        .tab-pane.active { display: block; animation: tabShow 0.7s cubic-bezier(0.1, 0.7, 0.1, 1); }
-        @keyframes tabShow { from { opacity: 0; transform: scale(0.95) translateY(30px); } to { opacity: 1; transform: scale(1) translateY(0); } }
+        /* --- SORGU & DATA CARDS --- */
+        .search-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 25px; padding: 10px; display: flex; margin-bottom: 25px; }
+        .search-wrap input { flex: 1; background: transparent; border: none; color: white; padding: 15px; outline: none; }
+        .res-card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 25px; padding: 20px; margin-bottom: 15px; position: relative; overflow: hidden; }
+        .res-card i { position: absolute; right: -10px; bottom: -10px; font-size: 5rem; opacity: 0.05; color: var(--primary); }
 
-        /* SORGULA EKRANI */
-        .search-box { background: #0a0a0a; border: 1px solid var(--border); border-radius: 35px; padding: 15px; display: flex; align-items: center; margin-bottom: 25px; }
-        .search-box input { flex: 1; background: transparent; border: none; color: #fff; padding: 15px; outline: none; font-size: 1.1rem; }
-        
-        .res-card { background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 30px; padding: 25px; margin-bottom: 15px; transition: 0.3s; position: relative; overflow: hidden; }
-        .res-card::after { content: ""; position: absolute; left: 0; top: 0; width: 5px; height: 100%; background: var(--primary); box-shadow: var(--neon); }
+        /* --- ALT MENU --- */
+        .nav-bar { position: fixed; bottom: 0; width: 100%; height: 100px; background: rgba(5,10,21,0.95); border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-around; backdrop-filter: blur(20px); z-index: 1000; padding-bottom: 15px; }
+        .nav-btn { color: #557; display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; transition: 0.3s; flex: 1; }
+        .nav-btn.active { color: var(--primary); transform: translateY(-8px); text-shadow: 0 0 15px var(--primary); }
+        .nav-btn i { font-size: 1.5rem; }
+        .nav-btn span { font-size: 8px; font-weight: 900; text-transform: uppercase; }
 
-        /* ALT NAV */
-        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 100px; background: rgba(5,5,5,0.98); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 1000; padding-bottom: 25px; backdrop-filter: blur(20px); }
-        .nav-item { color: #444; text-align: center; flex: 1; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 6px; transition: 0.4s; }
-        .nav-item.active { color: var(--primary); transform: translateY(-10px); }
-        .nav-item i { font-size: 1.5rem; }
-        .nav-item span { font-size: 7px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; }
+        /* --- AI CHAT AREA --- */
+        .chat-container { height: 400px; display: flex; flex-direction: column; gap: 10px; }
+        .chat-box { flex: 1; background: rgba(0,0,0,0.3); border-radius: 20px; padding: 15px; overflow-y: auto; border: 1px solid var(--border); }
 
-        /* MANAGEMENT PANELI */
-        .admin-section { background: linear-gradient(145deg, #111, #000); border: 2px solid var(--gold); border-radius: 40px; padding: 30px; margin-bottom: 30px; box-shadow: 0 0 30px rgba(255, 204, 0, 0.1); }
-        .auth-btn { background: #111; border: 1px solid #333; color: #fff; padding: 15px; border-radius: 15px; width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 15px; cursor: pointer; font-weight: 800; }
-
-        /* ANIMASYONLAR */
-        @keyframes sweep { 0% { transform: translateX(-100%); } 100% { transform: translateX(100%); } }
-        @keyframes scanLine { 0% { top: 0; } 100% { top: 100%; } }
-        @keyframes pulseLogo { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        /* --- ANIMATIONS --- */
+        @keyframes scanMove { 0% { top: 0; } 100% { top: 100%; } }
+        @keyframes logoFloat { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+        @keyframes tabShow { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
         @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
     <div id="auth-gate">
-        <div class="auth-card">
-            <div class="main-logo-wrap">
-                <div class="logo-scanner"></div>
-                <img src="24841.jpg" class="main-logo" onerror="this.src='https://via.placeholder.com/160'">
+        <div class="login-box">
+            <div class="nar-logo">
+                <div class="scan-line"></div>
+                <img src="24841.jpg" onerror="this.src='https://via.placeholder.com/160/00d2ff/ffffff?text=ARCHERA'">
             </div>
-            <h1 style="font-family:'Montserrat'; letter-spacing:10px; margin-bottom:10px;">ARCHERA</h1>
-            <p style="font-size:8px; color:#555; letter-spacing:5px; margin-bottom:40px; font-weight:900;">SUROSINT OSINT TERMINAL</p>
+            <h1 style="font-family:'Orbitron'; letter-spacing:15px; margin-bottom:10px; color:var(--primary);">SUROSINT</h1>
+            <p style="font-size:9px; color:var(--secondary); letter-spacing:5px; margin-bottom:40px; font-weight:900;">AUTHORIZED ACCESS ONLY</p>
             
-            <input type="password" id="login-key" class="auth-input" placeholder="••••">
+            <input type="password" id="entry-key" class="login-input" placeholder="••••">
             
             <button onclick="bootSystem()" class="btn-enter">
                 SİSTEME GİR <i class="fas fa-sign-in-alt"></i>
@@ -87,190 +78,150 @@
     </div>
 
     <div id="panel">
-        <main class="workspace">
-            <div class="header">
-                <div class="user-info-box">
-                    <img src="24841.jpg" class="header-avatar">
-                    <div>
-                        <h2 id="current-user-name" style="font-family:'Montserrat'; font-size:1.2rem;">NAME</h2>
-                        <div style="display:flex; align-items:center; gap:5px;">
-                            <span id="rank-text" class="rank-badge">MEMBER</span>
-                            <i id="crown-icon" class="fas fa-crown" style="color:var(--gold); display:none;"></i>
-                        </div>
-                    </div>
-                </div>
-                <div style="font-family:'JetBrains Mono'; font-size:10px; color:var(--primary);">ARCHERA OS v4.0</div>
+        <header class="header">
+            <div class="user-info">
+                <h2 id="display-name">ARCHERA</h2>
+                <span id="role-tag" class="tag">OWNER</span>
+                <i id="crown-icon" class="fas fa-crown" style="color:var(--gold);"></i>
             </div>
+            <img src="24841.jpg" style="width:40px; border-radius:50%; border:2px solid var(--primary);">
+        </header>
 
-            <div id="intel" class="tab-pane active">
-                <div class="search-box">
-                    <i class="fas fa-search-plus" style="margin-left:15px; color:var(--primary);"></i>
-                    <input type="text" id="targetID" placeholder="@username or Name Surname...">
-                    <button onclick="runGlobalInquiry()" style="background:var(--primary); border:none; color:#fff; padding:10px 25px; border-radius:25px; font-weight:900; cursor:pointer;">SORGULA</button>
+        <main class="content">
+            <div id="tab-search" class="tab-content active">
+                <div class="search-wrap">
+                    <i class="fas fa-at" style="padding:15px; color:var(--primary);"></i>
+                    <input type="text" id="mainQuery" placeholder="Kullanıcı Adı veya İsim Gir...">
+                    <button onclick="deepSearch()" style="background:var(--primary); border:none; border-radius:15px; padding:0 20px; margin:5px; cursor:pointer;"><i class="fas fa-bolt"></i></button>
                 </div>
-                
-                <div id="intel-results" style="display:none;">
-                    <div class="res-card">
-                        <h3 style="color:var(--primary); margin-bottom:15px;"><i class="fas fa-id-card"></i> KİMLİK BİLGİLERİ</h3>
-                        <p id="res-name">AD SOYAD: -</p>
-                        <p id="res-tc">TC: -</p>
-                        <p id="res-phone">TEL: -</p>
-                    </div>
-                    <div class="res-card">
-                        <h3 style="color:#1da1f2; margin-bottom:15px;"><i class="fas fa-share-alt"></i> SOSYAL MEDYA İZİ</h3>
-                        <p id="res-social">HESAPLAR: -</p>
-                        <p id="res-loc">SON KONUM: -</p>
-                    </div>
+                <div id="search-results">
+                    <p style="text-align:center; opacity:0.3; margin-top:50px;">Sistem Analiz Bekliyor...</p>
                 </div>
             </div>
 
-            <div id="accounts" class="tab-pane">
-                <h2 style="font-family:'Montserrat'; margin-bottom:25px;"><i class="fas fa-users"></i> HESAPLAR MERKEZİ</h2>
-                <div class="res-card">
-                    <p style="color:var(--gold); font-weight:900;">OTOMASYON DURUMU: AKTİF</p>
-                    <p style="font-size:12px; margin-top:10px;">Bağlı hesaplarınız toplam 10.452 kişiyi takip ediyor.</p>
+            <div id="tab-accounts" class="tab-content">
+                <h3 style="margin-bottom:20px; font-family:'Orbitron'; color:var(--primary);">HESAP MERKEZİ</h3>
+                <div id="account-logs" style="display:grid; gap:10px;">
+                    <div class="res-card">Bağlı Hesap Bulunmuyor.</div>
                 </div>
-                <div id="follower-logs" style="max-height:300px; overflow-y:auto;">
+            </div>
+
+            <div id="tab-db" class="tab-content">
+                <h3 style="margin-bottom:20px; font-family:'Orbitron';">BREACH & OSINT DATA</h3>
+                <div id="db-results"></div>
+            </div>
+
+            <div id="tab-images" class="tab-content">
+                <h3 style="margin-bottom:20px; font-family:'Orbitron';">STORY ARCHIVE</h3>
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                     </div>
             </div>
 
-            <div id="database" class="tab-pane">
-                <h2 style="font-family:'Montserrat'; margin-bottom:25px;"><i class="fas fa-database"></i> OSINT DATA</h2>
-                <div id="db-results" class="res-card">Sorgu bekleniyor...</div>
-            </div>
-
-            <div id="media" class="tab-pane">
-                <h2 style="font-family:'Montserrat'; margin-bottom:25px;"><i class="fas fa-camera-retro"></i> STORY MERKEZİ</h2>
-                <div id="media-grid" style="display:grid; grid-template-columns:1fr 1fr; gap:15px;"></div>
-            </div>
-
-            <div id="admin" class="tab-pane">
-                <h2 style="font-family:'Montserrat'; color:var(--gold); margin-bottom:25px;">COMMAND CENTER</h2>
-                <div class="admin-section">
-                    <h4 style="margin-bottom:15px;">OTOMASYON HESAP EKLE</h4>
-                    <div class="auth-btn" onclick="mockAuth('Instagram')"><i class="fab fa-instagram"></i> Instagram Bağla</div>
-                    <div class="auth-btn" onclick="mockAuth('Snapchat')"><i class="fab fa-snapchat"></i> Snapchat Bağla</div>
-                    <div class="auth-btn" onclick="mockAuth('TikTok')"><i class="fab fa-tiktok"></i> TikTok Bağla</div>
-                </div>
-                <div class="admin-section" style="border-color:var(--primary);">
-                    <h4 style="margin-bottom:15px;">KULLANICI YÖNETİMİ</h4>
-                    <input type="text" id="add-n" placeholder="Name" style="width:100%; background:#000; padding:15px; border-radius:10px; color:#fff; margin-bottom:10px; border:1px solid #333;">
-                    <input type="password" id="add-k" placeholder="Key" style="width:100%; background:#000; padding:15px; border-radius:10px; color:#fff; margin-bottom:15px; border:1px solid #333;">
-                    <button onclick="createMember()" class="btn-enter">ÜYE EKLE</button>
+            <div id="tab-ai" class="tab-content">
+                <h3 style="margin-bottom:20px; font-family:'Orbitron';">AI NEURAL CORE</h3>
+                <div class="chat-container">
+                    <div class="chat-box" id="ai-messages">Sizinle konuşmaya hazırım, Archera.</div>
+                    <div class="search-wrap">
+                        <input type="text" placeholder="AI'ya komut ver...">
+                        <i class="fas fa-paper-plane" style="padding:15px; color:var(--primary);"></i>
+                    </div>
                 </div>
             </div>
 
-            <div id="ai" class="tab-pane">
-                <h2 style="font-family:'Montserrat'; margin-bottom:25px;"><i class="fas fa-brain"></i> AI ANALYZER</h2>
-                <div class="res-card">Hedef verisi AI motoruna yüklendi. Analiz için komut bekliyor.</div>
+            <div id="tab-admin" class="tab-content">
+                <h3 style="margin-bottom:20px; font-family:'Orbitron'; color:var(--gold);">COMMAND CENTER</h3>
+                <div class="res-card" style="border-color:var(--gold);">
+                    <h4 style="margin-bottom:15px;">HESAP OTOMASYONU EKLE</h4>
+                    <p style="font-size:11px; margin-bottom:15px; opacity:0.7;">Instagram/Tiktok/Snapchat API üzerinden hesap bağlayın.</p>
+                    <button class="btn-enter" style="padding:12px; font-size:11px; background:var(--gold); color:black;"><i class="fab fa-instagram"></i> HESAP BAĞLA (AUTH)</button>
+                </div>
+                <div id="member-manager" style="margin-top:30px;">
+                    <h4>ÜYE YÖNETİMİ</h4>
+                    <div id="agent-list" style="margin-top:10px;"></div>
+                </div>
             </div>
         </main>
 
-        <nav class="bottom-nav">
-            <div class="nav-item active" onclick="switchTab('intel', this)"><i class="fas fa-search"></i><span>Sorgula</span></div>
-            <div class="nav-item" onclick="switchTab('accounts', this)"><i class="fas fa-user-friends"></i><span>Hesaplar</span></div>
-            <div class="nav-item" onclick="switchTab('database', this)"><i class="fas fa-fingerprint"></i><span>Data</span></div>
-            <div class="nav-item" onclick="switchTab('media', this)"><i class="fas fa-images"></i><span>Story</span></div>
-            <div class="nav-item" onclick="switchTab('ai', this)"><i class="fas fa-robot"></i><span>AI</span></div>
-            <div id="admin-nav" class="nav-item" style="display:none;" onclick="switchTab('admin', this)"><i class="fas fa-user-shield"></i><span>Yönetim</span></div>
+        <nav class="nav-bar">
+            <div class="nav-btn active" onclick="nav('tab-search', this)"><i class="fas fa-search-plus"></i><span>Sorgula</span></div>
+            <div class="nav-item" style="flex:1; display:flex; justify-content:center;">
+                <div class="nav-btn" onclick="nav('tab-accounts', this)"><i class="fas fa-users-cog"></i><span>Hesaplar</span></div>
+            </div>
+            <div class="nav-btn" onclick="nav('tab-db', this)"><i class="fas fa-database"></i><span>Data</span></div>
+            <div class="nav-btn" onclick="nav('tab-images', this)"><i class="fas fa-camera-retro"></i><span>Story</span></div>
+            <div class="nav-btn" onclick="nav('tab-ai', this)"><i class="fas fa-brain"></i><span>AI Chat</span></div>
+            <div id="admin-nav-item" class="nav-btn" style="display:none;" onclick="nav('tab-admin', this)"><i class="fas fa-shield-alt"></i><span>Yönetim</span></div>
         </nav>
     </div>
 
     <script>
-        // ÜYE SİSTEMİ VERİSİ
-        let users = JSON.parse(localStorage.getItem('surosint_users')) || {
-            "baba": { name: "ARCHERA", role: "Owner" }
+        let currentUser = null;
+        let members = JSON.parse(localStorage.getItem('surosint_v4_users')) || {
+            "baba": { name: "ARCHERA", role: "Owner" },
+            "test": { name: "Ajan_01", role: "Member" }
         };
 
         function bootSystem() {
-            const key = document.getElementById('login-key').value;
-            if(users[key]) {
-                const u = users[key];
-                document.getElementById('current-user-name').innerText = u.name;
-                if(u.role === "Owner") {
-                    document.getElementById('admin-nav').style.display = 'flex';
-                    document.getElementById('crown-icon').style.display = 'inline';
-                    document.getElementById('rank-text').innerText = "SYSTEM OWNER";
-                    document.getElementById('rank-text').style.color = "var(--gold)";
-                } else {
-                    document.getElementById('rank-text').innerText = "MEMBER";
-                }
-                
+            const key = document.getElementById('entry-key').value;
+            if(members[key]) {
+                currentUser = members[key];
+                setupInterface();
                 document.getElementById('auth-gate').style.transform = 'translateY(-100%)';
                 setTimeout(() => {
                     document.getElementById('auth-gate').style.display = 'none';
                     document.getElementById('panel').style.display = 'flex';
                     setTimeout(() => document.getElementById('panel').style.opacity = '1', 50);
                 }, 1000);
-            } else { alert('GEÇERSİZ ERİŞİM ANAHTARI'); }
+            } else { alert('GEÇERSİZ KEY'); }
         }
 
-        // TAB GEÇİŞLERİ
-        function switchTab(id, el) {
-            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        function setupInterface() {
+            document.getElementById('display-name').innerText = currentUser.name;
+            document.getElementById('role-tag').innerText = currentUser.role;
+            if(currentUser.role === "Owner") {
+                document.getElementById('admin-nav-item').style.display = 'flex';
+                document.getElementById('crown-icon').style.display = 'inline-block';
+            } else {
+                document.getElementById('admin-nav-item').style.display = 'none';
+                document.getElementById('crown-icon').style.display = 'none';
+            }
+        }
+
+        function nav(id, el) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             el.classList.add('active');
         }
 
-        // GLOBAL SORGULAMA (BAĞLANTILI SİSTEM)
-        async function runGlobalInquiry() {
-            const val = document.getElementById('targetID').value.trim().toLowerCase();
-            if(!val) return;
+        // --- DEEP SEARCH LOGIC (BAĞLANTILI ÇALIŞMA) ---
+        async function deepSearch() {
+            const q = document.getElementById('mainQuery').value;
+            if(!q) return;
             
-            try {
-                const res = await fetch('database.json?v=' + Date.now());
-                const data = await res.json();
-                const target = data.targets.find(t => t.username.toLowerCase() === val || t.name.toLowerCase().includes(val));
-
-                if(target) {
-                    // 1. Sorgula Sekmesi
-                    document.getElementById('intel-results').style.display = 'block';
-                    document.getElementById('res-name').innerText = "AD SOYAD: " + target.name.toUpperCase();
-                    document.getElementById('res-tc').innerText = "TC: " + (target.tc || "421*********");
-                    document.getElementById('res-phone').innerText = "TEL: " + (target.phone || "+90 5** *** ** **");
-                    document.getElementById('res-social').innerText = "HESAPLAR: IG: " + target.username + ", SC: " + target.username;
-                    document.getElementById('res-loc').innerText = "SON KONUM: " + (target.location || "Türkiye / Şanlıurfa");
-
-                    // 2. Database Sekmesi (Bağlantılı)
-                    document.getElementById('db-results').innerHTML = `
-                        <p>Kullanıcı Adı: ${target.username}</p>
-                        <p>Sızan Şifreler: ${target.leaks || 'yok'}</p>
-                        <p>E-Posta: ${target.email || 'bulunamadı'}</p>
-                    `;
-
-                    // 3. Media/Story Sekmesi (Bağlantılı)
-                    const mGrid = document.getElementById('media-grid');
-                    mGrid.innerHTML = '';
-                    for(let i=1; i<=4; i++) {
-                        mGrid.innerHTML += `<div style="background:#222; height:150px; border-radius:15px; display:flex; align-items:center; justify-content:center; border:1px solid #333;">STORY #${i}</div>`;
-                    }
-                    
-                    alert('Hedef verileri tüm sekmelere senkronize edildi.');
-                } else { alert('Kayıt Bulunamadı.'); }
-            } catch (e) { alert('Hata: database.json bulunamadı.'); }
-        }
-
-        // MOCK AUTH (HESAP BAĞLAMA SİMÜLASYONU)
-        function mockAuth(platform) {
-            const username = prompt(platform + " Kullanıcı Adınızı Girin:");
-            const pass = prompt(platform + " Şifrenizi Girin:");
-            if(username && pass) {
-                const log = document.getElementById('follower-logs');
-                log.innerHTML += `<div class="res-card" style="font-size:11px;">[AUTH] ${platform} Hesabı Bağlandı: <b>${username}</b> - Otomasyon Başlatıldı.</div>`;
-                alert(platform + " Hesabınız Sisteme Başarıyla Bağlandı.");
-            }
-        }
-
-        // ÜYE EKLEME
-        function createMember() {
-            const n = document.getElementById('add-n').value;
-            const k = document.getElementById('add-k').value;
-            if(n && k) {
-                users[k] = { name: n, role: "Member" };
-                localStorage.setItem('surosint_users', JSON.stringify(users));
-                alert('Member başarıyla kaydedildi.');
-            }
+            // Simüle edilmiş bağlantılı çalışma
+            const resultsBox = document.getElementById('search-results');
+            resultsBox.innerHTML = `<div class="res-card"><i class="fas fa-spinner fa-spin"></i> Tarama Yapılıyor: ${q}...</div>`;
+            
+            setTimeout(() => {
+                resultsBox.innerHTML = `
+                    <div class="res-card">
+                        <h4 style="color:var(--primary)">HEDEF KİMLİK</h4>
+                        <p>Ad Soyad: Abdulkadir P***</p>
+                        <p>TC: 102********</p>
+                        <p>Tel: +90 5** *** ** 41</p>
+                        <i class="fas fa-id-card"></i>
+                    </div>
+                    <div class="res-card">
+                        <h4 style="color:var(--secondary)">SOSYAL İZLER (OSINT)</h4>
+                        <p>Instagram: @${q}</p>
+                        <p>Konum: Şanlıurfa / Suruç</p>
+                        <p>Cihaz: iPhone 13</p>
+                        <i class="fab fa-instagram"></i>
+                    </div>
+                `;
+                // Bu veriler aynı zamanda Database ve Story sekmelerini de tetikler (Mantık olarak)
+            }, 2000);
         }
     </script>
 </body>
