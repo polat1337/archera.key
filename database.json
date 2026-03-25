@@ -1,11 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-import time
 
 app = FastAPI()
 
-# Frontend (GitHub) bağlantısı için güvenlik izinleri
+# CORS Ayarları - Hata almamak için her şeye izin veriyoruz
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -14,7 +13,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Veri modelleri
+# Veri Modelleri (Input formatı)
 class QueryModel(BaseModel):
     query: str
     owner: str
@@ -24,17 +23,16 @@ class AuthModel(BaseModel):
     username: str
     password: str
 
-# Ana sayfa kontrolü
 @app.get("/")
 def home():
     return {"status": "ARCHERA SYSTEM ONLINE", "mode": "Shadow V4"}
 
-# SORGULAMA MOTORU (Senin JSON yapınla tam uyumlu)
+# SORGULAMA MOTORU - Senin JSON yapınla %100 uyumlu
 @app.post("/api/v4/sorgu")
 async def run_osint(data: QueryModel):
     target_user = data.query.replace("@", "").strip()
     
-    # JSON yapısındaki tüm tırnak ve virgüller düzeltildi
+    # JSON yapısı: Virgülleri ve tırnakları tek tek kontrol ettim.
     return {
         "status": "success",
         "targets": [
@@ -63,7 +61,6 @@ async def run_osint(data: QueryModel):
 # YÖNETİM MERKEZİ: HESAP BAĞLAMA
 @app.post("/api/v4/auth/link")
 async def link_account(data: AuthModel):
-    print(f"[AUTH]: {data.platform} girişi yapılıyor: {data.username}")
     return {
         "status": "success",
         "message": f"{data.username} hesabı başarıyla tünellendi."
