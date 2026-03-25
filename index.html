@@ -3,87 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>SUROSINT | ENTERPRISE TERMINAL</title>
+    <title>SUROSINT | PRESTIGE TERMINAL</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@800&family=Outfit:wght@300;600;900&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;600;900&family=Montserrat:wght@700;800&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --primary: #e63946;
-            --bg-dark: #000000;
-            --glass: rgba(15, 15, 15, 0.9);
-            --border-white: rgba(255, 255, 255, 0.1);
-            --rounding: 30px; /* İstediğin o yuvarlak hatlar */
+            --primary: #ff3b3b;
+            --bg: #000000;
+            --card-bg: rgba(20, 20, 20, 0.95);
+            --border: rgba(255, 255, 255, 0.1);
+            --radius: 20px; /* İstediğin o yuvarlak köşeler */
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit', sans-serif; }
-        body { background: var(--bg-dark); color: #fff; height: 100vh; overflow: hidden; }
+        body { background: var(--bg); color: #fff; height: 100vh; overflow: hidden; }
 
-        /* KURUMSAL GİRİŞ PANELİ */
+        /* KURUMSAL GİRİŞ EKRANI */
         #auth-gate { 
-            position: fixed; inset: 0; 
-            background: radial-gradient(circle at center, #150000 0%, #000 100%);
+            position: fixed; inset: 0; background: radial-gradient(circle at center, #1a0505 0%, #000 100%);
             display: flex; align-items: center; justify-content: center; z-index: 100000;
-            transition: 1s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: 0.8s ease-in-out;
         }
         
         .auth-card { 
-            width: 90%; max-width: 420px; padding: 60px 40px; 
-            background: var(--glass); border: 1px solid var(--border-white);
-            border-radius: 40px; /* Ultra yuvarlak ve kurumsal */
-            text-align: center; backdrop-filter: blur(25px);
-            box-shadow: 0 40px 80px rgba(0,0,0,0.8);
-            animation: cardEntrance 0.8s ease-out;
-        }
-
-        @keyframes cardEntrance {
-            from { opacity: 0; transform: scale(0.9) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+            width: 90%; max-width: 400px; padding: 50px; 
+            background: var(--card-bg); border: 1px solid var(--border);
+            border-radius: 35px; /* Ultra yuvarlak */
+            text-align: center; backdrop-filter: blur(20px);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
         .auth-logo { 
-            width: 100px; height: 100px; border-radius: 50%; border: 2px solid var(--primary);
-            padding: 5px; margin-bottom: 30px; box-shadow: 0 0 30px rgba(230, 57, 70, 0.2);
-            transition: 0.5s ease;
+            width: 85px; height: 85px; border-radius: 50%; border: 2px solid var(--primary);
+            padding: 5px; margin-bottom: 25px; box-shadow: 0 0 20px rgba(255,59,59,0.2);
         }
 
-        .auth-logo:hover { transform: rotate(15deg) scale(1.05); }
+        .auth-title { font-family: 'Montserrat'; font-weight: 800; font-size: 1.5rem; letter-spacing: 2px; margin-bottom: 10px; }
 
-        .auth-title { font-family: 'Montserrat'; font-weight: 800; font-size: 1.6rem; letter-spacing: 4px; margin-bottom: 10px; color: #fff; }
-        .auth-subtitle { font-size: 10px; color: #555; letter-spacing: 5px; margin-bottom: 40px; text-transform: uppercase; font-weight: 600; }
-
-        /* YUVARLAK KURUMSAL INPUT */
+        /* GİRİŞ KUTUSU (YUVRALAK) */
         .auth-input { 
-            width: 100%; background: rgba(255,255,255,0.03); border: 1.5px solid var(--border-white);
-            color: var(--primary); padding: 22px; text-align: center; font-family: 'JetBrains Mono';
-            font-size: 1.6rem; letter-spacing: 10px; border-radius: 25px; /* Tam yuvarlak */
-            outline: none; margin-bottom: 30px; transition: 0.4s;
+            width: 100%; background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+            color: var(--primary); padding: 20px; text-align: center; font-family: 'JetBrains Mono';
+            font-size: 1.5rem; letter-spacing: 12px; border-radius: 22px; /* Tam yuvarlak */
+            outline: none; margin-bottom: 30px; transition: 0.3s;
         }
-        .auth-input:focus { border-color: var(--primary); background: rgba(255,255,255,0.06); box-shadow: 0 0 25px rgba(230, 57, 70, 0.2); }
+        .auth-input:focus { border-color: var(--primary); background: rgba(255,255,255,0.08); box-shadow: 0 0 20px rgba(255,59,59,0.15); }
 
-        /* MODERN KURUMSAL ACCESS BUTONU */
-        .btn-corporate { 
-            width: 100%; height: 65px; background: var(--primary); color: #fff; border: none;
-            font-weight: 800; text-transform: uppercase; letter-spacing: 3px; border-radius: 25px;
-            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 15px;
-            transition: 0.4s; position: relative; overflow: hidden;
+        /* KURUMSAL ACCESS BUTONU */
+        .btn-access { 
+            width: 100%; background: var(--primary); color: #fff; border: none; padding: 18px;
+            font-weight: 800; text-transform: uppercase; letter-spacing: 2px; border-radius: 22px;
+            cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px;
+            transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        
-        .btn-corporate i { font-size: 1.2rem; }
-        .btn-corporate:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(230, 57, 70, 0.4); filter: brightness(1.1); }
-        .btn-corporate:active { transform: translateY(0); }
+        .btn-access:hover { transform: scale(1.03); box-shadow: 0 10px 25px rgba(255,59,59,0.4); }
 
-        /* ANA PANEL (GİZLİ) */
-        #panel { display: none; height: 100vh; grid-template-columns: 280px 1fr; opacity: 0; }
-        
-        /* TEST VERSİYON ETİKETİ (SİTENİN GÜNCELLENDİĞİNİ ANLAMAN İÇİN) */
-        .version-tag { position: fixed; bottom: 10px; right: 20px; font-size: 9px; color: #333; pointer-events: none; }
+        /* PANEL */
+        #panel { display: none; height: 100vh; grid-template-columns: 280px 1fr; opacity: 0; transition: 1s; }
+        .sidebar { background: #080808; border-right: 1px solid var(--border); display: flex; flex-direction: column; }
+        .sidebar-header { padding: 40px; font-weight: 800; color: var(--primary); display: flex; align-items: center; gap: 15px; border-bottom: 1px solid var(--border); }
+        .nav-item { padding: 20px 40px; color: #555; cursor: pointer; display: flex; align-items: center; gap: 15px; font-size: 13px; font-weight: 600; transition: 0.3s; }
+        .nav-item.active { color: #fff; background: rgba(255,59,59,0.05); border-left: 4px solid var(--primary); }
 
-        /* MOBİL UYUMLULUK */
+        .workspace { padding: 60px; overflow-y: auto; }
+        .tab-content { display: none; animation: fadeIn 0.5s ease; }
+        .tab-content.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .card { background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: var(--radius); padding: 30px; margin-top: 20px; }
+        .search-box { background: rgba(255,255,255,0.05); border-radius: 15px; display: flex; padding: 5px; margin-bottom: 40px; border: 1px solid var(--border); }
+        .search-box input { background: transparent; border: none; color: #fff; padding: 15px 20px; flex-grow: 1; outline: none; }
+
         @media (max-width: 900px) {
             #panel { grid-template-columns: 1fr; }
-            .auth-card { padding: 50px 30px; }
-            .workspace { padding: 40px 20px; }
+            .sidebar { position: fixed; bottom: 0; width: 100%; height: 75px; flex-direction: row; z-index: 1000; }
+            .sidebar-header { display: none; }
+            .nav-item { flex-direction: column; font-size: 9px; flex-grow: 1; padding: 10px; border-left: none; border-top: 3px solid transparent; }
+            .nav-item.active { border-top-color: var(--primary); }
+            .workspace { padding: 30px; padding-bottom: 100px; }
         }
     </style>
 </head>
@@ -91,49 +89,80 @@
 
     <div id="auth-gate">
         <div class="auth-card">
-            <img src="24841.jpg" class="auth-logo" onerror="this.src='https://via.placeholder.com/100?text=LOGO'">
+            <img src="24841.jpg" class="auth-logo">
             <div class="auth-title">SUROSINT</div>
-            <p class="auth-subtitle">Operational Intelligence Center</p>
+            <p style="font-size: 9px; color: #555; letter-spacing: 3px; margin-bottom: 35px; text-transform: uppercase;">Enterprise Intelligence System</p>
             
             <input type="password" id="access-key" class="auth-input" placeholder="••••">
             
-            <button onclick="unlockSystem()" class="btn-corporate">
-                <i class="fas fa-shield-halved"></i>
-                <span>Sistemi Doğrula</span>
+            <button onclick="unlock()" class="btn-access">
+                <i class="fas fa-fingerprint"></i>
+                <span>Kimlik Doğrula</span>
             </button>
         </div>
     </div>
 
     <div id="panel">
-        <div style="padding: 100px; text-align: center; width: 100vw;">
-            <h1 style="font-family:'Montserrat'; font-size: 3rem;">SİSTEM AKTİF</h1>
-            <p style="letter-spacing: 5px; color: var(--primary);">HOŞ GELDİN REİS</p>
-            <button onclick="location.reload()" style="margin-top:20px; background:none; border:1px solid #333; color:#333; padding:10px; border-radius:20px; cursor:pointer;">Sistemi Yenile</button>
-        </div>
+        <aside class="sidebar">
+            <div class="sidebar-header"><img src="24841.jpg" style="width:30px; border-radius:50%;"> SUROSINT</div>
+            <div class="nav-list">
+                <div class="nav-item active" onclick="showTab('intel', this)"><i class="fas fa-search"></i> ANALİZ</div>
+                <div class="nav-item" onclick="showTab('leak', this)"><i class="fas fa-database"></i> VERİLER</div>
+                <div class="nav-item" onclick="showTab('vault', this)"><i class="fas fa-folder-open"></i> ARŞİV</div>
+                <div class="nav-item" onclick="showTab('list', this)"><i class="fas fa-plus-circle"></i> LİSTE</div>
+            </div>
+        </aside>
+        <main class="workspace">
+            <div id="intel" class="tab-content active">
+                <h1 style="font-size: 2.5rem; font-weight: 900; margin-bottom: 10px;">TERMİNAL</h1>
+                <p style="color:var(--primary); font-size: 10px; font-weight: 800; letter-spacing: 5px; margin-bottom: 40px;">SECURE DATA CLEARANCE</p>
+                <div class="search-box">
+                    <input type="text" id="masterSearch" placeholder="Hedef tanımlayın...">
+                    <button onclick="globalInquiry()" class="btn-access" style="width: auto; padding: 0 30px; border-radius: 12px;">Sorgula</button>
+                </div>
+                <div id="intel-results" style="display:none;" class="card">
+                    <div id="val-name" style="font-size: 20px; font-weight: 800; margin-bottom: 10px;"></div>
+                    <div id="val-loc" style="color: #888;"></div>
+                </div>
+            </div>
+            </main>
     </div>
 
-    <div class="version-tag">Build: 2026.03.25-V1.5 (PRO)</div>
-
     <script>
-        function unlockSystem() {
-            const key = document.getElementById('access-key').value;
-            if(key === 'babapro') {
+        function unlock() {
+            if(document.getElementById('access-key').value === 'baba') {
                 const gate = document.getElementById('auth-gate');
                 gate.style.opacity = '0';
-                gate.style.transform = 'scale(1.1)';
                 setTimeout(() => {
                     gate.style.display = 'none';
-                    document.getElementById('panel').style.display = 'block';
+                    document.getElementById('panel').style.display = 'grid';
                     setTimeout(() => document.getElementById('panel').style.opacity = '1', 50);
-                }, 1000);
-            } else {
-                alert('ERİŞİM REDDEDİLDİ: Geçersiz Kimlik Bilgisi.');
-                document.getElementById('access-key').value = '';
-            }
+                }, 800);
+            } else { alert('Hatalı Şifre.'); }
         }
-        
-        // Önbelleği temizlemek için küçük bir hile
-        console.log("Terminal Ver. 1.5 Loaded.");
+
+        function showTab(id, el) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            el.classList.add('active');
+        }
+
+        async function globalInquiry() {
+            const query = document.getElementById('masterSearch').value.trim().toLowerCase();
+            if(!query) return;
+            try {
+                const response = await fetch('database.json?cache=' + Date.now());
+                const data = await response.json();
+                const target = data.targets.find(t => t.username.toLowerCase() === query);
+                if(target) {
+                    document.getElementById('intel-results').style.display = 'block';
+                    document.getElementById('val-name').innerText = target.name.toUpperCase();
+                    document.getElementById('val-loc').innerText = target.location;
+                    alert("Veriler Senkronize Edildi.");
+                } else { alert("Hedef Kaydı Yok."); }
+            } catch (e) { alert("Bağlantı Hatası."); }
+        }
     </script>
 </body>
 </html>
