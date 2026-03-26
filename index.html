@@ -1,183 +1,252 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA | INTEL CORE</title>
-    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        /* --- SMM PANEL RENK PALETİ (CSS DEVRİMİ) --- */
-        :root {
-            --primary: #6c5ce7; /* SMM Moru */
-            --secondary: #0984e3; /* SMM Mavisi */
-            --bg-dark: #090a10;
-            --card-bg: #141622;
-            --text-main: #ffffff;
-            --text-muted: #636e72;
-            --border: rgba(108, 92, 231, 0.15); /* Morumsu Sınır */
-            --glow: 0 0 15px rgba(108, 92, 231, 0.3);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ARCHERA</title>
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Public Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: var(--bg-dark); color: var(--text-main); overflow: hidden; height: 100vh; }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
 
-        /* ARKA PLAN EFEKTİ */
-        .cyber-grid { position: fixed; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 50px 50px; z-index: -1; opacity: 0.2; }
+<style>
 
-        /* --- SMM STYLE GİRİŞ EKRANI --- */
-        #gatekeeper { position: fixed; inset: 0; background: var(--bg-dark); z-index: 10000; display: flex; align-items: center; justify-content: center; transition: 0.8s ease; }
-        .gate-card { 
-            width: 90%; max-width: 380px; text-align: center; border: 1px solid var(--border); 
-            padding: 60px 30px; border-radius: 16px; background: var(--card-bg); box-shadow: var(--glow);
-        }
-        .gate-card h1 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: 15px; font-size: 2.5rem; margin-bottom: 10px; color: var(--primary); text-shadow: 0 0 20px var(--primary); }
-        .gate-card p { font-size: 0.6rem; color: var(--text-muted); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 40px; }
-        
-        .key-input { 
-            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); 
-            padding: 18px; color: #fff; text-align: center; font-size: 1.2rem; letter-spacing: 10px; transition: 0.3s; margin-bottom: 25px; border-radius: 8px;
-        }
-        .key-input:focus { border-color: var(--primary); box-shadow: var(--glow); }
-        
-        .enter-btn { 
-            width: 100%; padding: 18px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; 
-            font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; border: none; border-radius: 8px; transition: 0.3s;
-        }
-        .enter-btn:hover { box-shadow: 0 5px 25px rgba(108, 92, 231, 0.5); transform: translateY(-2px); }
+:root {
+    --bg: #07080c;
+    --card: rgba(255,255,255,0.04);
+    --border: rgba(255,255,255,0.08);
+    --text: #eaeaf0;
+    --muted: #8b8fa3;
+    --accent: #7c6cff;
+}
 
-        /* --- ANA DASHBOARD (SMM STRUCTURE) --- */
-        #main-shell { display: none; height: 100vh; flex-direction: column; opacity: 0; transition: 1s; }
-        header { padding: 20px; display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); border-bottom: 1px solid var(--border); sticky: top; z-index: 10; }
-        .header-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: 3px; color: var(--primary); font-size: 1.3rem; }
-        #status-indicator { font-size: 0.6rem; color: #10b981; border: 1px solid #10b981; padding: 5px 12px; border-radius: 20px; font-weight: 700; background: rgba(16, 185, 129, 0.1); }
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Inter', sans-serif;
+}
 
-        .view-port { flex: 1; overflow-y: auto; padding: 25px; padding-bottom: 110px; }
-        .module { display: none; animation: slideIn 0.4s ease; }
-        .module.active { display: block; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+body {
+    background: radial-gradient(circle at top, #11121a, #050507);
+    color: var(--text);
+    height:100vh;
+    overflow:hidden;
+}
 
-        /* SMM PANEL KARTLARI */
-        .glass-card { 
-            background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; 
-            padding: 30px; margin-bottom: 25px; position: relative; box-shadow: var(--glow);
-        }
-        .card-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; display: block; font-weight: 700; border-left: 3px solid var(--primary); padding-left: 10px; }
-        
-        .smm-input-wrapper { position: relative; margin-bottom: 20px; }
-        .smm-input-wrapper i { position: absolute; left: 15px; top: 18px; color: var(--primary); font-size: 18px; }
-        .smm-input { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 18px 18px 18px 50px; color: #fff; font-size: 0.95rem; border-radius: 8px; transition: 0.3s; }
-        .smm-input:focus { border-color: var(--secondary); box-shadow: 0 0 10px rgba(9, 132, 227, 0.2); }
+/* soft glow bg */
+body::before {
+    content:"";
+    position:fixed;
+    inset:0;
+    background:
+    radial-gradient(circle at 20% 20%, rgba(124,108,255,0.08), transparent 40%),
+    radial-gradient(circle at 80% 80%, rgba(124,108,255,0.05), transparent 40%);
+    z-index:-1;
+}
 
-        .action-btn { 
-            width: 100%; padding: 18px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; 
-            border: none; border-radius: 8px; font-weight: 800; text-transform: uppercase; cursor: pointer; letter-spacing: 1px; transition: 0.3s;
-        }
-        .action-btn:hover { box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3); transform: scale(1.01); }
+/* LOGIN */
+#gatekeeper {
+    position:fixed;
+    inset:0;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    backdrop-filter: blur(10px);
+}
 
-        /* SMM STYLE ALT NAVİGASYON (Hasarsız) */
-        nav { 
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; 
-            background: var(--card-bg); border-top: 1px solid var(--border); 
-            display: flex; justify-content: space-around; align-items: center; z-index: 1000;
-        }
-        .nav-link { color: var(--text-muted); text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; transition: 0.3s; cursor: pointer; }
-        .nav-link.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
-        .nav-link i { font-size: 1.3rem; }
-        .nav-link span { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; }
+.gate-card {
+    width:90%;
+    max-width:350px;
+    padding:50px 30px;
+    border-radius:16px;
+    background:var(--card);
+    border:1px solid var(--border);
+    backdrop-filter: blur(25px);
+    text-align:center;
+}
 
-        /* SONUÇ TABLOSU */
-        .res-grid { margin-top: 30px; display: none; }
-        .res-row { background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 15px 20px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
-        .res-row:hover { border-color: var(--secondary); background: rgba(9, 132, 227, 0.05); }
-        .res-row span { color: var(--text-muted); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
-        .res-row p { color: #fff; font-weight: 600; font-size: 0.9rem; font-family: 'Public Sans', sans-serif; }
-    </style>
+.gate-card h1 {
+    font-family:'Space Grotesk';
+    letter-spacing:6px;
+    margin-bottom:10px;
+}
+
+.gate-card p {
+    font-size:0.7rem;
+    color:var(--muted);
+    margin-bottom:30px;
+}
+
+.key-input {
+    width:100%;
+    padding:15px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:transparent;
+    color:white;
+    text-align:center;
+    margin-bottom:15px;
+}
+
+.enter-btn {
+    width:100%;
+    padding:15px;
+    border-radius:10px;
+    border:none;
+    background:var(--accent);
+    color:white;
+    cursor:pointer;
+}
+
+/* MAIN */
+#main-shell {
+    display:none;
+    height:100vh;
+    flex-direction:column;
+}
+
+header {
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+    border-bottom:1px solid var(--border);
+}
+
+.view-port {
+    flex:1;
+    padding:20px;
+    overflow:auto;
+}
+
+/* CARD */
+.glass-card {
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:16px;
+    padding:20px;
+}
+
+/* INPUT */
+.smm-input {
+    width:100%;
+    padding:15px;
+    border-radius:10px;
+    border:1px solid var(--border);
+    background:transparent;
+    color:white;
+    margin-bottom:10px;
+}
+
+/* BTN */
+.action-btn {
+    width:100%;
+    padding:15px;
+    border-radius:10px;
+    border:none;
+    background:linear-gradient(135deg,#7c6cff,#5a4fff);
+    color:white;
+}
+
+/* RESULT */
+.res-grid {
+    margin-top:20px;
+    display:none;
+}
+
+.res-row {
+    padding:10px;
+    border-bottom:1px solid var(--border);
+    font-size:0.85rem;
+}
+
+/* NAV */
+nav {
+    position:fixed;
+    bottom:0;
+    width:100%;
+    display:flex;
+    height:65px;
+    border-top:1px solid var(--border);
+    background:rgba(10,10,15,0.6);
+}
+
+.nav-link {
+    flex:1;
+    text-align:center;
+    font-size:0.7rem;
+    color:var(--muted);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.nav-link.active {
+    color:white;
+}
+
+</style>
 </head>
+
 <body>
 
-    <div class="cyber-grid"></div>
+<div id="gatekeeper">
+    <div class="gate-card">
+        <h1>ARCHERA</h1>
+        <p>INTEL CORE</p>
+        <input type="password" id="gateKey" class="key-input">
+        <button class="enter-btn" onclick="tryLogin()">GİRİŞ</button>
+    </div>
+</div>
 
-    <div id="gatekeeper">
-        <div class="gate-card">
-            <h1>ARCHERA</h1>
-            <p>INTEL CORE OPERASYON</p>
-            <input type="password" id="gateKey" class="key-input" placeholder="••••••••">
-            <button class="enter-btn" onclick="tryLogin()">SİSTEME GİRİŞ YAP</button>
-            <a href="https://www.instagram.com/pxlat" target="_blank" style="display:block; margin-top:20px; color:#444; text-decoration:none; font-size:0.7rem;">Key Talep Et @pxlat</a>
+<div id="main-shell">
+
+<header>
+    <div>ARCHERA</div>
+    <div style="font-size:0.7rem;color:#7cffc4;">ONLINE</div>
+</header>
+
+<div class="view-port">
+
+<div id="mod-sorgu" class="module active">
+    <div class="glass-card">
+        <input id="targetInput" class="smm-input" placeholder="kullanıcı adı">
+        <button class="action-btn" onclick="executeSorgu()">ANALİZ</button>
+
+        <div id="resBox" class="res-grid">
+            <div class="res-row">AD: <span id="res-name"></span></div>
         </div>
     </div>
+</div>
 
-    <div id="main-shell">
-        <header>
-            <div class="header-logo">ARCHERA</div>
-            <div id="status-indicator">ENGINE ONLINE</div>
-        </header>
+</div>
 
-        <div class="view-port">
-            
-            <div id="mod-sorgu" class="module active">
-                <div class="glass-card">
-                    <span class="card-label">Merkezi Sorgu Terminali</span>
-                    <div class="smm-input-wrapper">
-                        <i class="fas fa-search"></i>
-                        <input type="text" id="targetInput" class="smm-input" placeholder="Hedef ID / Kullanıcı Adı...">
-                    </div>
-                    <button class="action-btn" onclick="executeSorgu()">
-                        ANALİZİ BAŞLAT <i class="fas fa-bolt"></i>
-                    </button>
-                    
-                    <div id="resBox" class="res-grid">
-                        <div class="res-row"><span>AD SOYAD:</span><p id="res-name">-</p></div>
-                        <div class="res-row"><span>GSM NO:</span><p style="color:var(--secondary)">SORGULANIYOR...</p></div>
-                        <div class="res-row"><span>T.C. KİMLİK:</span><p style="color:var(--primary)">BEKLENİYOR...</p></div>
-                    </div>
-                </div>
-            </div>
+<nav>
+<div class="nav-link active" onclick="switchTab('mod-sorgu', this)">Sorgu</div>
+</nav>
 
-            <div id="mod-admin" class="module">
-                <div class="glass-card">
-                    <span class="card-label">Sistem Ayarları</span>
-                    <input type="text" class="smm-input" placeholder="Session Token">
-                    <button class="action-btn">GÜNCELLE</button>
-                </div>
-            </div>
+</div>
 
-        </div>
+<script>
 
-        <nav>
-            <div class="nav-link active" onclick="switchTab('mod-sorgu', this)"><i class="fas fa-plus-circle"></i><span>Sorgu</span></div>
-            <div class="nav-link" onclick="switchTab('mod-db', this)"><i class="fas fa-database"></i><span>Database</span></div>
-            <div class="nav-link" onclick="switchTab('mod-admin', this)"><i class="fas fa-user-shield"></i><span>Profil</span></div>
-        </nav>
-    </div>
+function tryLogin(){
+    if(document.getElementById('gateKey').value === "baba"){
+        document.getElementById('gatekeeper').style.display="none";
+        document.getElementById('main-shell').style.display="flex";
+    }
+}
 
-    <script>
-        function tryLogin() {
-            const key = document.getElementById('gateKey').value;
-            if(key === "baba") {
-                document.getElementById('gatekeeper').style.opacity = "0";
-                setTimeout(() => {
-                    document.getElementById('gatekeeper').style.display = "none";
-                    document.getElementById('main-shell').style.display = "flex";
-                    setTimeout(() => { document.getElementById('main-shell').style.opacity = "1"; }, 50);
-                }, 800);
-            } else { window.location.href = "https://www.instagram.com/pxlat"; }
-        }
+function executeSorgu(){
+    let val = document.getElementById("targetInput").value;
+    if(!val) return;
+    document.getElementById("resBox").style.display="block";
+    document.getElementById("res-name").innerText = val;
+}
 
-        function switchTab(modId, el) {
-            document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-            document.getElementById(modId).classList.add('active');
-            el.classList.add('active');
-        }
+function switchTab(id, el){
+    document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('active'));
+    el.classList.add('active');
+}
 
-        function executeSorgu() {
-            const target = document.getElementById('targetInput').value;
-            if(!target) return;
-            document.getElementById('resBox').style.display = "block";
-            document.getElementById('res-name').innerText = target;
-        }
-    </script>
+</script>
+
 </body>
 </html>
