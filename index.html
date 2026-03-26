@@ -3,251 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA | TITAN SYSTEM</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <title>ARCHERA | BLACK OPS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #4e73df; --bg: #090b10; --card: #151921; --border: rgba(255, 255, 255, 0.08); --text-dim: #858796; --danger: #e74a3b; --success: #1cc88a; --purple: #6c5ce7; --warning: #f6e58d; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
-        body { background: var(--bg); color: #fff; height: 100vh; overflow: hidden; }
+        :root { --primary: #00d2ff; --bg: #050608; --card: #0d1117; --border: #1f2937; --text: #f9fafb; --accent: #3b82f6; --danger: #ef4444; --success: #22c55e; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; cursor: crosshair; }
+        body { background: var(--bg); color: var(--text); height: 100vh; overflow: hidden; }
 
-        /* --- LOADING & LOGIN --- */
-        #gatekeeper { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; align-items: center; justify-content: center; transition: 0.8s cubic-bezier(0.4, 0, 0.2, 1); }
-        .login-card { width: 90%; max-width: 380px; background: var(--card); padding: 45px; border-radius: 24px; border: 1px solid var(--border); text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.6); }
-        .loader-ring { display: none; width: 50px; height: 50px; border: 3px solid rgba(78, 115, 223, 0.1); border-top: 3px solid var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin: 20px auto; }
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-        
-        .input-box { width: 100%; padding: 16px; background: #0b0e14; border: 1px solid var(--border); border-radius: 12px; color: #fff; text-align: center; margin-bottom: 20px; outline: none; font-size: 1.1rem; transition: 0.3s; }
-        .input-box:focus { border-color: var(--primary); box-shadow: 0 0 20px rgba(78, 115, 223, 0.2); }
-        .login-btn { width: 100%; padding: 18px; background: var(--primary); color: #fff; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; transition: 0.3s; }
-        .login-btn:hover { transform: scale(1.02); filter: brightness(1.1); }
+        /* --- BIOMETRIC LOGIN --- */
+        #gatekeeper { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; align-items: center; justify-content: center; transition: 1s ease; }
+        .scan-line { position: absolute; width: 100%; height: 2px; background: var(--primary); top: 0; box-shadow: 0 0 15px var(--primary); animation: scan 3s infinite linear; display: none; }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+        .login-box { width: 350px; text-align: center; z-index: 10; padding: 40px; border: 1px solid var(--border); background: var(--card); border-radius: 20px; }
 
-        /* --- MAIN LAYOUT --- */
+        /* --- SYSTEM LAYOUT --- */
         #main-shell { display: none; height: 100vh; flex-direction: column; opacity: 0; }
-        header { height: 70px; background: var(--card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 25px; }
-        .profile-snap { display: flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.03); padding: 5px 15px; border-radius: 30px; border: 1px solid var(--border); }
-        #top-avatar { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+        header { height: 60px; border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; background: rgba(13,17,23,0.8); backdrop-filter: blur(10px); }
+        .sys-info { display: flex; gap: 20px; font-size: 0.65rem; color: var(--primary); font-family: 'Fira Code'; }
 
-        .viewport { flex: 1; overflow-y: auto; padding: 25px; padding-bottom: 120px; }
-        .module { display: none; max-width: 900px; margin: 0 auto; }
-        .module.active { display: block; animation: slideUp 0.5s ease-out; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .viewport { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 120px; }
+        .module { display: none; }
+        .module.active { display: block; animation: glitch 0.2s ease; }
+        @keyframes glitch { from { transform: skewX(10deg); opacity: 0; } to { transform: skewX(0); opacity: 1; } }
 
-        /* --- ADMIN PANELI (ULTRA) --- */
-        .admin-card { background: var(--card); border-radius: 20px; border: 1px solid var(--border); padding: 25px; margin-bottom: 25px; position: relative; overflow: hidden; }
-        .card-label { font-size: 0.75rem; font-weight: 800; color: var(--purple); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; border-left: 3px solid var(--purple); padding-left: 10px; }
-        .smm-input { width: 100%; background: #0b0e14; border: 1px solid var(--border); padding: 14px; color: #fff; border-radius: 12px; margin-bottom: 15px; outline: none; }
-        .smm-btn { width: 100%; padding: 16px; background: var(--primary); color: #fff; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        /* --- ADMIN: COMMAND CENTER --- */
+        .grid-layout { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
+        .panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; position: relative; }
+        .panel-h { font-size: 0.7rem; font-weight: 900; color: var(--primary); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 2px; border-bottom: 1px solid var(--border); padding-bottom: 10px; display: flex; justify-content: space-between; }
+        
+        /* Resource Monitor */
+        .stat-bar { height: 6px; background: #1a1a1a; border-radius: 10px; overflow: hidden; margin: 10px 0; }
+        .stat-fill { height: 100%; background: var(--primary); width: 0%; transition: 1s; }
 
-        /* --- LOG TERMINAL (GERÇEKÇİ) --- */
-        #log-screen { background: #050505; border: 1px solid #1a1a1a; border-radius: 10px; padding: 15px; font-family: 'Fira Code', monospace; font-size: 0.7rem; height: 180px; overflow-y: auto; color: #00ff00; line-height: 1.5; margin-bottom: 15px; }
-        .log-entry { margin-bottom: 4px; border-bottom: 1px solid rgba(0,255,0,0.05); }
-        .log-time { color: #888; margin-right: 8px; }
+        /* Terminal & Logs */
+        #terminal { background: #000; padding: 10px; font-family: 'Fira Code'; font-size: 0.7rem; height: 150px; overflow-y: auto; color: #22c55e; border: 1px solid #111; }
+        .smm-input { width: 100%; background: #000; border: 1px solid var(--border); padding: 12px; color: var(--primary); border-radius: 6px; margin-bottom: 10px; font-family: 'Fira Code'; font-size: 0.8rem; }
+        .smm-btn { width: 100%; padding: 12px; background: var(--primary); color: #000; border: none; font-weight: 900; border-radius: 6px; transition: 0.3s; }
 
-        /* --- ÜYE TABLOSU --- */
-        .u-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .u-table th { color: var(--text-dim); text-align: left; padding: 12px; font-size: 0.65rem; text-transform: uppercase; border-bottom: 1px solid var(--border); }
-        .u-table td { padding: 15px 12px; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.02); }
-        .role-badge { padding: 4px 10px; border-radius: 6px; font-size: 0.6rem; font-weight: 900; }
-        .role-admin { background: rgba(231, 74, 59, 0.15); color: var(--danger); }
-        .role-vip { background: rgba(108, 92, 231, 0.15); color: var(--purple); }
-
-        /* --- BOTTOM NAV --- */
-        nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 85px; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 1000; padding: 0 5px; }
-        .nav-link { color: var(--text-dim); text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; cursor: pointer; transition: 0.3s; position: relative; }
-        .nav-link.active { color: var(--primary); }
-        .nav-link i { font-size: 1.4rem; }
-        .nav-link span { font-size: 0.55rem; font-weight: 800; text-transform: uppercase; text-align: center; }
-        .nav-link.active::after { content: ''; position: absolute; top: -10px; width: 25px; height: 3px; background: var(--primary); border-radius: 10px; box-shadow: 0 0 10px var(--primary); }
+        /* --- NAV --- */
+        nav { position: fixed; bottom: 0; width: 100%; height: 75px; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; }
+        .nav-item { color: #4b5563; text-decoration: none; display: flex; flex-direction: column; align-items: center; font-size: 0.55rem; font-weight: 800; text-transform: uppercase; gap: 5px; cursor: pointer; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item i { font-size: 1.2rem; }
     </style>
 </head>
 <body>
 
     <div id="gatekeeper">
-        <div class="login-card" id="login-form">
-            <h1 style="color:#fff; letter-spacing: 5px;">ARCHERA</h1>
-            <p style="color:var(--text-dim); font-size: 0.6rem; margin-bottom: 30px; letter-spacing: 2px;">SECURE ACCESS PROTOCOL</p>
-            <div class="loader-ring" id="loader"></div>
-            <div id="input-area">
-                <input type="password" id="gateKey" class="input-box" placeholder="SYSTEM KEY">
-                <button class="login-btn" onclick="tryLogin()">
-                    AUTHORIZE <i class="fas fa-fingerprint"></i>
-                </button>
-            </div>
-            <a href="https://instagram.com/pxlat" target="_blank" style="display:block; margin-top:25px; color:#444; text-decoration:none; font-size:0.7rem;">REPORT ISSUE: @PXLAT</a>
+        <div class="scan-line" id="scanner"></div>
+        <div class="login-box">
+            <h2 style="letter-spacing:10px; margin-bottom:20px;">ARCHERA</h2>
+            <p id="status-text" style="font-size:0.6rem; color:var(--primary); margin-bottom:20px;">AWAITING SECURITY CLEARANCE...</p>
+            <input type="password" id="gateKey" class="smm-input" placeholder="ENTER ACCESS KEY" style="text-align:center;">
+            <button class="smm-btn" onclick="runSecurityProtocol()">INITIALIZE LOGIN</button>
         </div>
     </div>
 
     <div id="main-shell">
         <header>
-            <div style="font-weight:900; color:var(--primary); letter-spacing:2px;">ARCHERA <span id="clock" style="color:var(--text-dim); font-size:0.7rem; font-weight:400; margin-left:10px;"></span></div>
-            <div class="profile-snap" onclick="tab('mod-admin', document.getElementById('nav-admin'))">
-                <img id="top-avatar" src="https://ui-avatars.com/api/?name=Admin&background=4e73df&color=fff">
-                <span id="display-name" style="font-size:0.75rem; font-weight:800;">ROOT</span>
+            <div style="font-weight:900; letter-spacing:2px; font-size:0.8rem;">BLACK OPS <span id="clock" style="color:var(--primary); margin-left:10px;"></span></div>
+            <div class="sys-info">
+                <span>CPU: <b id="cpu-load">0%</b></span>
+                <span>MEM: <b id="mem-load">0%</b></span>
+                <span>LAT: <b id="lat-val">24ms</b></span>
             </div>
         </header>
 
-        <div class="viewport" id="viewport">
+        <div class="viewport">
             <div id="mod-sorgu" class="module active">
-                <div class="admin-card">
-                    <div class="card-label"><i class="fas fa-terminal"></i> Global Intel Scanner</div>
-                    <input type="text" id="target-search" class="smm-input" placeholder="Query ID / Username / GSM...">
-                    <button class="smm-btn" onclick="addLog('Searching database for: ' + document.getElementById('target-search').value)">START SCAN</button>
+                <div class="panel">
+                    <div class="panel-h">INTELLIGENCE SCANNER <span>LIVE_FEED</span></div>
+                    <input type="text" class="smm-input" placeholder="ID / GSM / NAME...">
+                    <button class="smm-btn" onclick="addLog('Querying Global Clusters...')">EXECUTE SEARCH</button>
                 </div>
             </div>
 
-            <div id="mod-img" class="module"><div class="admin-card"><div class="card-label"><i class="fas fa-images"></i> Media Library</div></div></div>
-            <div id="mod-ai" class="module"><div class="admin-card"><div class="card-label"><i class="fas fa-brain"></i> GemAI Neural Network</div></div></div>
-            <div id="mod-db" class="module"><div class="admin-card"><div class="card-label"><i class="fas fa-database"></i> SQL / NoSQL Clusters</div></div></div>
-            <div id="mod-accounts" class="module"><div class="admin-card"><div class="card-label"><i class="fas fa-id-card"></i> Vault Accounts</div></div></div>
-
             <div id="mod-admin" class="module">
-                
-                <div class="admin-card" style="border-top: 3px solid var(--success);">
-                    <div class="card-label" style="color:var(--success); border-color:var(--success)"><i class="fas fa-stream"></i> Live System Logs</div>
-                    <div id="log-screen"></div>
-                    <button class="smm-btn" style="background:#222; font-size:0.7rem;" onclick="document.getElementById('log-screen').innerHTML=''">CLEAR TERMINAL</button>
-                </div>
+                <div class="grid-layout">
+                    <div class="panel">
+                        <div class="panel-h">SYSTEM RESOURCES <span>REALTIME</span></div>
+                        <p style="font-size:0.6rem;">CPU CORE STATUS</p>
+                        <div class="stat-bar"><div id="cpu-bar" class="stat-fill"></div></div>
+                        <p style="font-size:0.6rem;">MEMORY LEAK WATCH</p>
+                        <div class="stat-bar"><div id="mem-bar" class="stat-fill" style="background:var(--danger)"></div></div>
+                    </div>
 
-                <div class="admin-card">
-                    <div class="card-label"><i class="fas fa-user-shield"></i> Advanced User Management</div>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:15px;">
-                        <input type="text" id="u-name" class="smm-input" placeholder="User Name" style="margin:0">
-                        <select id="u-role" class="smm-input" style="margin:0; background:#0b0e14">
-                            <option value="VIP">VIP MEMBER</option>
-                            <option value="ADMIN">ADMINISTRATOR</option>
-                        </select>
+                    <div class="panel">
+                        <div class="panel-h">OPERATIVE MANAGEMENT <span>SECURE</span></div>
+                        <div style="display:flex; gap:5px;">
+                            <input type="text" id="u-n" class="smm-input" placeholder="Codename">
+                            <input type="password" id="u-p" class="smm-input" placeholder="Pass">
+                        </div>
+                        <button class="smm-btn" style="background:var(--success)" onclick="addUser()">DEPLOY AGENT</button>
+                        <div id="agent-list" style="margin-top:10px; font-size:0.7rem; color:var(--primary)"></div>
                     </div>
-                    <input type="password" id="u-pass" class="smm-input" placeholder="Security Password">
-                    <button class="smm-btn" onclick="addUser()">DEPLOY USER</button>
-                    <table class="u-table">
-                        <thead><tr><th>USER</th><th>ROLE</th><th>STATUS</th><th>OP</th></tr></thead>
-                        <tbody id="u-list"></tbody>
-                    </table>
-                </div>
 
-                <div class="admin-card" style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
-                    <div>
-                        <div class="card-label"><i class="fas fa-id-badge"></i> Profile</div>
-                        <input type="text" id="prof-name" class="smm-input" placeholder="Display Name">
-                        <button class="smm-btn" onclick="updateProfile()">SAVE</button>
+                    <div class="panel" style="grid-column: span 1;">
+                        <div class="panel-h">ENCRYPTED LOGS <span>AES-256</span></div>
+                        <div id="terminal"></div>
                     </div>
-                    <div>
-                        <div class="card-label"><i class="fas fa-plug"></i> Session</div>
-                        <input type="text" id="sessionInput" class="smm-input" placeholder="Token ID">
-                        <button class="smm-btn" style="background:var(--purple)" onclick="saveSession()">BOOT</button>
-                    </div>
-                </div>
 
-                <div class="admin-card">
-                    <div class="card-label"><i class="fas fa-project-diagram"></i> Interface Customizer</div>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                        <input type="text" id="menu-name" class="smm-input" placeholder="Menu Title">
-                        <input type="text" id="menu-icon" class="smm-input" placeholder="FA Icon (e.g: fas fa-file)">
+                    <div class="panel">
+                        <div class="panel-h">SYSTEM INJECTION <span>MODULE_GEN</span></div>
+                        <input type="text" id="m-n" class="smm-input" placeholder="Menu Name">
+                        <input type="text" id="m-i" class="smm-input" placeholder="FA Icon (e.g: fas fa-skull)">
+                        <button class="smm-btn" onclick="injectModule()">INJECT TO KERNEL</button>
                     </div>
-                    <button class="smm-btn" style="background:#222" onclick="addDynamicMenu()">INJECT MENU</button>
                 </div>
             </div>
         </div>
 
-        <nav id="main-nav">
-            <div class="nav-link active" onclick="tab('mod-sorgu', this)"><i class="fas fa-search"></i><span>Sorgu</span></div>
-            <div class="nav-link" onclick="tab('mod-img', this)"><i class="fas fa-eye"></i><span>Medya</span></div>
-            <div class="nav-link" onclick="tab('mod-ai', this)"><i class="fas fa-bolt"></i><span>GemAI</span></div>
-            <div class="nav-link" onclick="tab('mod-db', this)"><i class="fas fa-server"></i><span>Data</span></div>
-            <div class="nav-link" onclick="tab('mod-accounts', this)"><i class="fas fa-key"></i><span>Vault</span></div>
-            <div id="nav-admin" class="nav-link" onclick="tab('mod-admin', this)"><i class="fas fa-ghost"></i><span>Yönetim</span></div>
+        <nav id="navbar">
+            <div class="nav-item active" onclick="tab('mod-sorgu', this)"><i class="fas fa-satellite-dish"></i><span>Scanner</span></div>
+            <div class="nav-item" onclick="tab('mod-img', this)"><i class="fas fa-ghost"></i><span>Ghost</span></div>
+            <div class="nav-item" onclick="tab('mod-ai', this)"><i class="fas fa-microchip"></i><span>Neural</span></div>
+            <div class="nav-item" onclick="tab('mod-db', this)"><i class="fas fa-shield-virus"></i><span>Vault</span></div>
+            <div class="nav-item" onclick="tab('mod-admin', this)"><i class="fas fa-skull-crossbones"></i><span>Admin</span></div>
         </nav>
     </div>
 
     <script>
-        // CANLI LOG SİSTEMİ
-        function addLog(msg) {
-            const screen = document.getElementById('log-screen');
-            const now = new Date().toLocaleTimeString();
-            screen.innerHTML += `<div class="log-entry"><span class="log-time">[${now}]</span> > ${msg}</div>`;
-            screen.scrollTop = screen.scrollHeight;
+        // LOGIC & EFFECTS
+        function addLog(m) {
+            const t = document.getElementById('terminal');
+            t.innerHTML += `<div>[${new Date().toLocaleTimeString()}] > ${m}</div>`;
+            t.scrollTop = t.scrollHeight;
         }
 
-        // ÜYE EKLEME (ROLU)
-        let users = JSON.parse(localStorage.getItem('archera_v13_users')) || [];
-        function addUser() {
-            const n = document.getElementById('u-name').value;
-            const p = document.getElementById('u-pass').value;
-            const r = document.getElementById('u-role').value;
-            if(n && p) {
-                users.push({name: n, role: r});
-                renderUsers();
-                addLog(`New user deployed: ${n} as ${r}`);
+        function runSecurityProtocol() {
+            if(document.getElementById('gateKey').value !== "baba") { 
+                window.location.href = "https://instagram.com/pxlat"; return; 
             }
-        }
-        function renderUsers() {
-            const list = document.getElementById('u-list');
-            list.innerHTML = "";
-            users.forEach((u, i) => {
-                const roleCls = u.role === "ADMIN" ? "role-admin" : "role-vip";
-                list.innerHTML += `<tr><td>${u.name}</td><td><span class="role-badge ${roleCls}">${u.role}</span></td><td><span style="color:var(--success)">●</span></td><td><i class="fas fa-times" style="color:var(--danger)" onclick="removeUser(${i})"></i></td></tr>`;
-            });
-            localStorage.setItem('archera_v13_users', JSON.stringify(users));
-        }
-        function removeUser(i) { addLog(`User removed: ${users[i].name}`); users.splice(i,1); renderUsers(); }
-
-        // DİNAMİK MENÜ
-        function addDynamicMenu() {
-            const name = document.getElementById('menu-name').value;
-            const icon = document.getElementById('menu-icon').value;
-            if(name && icon) {
-                const nav = document.getElementById('main-nav');
-                const id = "mod-" + name.toLowerCase();
-                nav.innerHTML += `<div class="nav-link" onclick="tab('${id}', this)"><i class="${icon}"></i><span>${name}</span></div>`;
-                document.getElementById('viewport').innerHTML += `<div id="${id}" class="module"><div class="admin-card"><h3>${name} Module</h3><p>Inject success.</p></div></div>`;
-                addLog(`Interface updated: Added menu ${name}`);
-            }
-        }
-
-        // PROFİL & SESSION
-        function updateProfile() {
-            const name = document.getElementById('prof-name').value;
-            if(name) {
-                document.getElementById('display-name').innerText = name.toUpperCase();
-                addLog(`Profile updated: Current user is now ${name}`);
-            }
-        }
-        function saveSession() {
-            const s = document.getElementById('sessionInput').value;
-            if(s) { addLog(`Session Bootstrapped: ${s.substring(0,8)}...`); alert("BOOT SUCCESS"); }
-        }
-
-        // GİRİŞ PROTOKOLÜ (EFSANE LOADER)
-        function tryLogin() {
-            const k = document.getElementById('gateKey').value;
-            if(k === "baba") {
-                document.getElementById('input-area').style.display = "none";
-                document.getElementById('loader').style.display = "block";
+            document.getElementById('scanner').style.display = "block";
+            document.getElementById('status-text').innerText = "SCANNING BIOMETRICS...";
+            setTimeout(() => {
+                document.getElementById('status-text').innerText = "ACCESS GRANTED. BOOTING KERNEL...";
                 setTimeout(() => {
-                    document.getElementById('gatekeeper').style.opacity = "0";
-                    setTimeout(() => {
-                        document.getElementById('gatekeeper').style.display = "none";
-                        document.getElementById('main-shell').style.display = "flex";
-                        setTimeout(() => { 
-                            document.getElementById('main-shell').style.opacity = "1";
-                            addLog("System Core Initialized...");
-                            addLog("Welcome back, Commander.");
-                            renderUsers(); 
-                        }, 50);
-                    }, 800);
-                }, 1500);
-            } else { window.location.href = "https://instagram.com/pxlat"; }
+                    document.getElementById('gatekeeper').style.transform = "translateY(-100%)";
+                    document.getElementById('main-shell').style.display = "flex";
+                    setTimeout(() => { document.getElementById('main-shell').style.opacity = "1"; initSys(); }, 100);
+                }, 1000);
+            }, 2000);
+        }
+
+        function initSys() {
+            addLog("Kernel Version 14.0.0-BLACKOPS Initialized.");
+            addLog("Encrypted Connection Established via Render Proxy.");
+            setInterval(() => {
+                const cpu = Math.floor(Math.random() * 40) + 10;
+                const mem = Math.floor(Math.random() * 30) + 20;
+                document.getElementById('cpu-load').innerText = cpu + "%";
+                document.getElementById('mem-load').innerText = mem + "%";
+                document.getElementById('cpu-bar').style.width = cpu + "%";
+                document.getElementById('mem-bar').style.width = mem + "%";
+            }, 2000);
+        }
+
+        function injectModule() {
+            const n = document.getElementById('m-n').value;
+            const i = document.getElementById('m-i').value;
+            if(n && i) {
+                document.getElementById('navbar').innerHTML += `<div class="nav-item" onclick="tab('mod-${n}', this)"><i class="${i}"></i><span>${n}</span></div>`;
+                addLog(`Module [${n}] successfully injected into system core.`);
+            }
+        }
+
+        function addUser() {
+            const u = document.getElementById('u-n').value;
+            if(u) {
+                document.getElementById('agent-list').innerHTML += `<div>● AGENT_${u.toUpperCase()} | STATUS: ACTIVE</div>`;
+                addLog(`Operative ${u} authorized for field work.`);
+            }
         }
 
         function tab(id, el) {
             document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
-            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            const target = document.getElementById(id);
+            if(target) target.classList.add('active');
             el.classList.add('active');
         }
 
-        // SAAT GÜNCELLEME
         setInterval(() => { document.getElementById('clock').innerText = new Date().toLocaleTimeString(); }, 1000);
     </script>
 </body>
