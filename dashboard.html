@@ -3,199 +3,70 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA | Dashboard</title>
+    <title>ARCHERA | DASHBOARD</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <style>
-        :root {
-            --bg: #0b0f19;
-            --card-bg: #111827;
-            --primary: #6366f1;
-            --text-main: #ffffff;
-            --text-muted: #9ca3af;
-            
-            /* Referans Gradyan Renkleri (image_3.png) */
-            --grad-purple: linear-gradient(135deg, #a78bfa, #7c3aed);
-            --grad-pink: linear-gradient(135deg, #f87171, #dc2626);
-            --grad-orange: linear-gradient(135deg, #fb923c, #ea580c);
-            --grad-blue: linear-gradient(135deg, #60a5fa, #2563eb);
-        }
-
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        body {
-            margin: 0; padding: 0;
-            background-color: var(--bg);
-            font-family: 'Inter', sans-serif;
-            color: var(--text-main);
-            padding-bottom: 80px; /* Alt menü için boşluk */
-        }
-
-        /* Header (Referans image_3.png) */
-        .app-header {
-            padding: 15px 20px;
-            display: flex; justify-content: space-between; align-items: center;
-            background-color: #0d111c;
-            border-bottom: 1px solid #1f2937;
-        }
-        .header-icons { display: flex; gap: 15px; color: #facc15; } /* Güneş ikonu sarı */
-
-        /* İstatistik Kartları (Referans image_3.png) */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-            padding: 20px;
-        }
-
-        .stat-card {
-            border-radius: 16px;
-            padding: 20px;
-            color: white;
-            text-align: center;
-        }
-        .stat-card .label { font-size: 0.75rem; opacity: 0.8; font-weight: 500; text-transform: uppercase; }
-        .stat-card .value { font-size: 1.25rem; font-weight: 700; margin-top: 5px; }
-
-        /* Ana İçerik Alanı (Referans SMM Yapısı) */
-        .content-area { padding: 0 20px; }
+        :root { --bg: #0b0f19; --card: #111827; --primary: #6366f1; --border: #1f2937; }
+        body { margin: 0; background: var(--bg); font-family: 'Inter', sans-serif; color: white; padding-bottom: 80px; }
         
-        .main-card {
-            background-color: var(--card-bg);
-            border: 1px solid #1f2937;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
+        header { padding: 20px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); background: #0d111c; }
+        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 20px; }
+        .stat-card { border-radius: 15px; padding: 15px; display: flex; flex-direction: column; }
+        .stat-card .title { font-size: 0.7rem; opacity: 0.7; font-weight: 700; text-transform: uppercase; }
+        .stat-card .val { font-size: 1.1rem; font-weight: 700; margin-top: 5px; }
 
-        .main-card label {
-            display: block;
-            font-size: 0.9rem;
-            color: var(--text-main);
-            margin-bottom: 10px;
-            font-weight: 600;
-        }
+        .search-area { padding: 0 20px; }
+        .main-panel { background: var(--card); border: 1px solid var(--border); border-radius: 18px; padding: 20px; }
+        
+        .input-label { font-size: 0.85rem; font-weight: 700; margin-bottom: 10px; display: block; color: var(--primary); }
+        .custom-select { background: #0b0f19; border: 1px solid var(--border); border-radius: 10px; padding: 12px; margin-bottom: 15px; display: flex; justify-content: space-between; }
+        
+        .input-query { width: 100%; background: #0b0f19; border: 1px solid var(--border); border-radius: 10px; padding: 15px; color: white; outline: none; margin-bottom: 20px; }
 
-        /* Referans SMM Input Yapısı */
-        .smm-input-group {
-            background-color: #0b0f19;
-            border: 1px solid #1f2937;
-            border-radius: 12px;
-            padding: 14px;
-            width: 100%;
-            color: #fff;
-            display: flex; align-items: center; gap: 10px;
-            cursor: pointer;
-            margin-bottom: 20px;
-        }
-
-        /* Alt Gezinme Menüsü (Referans image_3.png) */
-        .bottom-nav {
-            position: fixed; bottom: 0; left: 0; width: 100%;
-            background-color: #0d111c;
-            border-top: 1px solid #1f2937;
-            display: flex; justify-content: space-around; align-items: center;
-            height: 70px;
-            z-index: 100;
-        }
-
-        .nav-item {
-            text-align: center;
-            color: var(--text-muted);
-            font-size: 0.7rem;
-            text-decoration: none;
-            display: flex; flex-direction: column; align-items: center; gap: 4px;
-        }
-
-        .nav-item.active { color: var(--primary); }
-        .nav-item .material-icons-round { font-size: 24px; }
-
-        /* Orta Yuvarlak Buton (Referans image_3.png) */
-        .center-post-btn {
-            background-color: var(--primary);
-            color: white;
-            width: 56px; height: 56px;
-            border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            position: relative; top: -20px;
-            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.4);
-        }
-
+        nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #0d111c; border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; }
+        .nav-btn { color: #64748b; text-decoration: none; text-align: center; display: flex; flex-direction: column; font-size: 0.65rem; gap: 4px; }
+        .nav-btn.active { color: var(--primary); }
     </style>
 </head>
 <body>
 
-    <header class="app-header">
-        <span class="material-icons-round">menu</span>
-        <div class="header-icons">
-            <span class="material-icons-round">wb_sunny</span>
-            <span class="material-icons-round" style="color: #9ca3af;">settings</span>
-            <span class="material-icons-round" style="color: #9ca3af;">power_settings_new</span>
-        </div>
+    <header>
+        <span class="material-icons-round">terminal</span>
+        <span class="material-icons-round" style="color: #6366f1;">settings</span>
     </header>
 
-    <section class="stats-grid">
-        <div class="stat-card" style="background: var(--grad-purple);">
-            <div class="label">Sorgu Bakiyesi</div>
-            <div class="value">994.764 $</div>
+    <section class="stats">
+        <div class="stat-card" style="background: linear-gradient(135deg, #6366f1, #4338ca);">
+            <div class="title">Sistem Durumu</div>
+            <div class="val">AKTİF</div>
         </div>
-        <div class="stat-card" style="background: var(--grad-pink);">
-            <div class="label">Toplam Sorgu</div>
-            <div class="value">10.236</div>
-        </div>
-        <div class="stat-card" style="background: var(--grad-orange);">
-            <div class="label">Normal Sorgu</div>
-            <div class="value">Açık</div>
-        </div>
-        <div class="stat-card" style="background: var(--grad-blue);">
-            <div class="label">Üyelik Durumu</div>
-            <div class="value">Bronze</div>
+        <div class="stat-card" style="background: linear-gradient(135deg, #ec4899, #be185d);">
+            <div class="title">Bakiye</div>
+            <div class="val">994.764 $</div>
         </div>
     </section>
 
-    <section class="content-area">
-        <div class="main-card">
-            <label>Kategori</label>
-            <div class="smm-input-group">
-                <span class="material-icons-round" style="color: #ff0000;">query_stats</span>
-                <span>Sosyal Medya Sorgu</span>
-                <span class="material-icons-round" style="margin-left: auto;">expand_more</span>
+    <section class="search-area">
+        <div class="main-panel">
+            <label class="input-label">MODÜL SEÇİMİ</label>
+            <div class="custom-select">
+                <span>Instagram Veri Sorgu</span>
+                <span class="material-icons-round">expand_more</span>
             </div>
 
-            <label>Servis: 3</label>
-            <div class="smm-input-group">
-                <span class="material-icons-round" style="color: #ff0000;">search</span>
-                <span>Instagram Kullanıcı Adı Sorgu</span>
-                <span class="material-icons-round" style="margin-left: auto;">expand_more</span>
-            </div>
-
-            <label>Sorgu Linki / Kullanıcı Adı</label>
-            <div class="smm-input-group" style="cursor: text;">
-                <input type="text" placeholder="Kullanıcı adı girin..." style="background: transparent; border: none; color: white; width: 100%; outline: none;">
-            </div>
+            <label class="input-label">SORGULANACAK VERİ</label>
+            <input type="text" class="input-query" placeholder="Kullanıcı adı veya ID girin...">
+            
+            <button style="width:100%; padding:15px; background:var(--primary); border:none; border-radius:10px; color:white; font-weight:700;">SORGULAMAYI BAŞLAT</button>
         </div>
     </section>
 
-    <nav class="bottom-nav">
-        <a href="#" class="nav-item active">
-            <span class="material-icons-round">analytics</span>
-            <span>Sorgular</span>
-        </a>
-        <a href="#" class="nav-item">
-            <span class="material-icons-round">add_circle_outline</span>
-            <span>Bakiye Ekle</span>
-        </a>
-        <div class="center-post-btn">
-            <span class="material-icons-round">search</span>
-        </div>
-        <a href="#" class="nav-item">
-            <span class="material-icons-round">assignment</span>
-            <span>Siparişler</span>
-        </a>
-        <a href="#" class="nav-item">
-            <span class="material-icons-round">contact_support</span>
-            <span>Destek</span>
-        </a>
+    <nav>
+        <a href="#" class="nav-btn active"><i class="material-icons-round">search</i><span>Sorgu</span></a>
+        <a href="#" class="nav-btn"><i class="material-icons-round">history</i><span>Geçmiş</span></a>
+        <a href="#" class="nav-btn"><i class="material-icons-round">account_balance_wallet</i><span>Bakiye</span></a>
+        <a href="#" class="nav-btn" onclick="location.href='index.html'"><i class="material-icons-round">power_settings_new</i><span>Çıkış</span></a>
     </nav>
 
 </body>
