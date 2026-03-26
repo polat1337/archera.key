@@ -3,39 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA | SECURE</title>
+    <title>ARCHERA | GATEKEEPER</title>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
     <style>
+        :root { --accent: #00f2ff; --bg: #050505; }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: #000; font-family: 'Space Grotesk', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; color: #fff; overflow: hidden; }
-        .auth-container { width: 85%; max-width: 320px; text-align: center; }
-        h1 { font-weight: 700; letter-spacing: 15px; font-size: 2.2rem; margin-bottom: 40px; }
-        .input-wrap { border-bottom: 1px solid #222; margin-bottom: 30px; }
-        input { 
-            width: 100%; background: transparent; border: none; padding: 15px; 
-            color: #fff; text-align: center; font-size: 1rem; letter-spacing: 2px; outline: none; 
-        }
-        .btn-link { 
-            display: block; width: 100%; padding: 15px; background: #fff; color: #000; 
-            text-decoration: none; font-weight: 700; font-size: 0.8rem; letter-spacing: 3px; 
-            border: none; cursor: pointer; transition: 0.4s;
-        }
-        .btn-link:hover { background: #333; color: #fff; }
-        .req { margin-top: 25px; font-size: 0.6rem; color: #444; letter-spacing: 2px; text-transform: uppercase; }
-        .req a { color: #888; text-decoration: none; }
+        body { background: var(--bg); font-family: 'Space Grotesk', sans-serif; height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; color: #fff; }
+        
+        /* Cyber Grid Arkaplan */
+        .grid-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(var(--accent) 1px, transparent 1px), linear-gradient(90deg, var(--accent) 1px, transparent 1px); background-size: 50px 50px; opacity: 0.05; z-index: -1; animation: move 20s linear infinite; }
+        @keyframes move { from { background-position: 0 0; } to { background-position: 50px 50px; } }
+
+        .gate-card { background: rgba(10, 10, 10, 0.8); backdrop-filter: blur(15px); border: 1px solid rgba(255,255,255,0.1); padding: 50px 40px; border-radius: 2px; text-align: center; width: 90%; max-width: 400px; box-shadow: 0 0 50px rgba(0,0,0,1); }
+        h1 { font-weight: 700; letter-spacing: 15px; font-size: 2.5rem; margin-bottom: 10px; text-shadow: 0 0 10px var(--accent); }
+        p { font-size: 0.7rem; color: #666; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 40px; }
+
+        .input-group { position: relative; margin-bottom: 30px; }
+        input { width: 100%; background: transparent; border: none; border-bottom: 1px solid #333; padding: 15px; color: #fff; text-align: center; font-size: 1.1rem; letter-spacing: 5px; outline: none; transition: 0.5s; }
+        input:focus { border-bottom-color: var(--accent); }
+
+        .btn-enter { width: 100%; padding: 18px; background: transparent; border: 1px solid var(--accent); color: var(--accent); font-weight: 700; cursor: pointer; text-transform: uppercase; letter-spacing: 3px; position: relative; overflow: hidden; transition: 0.4s; opacity: 0.5; pointer-events: none; }
+        .btn-enter.active { opacity: 1; pointer-events: auto; box-shadow: 0 0 20px var(--accent); }
+        .btn-enter:hover { background: var(--accent); color: #000; }
+
+        .loading-bar { position: absolute; bottom: 0; left: 0; height: 2px; width: 0%; background: var(--accent); transition: 0.5s; }
     </style>
 </head>
 <body>
-    <div class="auth-container">
+    <div class="grid-bg"></div>
+    <div class="gate-card">
         <h1>ARCHERA</h1>
-        <div class="input-wrap">
-            <input type="password" id="k" placeholder="SYSTEM KEY">
+        <p>Intelligence System Access</p>
+        <div class="input-group">
+            <input type="password" id="keyField" placeholder="ENTER ACCESS KEY" oninput="checkInput()">
         </div>
-        <button class="btn-link" onclick="v()">SISTEME SIZ</button>
-        <div class="req">NO ACCESS? <a href="https://instagram.com/pxlat" target="_blank">REQUEST @PXLAT</a></div>
+        <button id="enterBtn" class="btn-enter" onclick="startLoading()">İçeri Gir <span class="loading-bar" id="lBar"></span></button>
+        <div style="margin-top: 30px; font-size: 0.6rem; color: #444;">REQUEST ACCESS: <a href="https://instagram.com/pxlat" style="color:#888; text-decoration:none;">@PXLAT</a></div>
     </div>
+
     <script>
-        function v(){ if(document.getElementById('k').value === "reis") { window.location.href="dashboard.html"; } else { alert("ACCESS DENIED"); } }
+        function checkInput() {
+            const btn = document.getElementById('enterBtn');
+            if(document.getElementById('keyField').value.length > 2) {
+                btn.classList.add('active');
+            } else { btn.classList.remove('active'); }
+        }
+
+        function startLoading() {
+            if(document.getElementById('keyField').value === "reis") {
+                document.getElementById('lBar').style.width = "100%";
+                setTimeout(() => { window.location.href = "dashboard.html"; }, 800);
+            } else { alert("ACCESS DENIED"); }
+        }
     </script>
 </body>
 </html>
