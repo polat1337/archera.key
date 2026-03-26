@@ -3,32 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA | STORM</title>
+    <title>ARCHERA | OSINT STORM</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;800&family=Orbitron:wght@900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Outfit:wght@300;600;800&display=swap" rel="stylesheet">
     <style>
         :root { --accent: #00d2ff; --bg: #050a15; --card: rgba(10, 25, 49, 0.7); --border: rgba(0, 210, 255, 0.2); }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit'; }
-        body { background: var(--bg); color: #fff; height: 100vh; overflow: hidden; }
+        body { background: var(--bg); color: #fff; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
         
-        /* Auth Gate (Passkey Ekranı) */
+        /* PASSKEY GATE */
         #auth-gate { position: fixed; inset: 0; z-index: 9999; background: var(--bg); display: flex; align-items: center; justify-content: center; }
         .login-box { width: 85%; max-width: 380px; padding: 40px; background: var(--card); border: 1px solid var(--border); border-radius: 30px; text-align: center; backdrop-filter: blur(15px); }
         
-        /* Main UI */
-        #panel { display: none; height: 100vh; flex-direction: column; }
-        .main-content { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px; }
-        .storm-card { background: var(--card); border-radius: 20px; padding: 20px; border-left: 4px solid var(--accent); margin-bottom: 15px; border-top: 1px solid var(--border); }
+        /* HEADER & CONTENT */
+        header { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        main { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px; }
         
+        /* TAB SİSTEMİ (BOZULMAYI ÖNLEYEN KISIM) */
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
+        
+        /* STORM COMPONENTS */
+        .storm-card { background: var(--card); border-radius: 20px; padding: 20px; border-left: 4px solid var(--accent); margin-bottom: 15px; border-top: 1px solid var(--border); }
         .inp { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: var(--accent); margin-bottom: 15px; outline: none; }
         .btn { width: 100%; padding: 15px; border-radius: 12px; border: none; background: linear-gradient(90deg, #0072ff, #00d2ff); color: #fff; font-weight: 800; cursor: pointer; text-transform: uppercase; }
 
-        .nav { position: fixed; bottom: 0; width: 100%; height: 85px; background: rgba(5, 10, 21, 0.98); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; }
-        .nav-link { color: #5b7a9d; text-align: center; font-size: 10px; cursor: pointer; }
-        .nav-link.active { color: var(--accent); }
-        .tab { display: none; animation: f 0.3s; }
-        @keyframes f { from { opacity: 0; } to { opacity: 1; } }
-        #loader { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 10000; flex-direction: column; align-items: center; justify-content: center; }
+        /* NAV BAR (SABİT ALT MENÜ) */
+        nav { position: fixed; bottom: 0; width: 100%; height: 85px; background: rgba(5, 10, 21, 0.98); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
+        .nav-item { color: #5b7a9d; text-align: center; font-size: 10px; cursor: pointer; transition: 0.3s; flex: 1; }
+        .nav-item.active { color: var(--accent); transform: translateY(-5px); }
+        .nav-item i { font-size: 22px; margin-bottom: 5px; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        #loader { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 10000; align-items: center; justify-content: center; }
     </style>
 </head>
 <body>
@@ -37,69 +44,106 @@
 
     <div id="auth-gate">
         <div class="login-box">
-            <img src="24841.jpg" style="width:70px; border-radius:15px; margin-bottom:20px;">
-            <h1 style="font-family:'Orbitron'; font-size:22px; margin-bottom:30px;">ARCHERA</h1>
+            <h1 style="font-family:'Orbitron'; margin-bottom:20px;">ARCHERA</h1>
             <input type="password" id="pk" class="inp" placeholder="PASSKEY" style="text-align:center;">
-            <button onclick="entry()" class="btn">SİSTEME SIZ</button>
+            <button onclick="entry()" class="btn">SİSTEMİ ATEŞLE</button>
         </div>
     </div>
 
-    <div id="panel">
-        <div class="main-content">
-            <div id="t-osint" class="tab" style="display:block;">
+    <div id="panel" style="display:none; height:100%; flex-direction:column;">
+        <header>
+            <span style="font-weight:800; letter-spacing:1px;">STORM <span style="color:var(--accent);">v4.2</span></span>
+            <i class="fas fa-bolt" style="color:var(--accent);"></i>
+        </header>
+
+        <main>
+            <div id="tab-osint" class="tab-content active">
                 <div class="storm-card">
-                    <input type="text" id="target" class="inp" placeholder="@kullanici_adi">
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                        <button onclick="doAction('follow')" class="btn" style="font-size:10px;">TAKİP ET</button>
-                        <button onclick="doAction('stories')" class="btn" style="font-size:10px; background:#e1306c;">STORY ÇEK</button>
-                    </div>
+                    <input type="text" id="target" class="inp" placeholder="@hedef_user">
+                    <button onclick="runAction('follow')" class="btn">TAKİP ET</button>
+                    <button onclick="runAction('stories')" class="btn" style="background:#e1306c; margin-top:10px;">STORY ÇEK</button>
                 </div>
-                <div id="res" class="storm-card" style="display:none; font-size:12px;"></div>
+                <div id="res-box" class="storm-card" style="display:none;"></div>
             </div>
 
-            <div id="t-acc" class="tab">
+            <div id="tab-db" class="tab-content">
                 <div class="storm-card">
-                    <h3 style="margin-bottom:15px; font-family:'Orbitron'; font-size:14px;">SESSION KONTROL</h3>
-                    <input type="text" id="sid" class="inp" placeholder="Instagram Session ID">
-                    <button onclick="link()" class="btn">TUNELİ BAĞLA</button>
+                    <h3>DATABASE SORGULA</h3>
+                    <input type="text" class="inp" placeholder="TC / İSİM...">
+                    <button class="btn">ARA</button>
                 </div>
-                <div id="acc-status"></div>
             </div>
-        </div>
 
-        <nav class="nav">
-            <div class="nav-link active" onclick="tab('t-osint', this)"><i class="fas fa-crosshairs"></i><br>OSINT</div>
-            <div class="nav-link" onclick="tab('t-acc', this)"><i class="fas fa-user-shield"></i><br>HESAPLAR</div>
-            <div class="nav-link"><i class="fas fa-database"></i><br>DATABASE</div>
+            <div id="tab-ai" class="tab-content">
+                <div class="storm-card" style="height:250px; overflow-y:auto;" id="chat-logs">
+                    <p style="color:#5b7a9d;">Sistem hazır...</p>
+                </div>
+                <input type="text" class="inp" placeholder="Yapay zekaya komut ver...">
+            </div>
+
+            <div id="tab-admin" class="tab-content">
+                <div class="storm-card">
+                    <h3>HESAP YÖNETİMİ</h3>
+                    <p style="font-size:12px; color:#5b7a9d; margin-bottom:15px;">Instagram bağlantısını buradan yap.</p>
+                    <input type="text" id="sid" class="inp" placeholder="Session ID Yapıştır">
+                    <button onclick="linkSession()" class="btn">BAĞLA</button>
+                </div>
+            </div>
+        </main>
+
+        <nav>
+            <div class="nav-item active" onclick="switchTab('tab-osint', this)"><i class="fas fa-crosshairs"></i><br>OSINT</div>
+            <div class="nav-item" onclick="switchTab('tab-db', this)"><i class="fas fa-database"></i><br>DATA</div>
+            <div class="nav-item" onclick="switchTab('tab-ai', this)"><i class="fas fa-robot"></i><br>AI</div>
+            <div class="nav-item" onclick="switchTab('tab-admin', this)"><i class="fas fa-user-shield"></i><br>ADMIN</div>
         </nav>
     </div>
 
     <script>
         const R_URL = "https://surosint.onrender.com";
-        function entry() { if(document.getElementById('pk').value === "baba") { document.getElementById('auth-gate').style.display='none'; document.getElementById('panel').style.display='flex'; } }
-        function tab(id, el) { document.querySelectorAll('.tab').forEach(x=>x.style.display='none'); document.querySelectorAll('.nav-link').forEach(x=>x.classList.remove('active')); document.getElementById(id).style.display='block'; el.classList.add('active'); }
 
-        async function link() {
-            const sid = document.getElementById('sid').value;
-            document.getElementById('loader').style.display='flex';
-            const r = await fetch(`${R_URL}/api/v4/auth/link`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({sessionid: sid}) });
-            const res = await r.json();
-            document.getElementById('loader').style.display='none';
-            alert(res.message);
-            if(res.status==='success') document.getElementById('acc-status').innerHTML = `<div class="storm-card">AKTİF: @${res.user}</div>`;
+        function entry() { 
+            if(document.getElementById('pk').value === "baba") { 
+                document.getElementById('auth-gate').style.display='none'; 
+                document.getElementById('panel').style.display='flex'; 
+            } 
         }
 
-        async function doAction(type) {
+        function switchTab(tabId, el) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.getElementById(tabId).classList.add('active');
+            el.classList.add('active');
+        }
+
+        async function linkSession() {
+            const sid = document.getElementById('sid').value;
+            if(!sid) return;
+            loader(true);
+            const r = await fetch(`${R_URL}/api/v4/auth/link`, {
+                method:'POST', headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({sessionid: sid})
+            });
+            const res = await r.json();
+            loader(false);
+            alert(res.message);
+        }
+
+        async function runAction(type) {
             const t = document.getElementById('target').value;
             if(!t) return;
-            document.getElementById('loader').style.display='flex';
-            const r = await fetch(`${R_URL}/api/v4/action/${type}`, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({target: t}) });
+            loader(true);
+            const r = await fetch(`${R_URL}/api/v4/action/${type}`, {
+                method:'POST', headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({target: t})
+            });
             const res = await r.json();
-            document.getElementById('loader').style.display='none';
-            const out = document.getElementById('res');
-            out.style.display='block';
-            out.innerText = res.message || (res.urls ? `${res.urls.length} Story bulundu.` : "İşlem Tamam.");
+            loader(false);
+            document.getElementById('res-box').style.display = 'block';
+            document.getElementById('res-box').innerText = res.message || "İşlem başarılı.";
         }
+
+        function loader(s) { document.getElementById('loader').style.display = s ? 'flex' : 'none'; }
     </script>
     <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
 </body>
