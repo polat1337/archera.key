@@ -3,131 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA | Login</title>
+    <title>ARCHERA | LOGIN</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <style>
-        :root {
-            --bg: #0b0f19;       /* Koyu Arka Plan */
-            --card-bg: #111827;  /* Form Arka Planı */
-            --primary: #6366f1;  /* Referans Mor Buton */
-            --text-main: #ffffff;
-            --text-muted: #9ca3af;
-            --border: #1f2937;
-        }
-
+        :root { --bg: #05070a; --card: #0d1117; --primary: #6366f1; --border: #30363d; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-        body, html {
-            margin: 0; padding: 0; height: 100vh; width: 100vw;
-            background-color: var(--bg);
-            font-family: 'Inter', sans-serif;
-            color: var(--text-main);
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        .login-container {
-            background-color: var(--card-bg);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 40px 30px;
-            width: 90%;
-            max-width: 400px;
-            text-align: left;
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
-        }
-
-        .header h1 { font-size: 1.75rem; font-weight: 700; margin: 0; }
-        .header p { font-size: 0.9rem; color: var(--text-muted); margin-top: 8px; margin-bottom: 35px; }
-
-        .input-group { margin-bottom: 20px; position: relative; }
+        body { margin: 0; background: var(--bg); font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; color: white; }
         
-        .input-box {
-            background-color: #0b0f19; /* Daha koyu input içi */
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 16px 16px 16px 52px; /* Sol ikon için padding */
-            width: 100%;
-            color: #fff;
-            font-size: 1rem;
-            transition: 0.3s;
-            display: block;
-        }
-
-        .input-box:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
-
-        .input-icon {
-            position: absolute; left: 16px; top: 50%;
-            transform: translateY(-50%);
-            color: #64748b;
-            font-size: 24px;
-        }
-
-        .remember-forgot {
-            display: flex; justify-content: space-between; align-items: center;
-            font-size: 0.85rem; color: var(--text-muted); margin-bottom: 25px;
-        }
+        .login-box { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 40px 30px; width: 90%; max-width: 380px; text-align: center; }
+        h1 { font-size: 1.8rem; letter-spacing: 3px; margin: 0 0 10px; }
+        p { color: #8b949e; font-size: 0.8rem; margin-bottom: 30px; }
         
-        .checkbox-wrap { display: flex; align-items: center; gap: 8px; }
+        .input-group { position: relative; margin-bottom: 20px; }
+        .input-group input { width: 100%; background: #010409; border: 1px solid var(--border); border-radius: 12px; padding: 15px 15px 15px 50px; color: white; outline: none; transition: 0.3s; }
+        .input-group input:focus { border-color: var(--primary); }
+        .input-group i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: #64748b; }
         
-        .btn-login {
-            background-color: var(--primary);
-            color: #ffffff;
-            border: none;
-            border-radius: 12px;
-            padding: 16px;
-            width: 100%;
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: 0.3s;
-            display: block;
-        }
-
-        .btn-login:hover { background-color: #4f46e5; }
-
-        .register-link {
-            text-align: center; margin-top: 25px;
-            font-size: 0.9rem; color: var(--text-muted);
-        }
-        .register-link a { color: var(--primary); text-decoration: none; font-weight: 600; }
+        .btn-enter { width: 100%; padding: 15px; background: var(--primary); border: none; border-radius: 12px; color: white; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .btn-enter:hover { filter: brightness(1.2); box-shadow: 0 0 15px rgba(99, 102, 241, 0.4); }
+        
+        .request-link { margin-top: 25px; font-size: 0.85rem; color: #8b949e; }
+        .request-link a { color: var(--primary); text-decoration: none; font-weight: 700; cursor: pointer; }
     </style>
 </head>
 <body>
 
-<div class="login-container">
-    <div class="header">
-        <h1>Hoşgeldiniz!</h1>
-        <p>ARCHERA Terminal Access key girin.</p>
-    </div>
-
+<div class="login-box">
+    <h1>ARCHERA</h1>
+    <p>SİSTEME ERİŞİM İÇİN ANAHTAR GİRİN</p>
+    
     <div class="input-group">
-        <span class="material-icons-round input-icon">vpn_key</span>
-        <input type="password" id="keyInput" class="input-box" placeholder="Terminal Anahtarı">
+        <i class="material-icons-round">vpn_key</i>
+        <input type="password" id="key" placeholder="Access Key">
     </div>
-
-    <div class="remember-forgot">
-        <div class="checkbox-wrap">
-            <input type="checkbox" id="remember">
-            <label for="remember">Beni Hatırla</label>
-        </div>
-    </div>
-
-    <button class="btn-login" onclick="login()">Sisteme Bağlan</button>
-
-    <div class="register-link">
-        Anahtarınız yok mu? <a href="#">Talep Et</a>
+    
+    <button class="btn-enter" onclick="checkKey()">SİSTEME GİRİŞ YAP</button>
+    
+    <div class="request-link">
+        Anahtarın yok mu? <a href="https://instagram.com/pxlat" target="_blank">Talep Et @pxlat</a>
     </div>
 </div>
 
 <script>
-    function login() {
-        const val = document.getElementById('keyInput').value;
-        if(val === "reis") {
-            alert("Giriş Başarılı! Yönlendiriliyorsunuz.");
-            window.location.href = "dashboard.html"; // Dashboard'a yönlendir
+    function checkKey() {
+        const input = document.getElementById('key').value;
+        if(input === "reis") {
+            // Başarılı girişte dashboard.html dosyasına yönlendirir
+            window.location.href = "dashboard.html";
         } else {
-            alert("Hatalı Anahtar.");
+            alert("GEÇERSİZ ERİŞİM ANAHTARI!");
         }
     }
 </script>
