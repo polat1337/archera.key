@@ -72,7 +72,7 @@
     <div id="main-shell">
         <header>
             <div class="header-logo">ARCHERA // CORE</div>
-            <div style="font-size: 0.6rem; color: var(--accent); border: 1px solid var(--accent); padding: 5px 10px;">SECURE CONNECTION</div>
+            <div id="status-indicator" style="font-size: 0.6rem; color: #ff3333; border: 1px solid #ff3333; padding: 5px 10px;">ENGINE OFFLINE</div>
         </header>
 
         <div class="view-port">
@@ -80,20 +80,20 @@
             <div id="mod-sorgu" class="module active">
                 <div class="glass-card">
                     <span class="card-label">Merkezi Sorgu Terminali</span>
-                    <input type="text" id="targetInput" placeholder="AD SOYAD / USERNAME / TC">
+                    <input type="text" id="targetInput" placeholder="Kullanıcı Adı Girin (Örn: polat1337)">
                     <button class="action-btn" onclick="executeSorgu()">Sorguyu Başlat</button>
                     
-                    <div id="sorguLoading" style="display:none; text-align:center; margin-top:15px; color:var(--accent); font-size:0.7rem;">API VERİLERİ EŞLEŞTİRİLİYOR...</div>
+                    <div id="sorguLoading" style="display:none; text-align:center; margin-top:15px; color:var(--accent); font-size:0.7rem;">API VERİLERİ ÇEKİLİYOR...</div>
 
                     <div id="resCard" class="identity-result">
-                        <div class="data-row"><span>TC:</span><p>382********</p></div>
-                        <div class="data-row"><span>GSM:</span><p>+90 53* *** ** 31</p></div>
-                        <div class="data-row"><span>ADRES:</span><p>SURUÇ / ŞANLIURFA</p></div>
-                        <div class="data-row"><span>MAIL:</span><p>target@example.com</p></div>
+                        <div class="data-row"><span>AD SOYAD:</span><p id="res-name">-</p></div>
+                        <div class="data-row"><span>TAKİPÇİ:</span><p id="res-followers">-</p></div>
+                        <div class="data-row"><span>SURUÇ ANALİZİ:</span><p id="res-loc">-</p></div>
+                        <div class="data-row"><span>DURUM:</span><p id="res-priv">-</p></div>
                         <div style="margin-top:15px; display:flex; gap:10px; color:var(--accent);">
-                            <i class="material-icons-round">camera_alt</i>
-                            <i class="material-icons-round">send</i>
-                            <i class="material-icons-round">public</i>
+                            <i class="material-icons-round">verified_user</i>
+                            <i class="material-icons-round">location_searching</i>
+                            <i class="material-icons-round">security</i>
                         </div>
                     </div>
                 </div>
@@ -110,8 +110,7 @@
             <div id="mod-img" class="module">
                 <div class="glass-card">
                     <span class="card-label">Yandex Disk Visual Archive</span>
-                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-                        <div style="aspect-ratio:1/1; background:#111; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:#333;"><i class="material-icons-round">image</i></div>
+                    <div id="image-gallery" style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
                         <div style="aspect-ratio:1/1; background:#111; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; color:#333;"><i class="material-icons-round">image</i></div>
                     </div>
                 </div>
@@ -120,8 +119,8 @@
             <div id="mod-ai" class="module">
                 <div class="glass-card">
                     <span class="card-label">AI Profil Analizörü</span>
-                    <div style="height:200px; background:#000; border:1px solid var(--border); margin-bottom:15px; padding:10px; font-size:0.7rem; color:#888;">AI: Analiz etmek istediğiniz hedef verisini girin...</div>
-                    <input type="text" placeholder="AI'ya sor...">
+                    <div id="ai-chat-box" style="height:200px; background:#000; border:1px solid var(--border); margin-bottom:15px; padding:10px; font-size:0.7rem; color:#888; overflow-y:auto;">AI: Analiz etmek istediğiniz hedef verisini girin...</div>
+                    <input type="text" id="aiInput" placeholder="AI'ya sor...">
                     <button class="action-btn">Analiz Et</button>
                 </div>
             </div>
@@ -129,14 +128,9 @@
             <div id="mod-admin" class="module">
                 <div class="glass-card">
                     <span class="card-label">Session ID & Bot Kontrol</span>
-                    <select><option>Instagram (4 Hesap Aktif)</option></select>
-                    <input type="text" placeholder="New Session ID">
-                    <button class="action-btn" style="background:#fff; color:#000;">Session Ekle</button>
-                </div>
-                <div class="glass-card">
-                    <span class="card-label">Panel Yapılandırma</span>
-                    <input type="text" placeholder="Yeni Menü Adı">
-                    <button class="action-btn" style="background:#111; color:#fff; border:1px solid #333;">Modül Ekle</button>
+                    <select id="sessionPlatform"><option value="ig">Instagram (Limit: 10.000)</option></select>
+                    <input type="text" id="sessionData" placeholder="New Session ID / Cookie">
+                    <button class="action-btn" style="background:#fff; color:#000;" onclick="saveSession()">Session Ekle</button>
                 </div>
             </div>
 
@@ -152,6 +146,9 @@
     </div>
 
     <script>
+        // RENDER URL'İNİ BURAYA YAPIŞTIR
+        const RENDER_URL = 'https://polat1337.onrender.com';
+
         // Giriş Mantığı
         function tryLogin() {
             const key = document.getElementById('gateKey').value;
@@ -160,12 +157,28 @@
                 setTimeout(() => {
                     document.getElementById('gatekeeper').style.display = "none";
                     document.getElementById('main-shell').style.display = "flex";
-                    setTimeout(() => { document.getElementById('main-shell').style.opacity = "1"; }, 50);
+                    setTimeout(() => { 
+                        document.getElementById('main-shell').style.opacity = "1"; 
+                        checkBackend();
+                    }, 50);
                 }, 800);
             } else { alert("ACCESS DENIED"); }
         }
 
-        // Modül Değiştirme (SPA)
+        // Backend Durum Kontrolü
+        async function checkBackend() {
+            try {
+                const res = await fetch(RENDER_URL + '/');
+                if(res.ok) {
+                    const status = document.getElementById('status-indicator');
+                    status.innerText = "ENGINE ONLINE";
+                    status.style.color = "#00f2ff";
+                    status.style.borderColor = "#00f2ff";
+                }
+            } catch(e) { console.log("Backend uyanıyor..."); }
+        }
+
+        // Modül Değiştirme
         function switchTab(modId, el) {
             document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
             document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
@@ -173,14 +186,53 @@
             el.classList.add('active');
         }
 
-        // Sorgu Simülasyonu
-        function executeSorgu() {
-            document.getElementById('sorguLoading').style.display = "block";
-            document.getElementById('resCard').style.display = "none";
-            setTimeout(() => {
-                document.getElementById('sorguLoading').style.display = "none";
-                document.getElementById('resCard').style.display = "block";
-            }, 1500);
+        // GERÇEK SORGU FONKSİYONU
+        async function executeSorgu() {
+            const target = document.getElementById('targetInput').value;
+            const loading = document.getElementById('sorguLoading');
+            const resultCard = document.getElementById('resCard');
+
+            if(!target) return alert("Hedef belirtilmedi!");
+
+            loading.style.display = "block";
+            resultCard.style.display = "none";
+
+            try {
+                const response = await fetch(RENDER_URL + '/api/query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ 
+                        session_id: localStorage.getItem('archera_session') || "default", 
+                        target: target 
+                    })
+                });
+
+                const res = await response.json();
+                
+                if(res.status === "success") {
+                    loading.style.display = "none";
+                    resultCard.style.display = "block";
+                    
+                    document.getElementById('res-name').innerText = res.data.full_name || "Bilinmiyor";
+                    document.getElementById('res-followers').innerText = res.data.followers.toLocaleString();
+                    document.getElementById('res-loc').innerText = res.data.location_inference;
+                    document.getElementById('res-priv').innerText = res.data.is_private ? "Gizli Profil" : "Açık Profil";
+                } else {
+                    alert("Hata: " + res.detail);
+                    loading.style.display = "none";
+                }
+            } catch (e) {
+                alert("Motor Başlatılamadı. Render uyanıyor olabilir (30sn bekleyin).");
+                loading.style.display = "none";
+            }
+        }
+
+        function saveSession() {
+            const data = document.getElementById('sessionData').value;
+            if(data) {
+                localStorage.setItem('archera_session', data);
+                alert("Session ID Veri Tabanına İşlendi.");
+            }
         }
     </script>
 </body>
