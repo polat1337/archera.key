@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ARCHERA | CORE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <style>
+        :root { --bg: #030712; --accent: #00d2ff; --panel: #0d111c; --border: #1f2937; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); font-family: 'Inter', sans-serif; color: white; padding-bottom: 100px; }
+        header { padding: 20px; background: var(--panel); border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-family: 'Space Grotesk', sans-serif; font-size: 1.2rem; letter-spacing: 3px; color: var(--accent); }
+
+        .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 20px; }
+        .st-card { background: var(--panel); border: 1px solid var(--border); border-left: 4px solid var(--accent); border-radius: 15px; padding: 15px; }
+        .st-label { font-size: 0.6rem; color: #64748b; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; }
+        .st-val { font-size: 1rem; font-weight: 800; margin-top: 5px; font-family: 'Space Grotesk'; }
+
+        .main-container { padding: 0 20px; }
+        .action-box { background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 30px; }
+        .box-title { font-size: 0.75rem; color: var(--accent); font-weight: 800; text-transform: uppercase; margin-bottom: 15px; display: block; }
+        input { width: 100%; background: #010409; border: 1px solid var(--border); border-radius: 12px; padding: 18px; color: white; font-size: 1rem; outline: none; margin-bottom: 20px; }
+        input:focus { border-color: var(--accent); }
+        .btn-action { width: 100%; padding: 18px; background: var(--accent); border: none; border-radius: 12px; color: #000; font-weight: 800; text-transform: uppercase; cursor: pointer; }
+
+        /* ALT MENÜ - İSTEDİĞİN ŞABLON */
+        nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 85px; background: #05070a; border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 999; }
+        .nav-item { text-decoration: none; color: #4b5563; display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; transition: 0.3s; }
+        .nav-item.active { color: var(--accent); filter: drop-shadow(0 0 8px var(--accent)); }
+        .nav-item i { font-size: 26px; }
+        .nav-item span { font-size: 0.55rem; font-weight: 800; text-transform: uppercase; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">ARCHERA CORE</div>
+        <i class="material-icons-round" style="color: var(--accent);">radar</i>
+    </header>
+
+    <div class="stats-grid">
+        <div class="st-card"><div class="st-label">Sistem Durumu</div><div class="st-val">AKTİF</div></div>
+        <div class="st-card"><div class="st-label">Aktif Bakiye</div><div class="st-val">994.764 $</div></div>
+    </div>
+
+    <div class="main-container">
+        <div class="action-box">
+            <span class="box-title">OPERASYONEL SORGULAMA</span>
+            <input type="text" placeholder="Hedef kullanıcı/ID girin...">
+            <button class="btn-action">SORGULAMAYI BAŞLAT</button>
+        </div>
+    </div>
+
+    <nav>
+        <a href="#" class="nav-item active"><i class="material-icons-round">search</i><span>SORGULA</span></a>
+        <a href="#" class="nav-item"><i class="material-icons-round">groups</i><span>HESAPLAR</span></a>
+        <a href="#" class="nav-item"><i class="material-icons-round">account_tree</i><span>DATABASE</span></a>
+        <a href="#" class="nav-item"><i class="material-icons-round">photo_library</i><span>GÖRÜNTÜLER</span></a>
+        <a href="#" class="nav-item"><i class="material-icons-round">smart_toy</i><span>AI CHAT</span></a>
+        <a href="#" class="nav-item" onclick="location.href='index.html'"><i class="material-icons-round">logout</i><span>YÖNETİM</span></a>
+    </nav>
+</body>
+</html>
