@@ -2,139 +2,200 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA STORM | V4.4</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@900&family=Outfit:wght@300;800&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIM | Intelligence Center</title>
     <style>
-        :root { --accent: #00d2ff; --bg: #050a15; --card: rgba(10, 25, 49, 0.7); --border: rgba(0, 210, 255, 0.2); }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Outfit'; }
-        body { background: var(--bg); color: #fff; height: 100vh; overflow: hidden; }
-        
-        /* PASSKEY GATE */
-        #auth-gate { position: fixed; inset: 0; z-index: 9999; background: var(--bg); display: flex; align-items: center; justify-content: center; }
-        .login-box { width: 85%; max-width: 380px; padding: 40px; background: var(--card); border: 1px solid var(--border); border-radius: 30px; text-align: center; backdrop-filter: blur(15px); }
-        
-        /* PANEL UI */
-        #panel { display: none; height: 100vh; flex-direction: column; background: var(--bg); }
-        header { padding: 15px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
-        main { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px; }
-        
-        .module { display: none; }
-        .module.active { display: block; animation: fadeIn 0.3s; }
-        
-        .storm-card { background: var(--card); border-radius: 20px; padding: 20px; border-left: 4px solid var(--accent); margin-bottom: 15px; border-top: 1px solid var(--border); }
-        .inp { width: 100%; background: rgba(0,0,0,0.4); border: 1px solid var(--border); padding: 15px; border-radius: 12px; color: var(--accent); margin-bottom: 15px; outline: none; }
-        .btn { width: 100%; padding: 15px; border-radius: 12px; border: none; background: linear-gradient(90deg, #0072ff, #00d2ff); color: #fff; font-weight: 800; cursor: pointer; text-transform: uppercase; }
+        :root {
+            --primary: #00f3ff;
+            --bg: #050505;
+            --panel: rgba(20, 20, 20, 0.7);
+        }
 
-        /* NAV */
-        nav { position: fixed; bottom: 0; width: 100%; height: 85px; background: rgba(5, 10, 21, 0.98); border-top: 1px solid var(--border); display: flex; align-items: center; z-index: 100; overflow-x: auto; }
-        .nav-item { min-width: 80px; color: #5b7a9d; text-align: center; font-size: 9px; cursor: pointer; flex: 1; }
-        .nav-item.active { color: var(--accent); transform: translateY(-5px); }
-        .nav-item i { font-size: 22px; margin-bottom: 5px; display: block; }
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--bg);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* Arka Plan Grid Efekti */
+        .grid-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(var(--primary) 1px, transparent 1px),
+                              linear-gradient(90deg, var(--primary) 1px, transparent 1px);
+            background-size: 50px 50px;
+            background-position: center;
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        .login-card {
+            background: var(--panel);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 243, 255, 0.2);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
+            width: 320px;
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+            margin-bottom: 30px;
+            color: var(--primary);
+            text-shadow: 0 0 10px var(--primary);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: white;
+            outline: none;
+            transition: 0.3s;
+            box-sizing: border-box;
+            text-align: center;
+            font-family: monospace;
+        }
+
+        input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
+        }
+
+        .btn-enter {
+            width: 100%;
+            padding: 12px;
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: 0.4s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-enter:hover {
+            background: var(--primary);
+            color: black;
+            box-shadow: 0 0 20px var(--primary);
+        }
+
+        .status-msg {
+            margin-top: 15px;
+            font-size: 0.8rem;
+            height: 20px;
+            color: #ff4d4d;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Yükleme Ekranı */
+        #loader {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg);
+            z-index: 100;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .loading-bar {
+            width: 200px;
+            height: 2px;
+            background: #111;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loading-progress {
+            width: 0%;
+            height: 100%;
+            background: var(--primary);
+            animation: load 2.5s forwards;
+        }
+
+        @keyframes load {
+            to { width: 100%; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="auth-gate">
-        <div class="login-box">
-            <h1 style="font-family:'Orbitron'; font-size:24px; color:var(--accent);">ARCHERA</h1>
-            <input type="password" id="pk" class="inp" placeholder="••••" style="text-align:center; margin-top:20px;">
-            <button onclick="entry()" class="btn">SİSTEME SIZ</button>
+    <div class="grid-bg"></div>
+
+    <div id="loader">
+        <div style="letter-spacing: 10px; color: var(--primary);">INITIALIZING...</div>
+        <div class="loading-bar">
+            <div class="loading-progress"></div>
         </div>
     </div>
 
-    <div id="panel">
-        <header>
-            <span style="font-weight:800; letter-spacing:1px;">STORM <span style="color:var(--accent);">v4.4</span></span>
-            <i class="fas fa-bolt" style="color:var(--accent);"></i>
-        </header>
-        <main id="app-content"></main>
-        <nav id="app-nav"></nav>
+    <div class="login-card" id="loginCard">
+        <h1>SIM V1.0</h1>
+        <div class="input-group">
+            <input type="password" id="accessKey" placeholder="GİRİŞ ANAHTARI">
+        </div>
+        <button class="btn-enter" onclick="checkKey()">
+            SİSTEME GİR 
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"/></svg>
+        </button>
+        <div class="status-msg" id="statusMsg"></div>
     </div>
 
     <script>
-        const API = "https://surosint.onrender.com/api/v4";
+        const VALID_KEY = "reis"; // Mevcut sistem anahtarı
 
-        function entry() {
-            const pass = document.getElementById('pk').value;
-            if(pass === "baba") {
-                document.getElementById('auth-gate').style.display = 'none';
-                document.getElementById('panel').style.display = 'flex';
-                loadDynamicSystem();
-            } else { alert("HATALI KEY!"); }
-        }
-
-        async function loadDynamicSystem() {
-            try {
-                const response = await fetch(`${API}/menus`);
-                const menus = await response.json();
-                const nav = document.getElementById('app-nav');
-                const content = document.getElementById('app-content');
-
-                nav.innerHTML = '';
-                content.innerHTML = '';
-
-                menus.forEach((m, i) => {
-                    const isActive = i === 0 ? 'active' : '';
-                    // Alt Menü İkonu
-                    nav.innerHTML += `
-                        <div class="nav-item ${isActive}" onclick="tabSwitch('${m.id}', this)">
-                            <i class="${m.icon}"></i>${m.label}
-                        </div>`;
-                    // Modül İçeriği
-                    content.innerHTML += `
-                        <section id="${m.id}" class="module ${isActive}">
-                            <div class="storm-card">
-                                <h3><i class="${m.icon}"></i> ${m.label}</h3>
-                                <p style="color:#5b7a9d; margin-top:10px;">${m.label} modülü aktif. Komut bekleniyor...</p>
-                            </div>
-                        </section>`;
-                });
-
-                // ADMIN MODÜLÜ (SABİT)
-                nav.innerHTML += `<div class="nav-item" onclick="tabSwitch('mod-admin', this)"><i class="fas fa-tools"></i>ADMIN</div>`;
-                content.innerHTML += `
-                    <section id="mod-admin" class="module">
-                        <div class="storm-card">
-                            <h3>YÖNETİM PANELİ</h3>
-                            <input id="m-name" class="inp" placeholder="Menü Adı (örn: IP SORGUSU)">
-                            <input id="m-icon" class="inp" placeholder="İkon (örn: fas fa-globe)">
-                            <button onclick="addNewModule()" class="btn">SİSTEME MENÜ EKLE</button>
-                        </div>
-                    </section>`;
-
-            } catch (err) {
-                console.error("Yükleme hatası:", err);
-                alert("Backend bağlantısı başarısız!");
-            }
-        }
-
-        function tabSwitch(id, el) {
-            document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-            el.classList.add('active');
-        }
-
-        async function addNewModule() {
-            const label = document.getElementById('m-name').value;
-            const icon = document.getElementById('m-icon').value;
-            if(!label || !icon) return alert("Boş bırakma!");
-
-            const id = 'mod-' + Math.random().toString(36).substr(2, 5);
+        function checkKey() {
+            const key = document.getElementById('accessKey').value;
+            const msg = document.getElementById('statusMsg');
             
-            const res = await fetch(`${API}/menus/add`, {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({ id, label, icon })
-            });
-
-            if(res.ok) {
-                alert("Menü eklendi! Sistem güncelleniyor.");
-                loadDynamicSystem();
+            if(key === VALID_KEY) {
+                msg.style.color = "#00f3ff";
+                msg.innerText = "ERİŞİM ONAYLANDI...";
+                
+                setTimeout(() => {
+                    document.getElementById('loginCard').style.display = 'none';
+                    document.getElementById('loader').style.display = 'flex';
+                    
+                    // Ana Dashboard'a yönlendirme simülasyonu
+                    setTimeout(() => {
+                        alert("Sistem Hazır. Bir sonraki faz (Dashboard) için bekleyiniz.");
+                        // Buraya dashboard linki gelecek: window.location.href = "dashboard.html";
+                    }, 3000);
+                }, 1000);
+            } else {
+                msg.innerText = "GEÇERSİZ ANAHTAR!";
+                document.getElementById('accessKey').style.borderColor = "#ff4d4d";
             }
         }
     </script>
