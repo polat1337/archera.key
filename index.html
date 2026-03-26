@@ -2,172 +2,135 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA | OMNIPOTENT</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@400;900&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARCHERA | CORE ENGINE</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --p: #00ff41; --bg: #050505; --card: #0a0a0a; --b: #1a1a1a; --d: #ff3e3e; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; scrollbar-width: thin; scrollbar-color: var(--p) transparent; }
-        body { background: var(--bg); color: #eee; height: 100vh; overflow: hidden; }
-
-        /* AUTH PROTOCOL */
-        #auth-layer { position: fixed; inset: 0; background: #000; z-index: 10000; display: flex; align-items: center; justify-content: center; transition: 1s; }
-        .auth-terminal { width: 400px; padding: 40px; border: 1px solid var(--b); background: var(--card); border-radius: 4px; border-top: 4px solid var(--p); }
-        .t-input { width: 100%; background: #000; border: 1px solid var(--b); padding: 15px; color: var(--p); font-family: 'Fira Code'; margin-bottom: 20px; outline: none; }
-        .t-btn { width: 100%; padding: 15px; background: transparent; color: var(--p); border: 1px solid var(--p); font-weight: 900; cursor: pointer; transition: 0.3s; }
-        .t-btn:hover { background: var(--p); color: #000; }
-
-        /* MASTER LAYOUT */
-        #shell { display: none; height: 100vh; flex-direction: column; opacity: 0; }
-        header { height: 50px; border-bottom: 1px solid var(--b); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; background: #000; }
-        .v-port { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 100px; }
+        :root { --p: #00ff41; --bg: #0a0a0a; --b: #222; }
+        body { background: var(--bg); color: #eee; font-family: sans-serif; margin: 0; overflow: hidden; height: 100vh; }
         
-        .mod { display: none; }
-        .mod.active { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 15px; animation: fadeIn 0.3s; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* WIDGETS */
-        .w-card { background: var(--card); border: 1px solid var(--b); padding: 20px; border-radius: 4px; position: relative; }
-        .w-h { font-size: 0.65rem; font-weight: 900; color: var(--p); margin-bottom: 15px; letter-spacing: 2px; text-transform: uppercase; border-bottom: 1px solid var(--b); padding-bottom: 8px; display: flex; justify-content: space-between; }
+        /* AUTH */
+        #gate { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center; }
+        .gate-box { width: 300px; padding: 30px; border: 1px solid var(--b); text-align: center; }
         
-        /* DATA TABLES & LISTS */
-        .data-row { display: flex; justify-content: space-between; font-size: 0.75rem; padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.02); }
-        .tag { font-size: 0.6rem; padding: 2px 6px; border-radius: 3px; background: rgba(0,255,65,0.1); color: var(--p); font-weight: 800; }
-
-        /* TERMINAL INTERFACE */
-        .cli-box { background: #000; padding: 10px; font-family: 'Fira Code'; font-size: 0.7rem; height: 180px; overflow-y: auto; color: var(--p); border: 1px solid var(--b); }
+        /* LAYOUT */
+        #app { display: none; height: 100vh; flex-direction: column; }
+        header { height: 50px; border-bottom: 1px solid var(--b); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; font-size: 0.8rem; }
+        .viewport { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 100px; }
         
-        /* NAVIGATION */
-        nav { position: fixed; bottom: 0; width: 100%; height: 70px; background: #000; border-top: 1px solid var(--b); display: flex; justify-content: space-around; align-items: center; }
-        .n-item { color: #555; text-align: center; font-size: 0.6rem; font-weight: 800; cursor: pointer; transition: 0.3s; flex: 1; }
-        .n-item i { font-size: 1.4rem; margin-bottom: 4px; display: block; }
-        .n-item.active { color: var(--p); text-shadow: 0 0 10px var(--p); }
+        /* COMPONENTS */
+        .mod { display: none; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
+        .mod.active { display: grid; }
+        .card { background: #111; border: 1px solid var(--b); padding: 15px; border-radius: 4px; }
+        .card-h { font-size: 0.7rem; color: var(--p); font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid var(--b); padding-bottom: 5px; }
+        
+        input, select, textarea { width: 100%; background: #000; border: 1px solid var(--b); padding: 10px; color: var(--p); margin-bottom: 10px; outline: none; box-sizing: border-box; }
+        button { width: 100%; padding: 10px; background: var(--p); color: #000; border: none; font-weight: bold; cursor: pointer; }
+        
+        /* LOG TERMINAL */
+        .terminal { background: #000; height: 150px; overflow-y: auto; padding: 10px; font-family: monospace; font-size: 0.7rem; color: var(--p); border: 1px solid var(--b); }
+        
+        /* NAV */
+        nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; border-top: 1px solid var(--b); display: flex; justify-content: space-around; align-items: center; }
+        .n-btn { color: #555; text-align: center; font-size: 0.6rem; cursor: pointer; flex: 1; }
+        .n-btn i { font-size: 1.2rem; display: block; margin-bottom: 3px; }
+        .n-btn.active { color: var(--p); }
     </style>
 </head>
 <body>
 
-    <div id="auth-layer">
-        <div class="auth-terminal">
-            <h1 style="color:#fff; font-size:1.5rem; margin-bottom:10px;">ARCHERA CORE</h1>
-            <p style="color:#555; font-size:0.6rem; margin-bottom:30px;">KERNEL PRIVILEGE: ROOT</p>
-            <input type="password" id="key" class="t-input" placeholder="PASSKEY">
-            <button class="t-btn" onclick="initSystem()">BOOT SYSTEM</button>
+    <div id="gate">
+        <div class="gate-box">
+            <h2 style="color:var(--p)">ARCHERA</h2>
+            <input type="password" id="pass" placeholder="ACCESS_KEY">
+            <button onclick="login()">LOGIN</button>
         </div>
     </div>
 
-    <div id="shell">
+    <div id="app">
         <header>
-            <div style="font-weight:900; font-size:0.8rem; color:var(--p);">ARCHERA // MASTER</div>
-            <div id="sys-meta" style="font-family:'Fira Code'; font-size:0.6rem; color:#555;">IP: 192.168.1.1 | PING: 12ms</div>
+            <div>CORE_V16 // <span id="clock"></span></div>
+            <div style="color:var(--p)">CPU: <span id="cpu">0%</span> | RAM: <span id="ram">0%</span></div>
         </header>
 
-        <div class="v-port">
-            
-            <div id="mod-scan" class="mod active">
-                <div class="w-card">
-                    <div class="w-h">Global Crawler <span>LIVE</span></div>
-                    <input type="text" class="t-input" placeholder="URL / GSM / IP..." id="crawl-target">
-                    <button class="t-btn" onclick="runScan()">EXECUTE DEEP SCAN</button>
-                    <div class="cli-box" id="scan-log" style="margin-top:15px;">Awaiting instructions...</div>
-                </div>
-                <div class="w-card">
-                    <div class="w-h">Leak Watcher <span>DB_SPOOF</span></div>
-                    <div id="leak-data">
-                        <div class="data-row"><span>com_facebook_2024.sql</span> <span class="tag">MONITORING</span></div>
-                        <div class="data-row"><span>tr_gsm_index_v2.db</span> <span class="tag">PARSING</span></div>
-                        <div class="data-row"><span>insta_sessions.json</span> <span class="tag">IDLE</span></div>
-                    </div>
+        <div class="viewport" id="v-port">
+            <div id="m-scan" class="mod active">
+                <div class="card">
+                    <div class="card-h">INTELLIGENCE SCANNER</div>
+                    <input type="text" id="target" placeholder="GSM / ID / IP...">
+                    <button onclick="runScan()">EXECUTE QUERY</button>
+                    <div class="terminal" id="scan-log" style="margin-top:10px;">Idle...</div>
                 </div>
             </div>
 
-            <div id="mod-admin" class="mod">
-                <div class="w-card">
-                    <div class="w-h">Session Architect <span>RENDER/MANGO</span></div>
-                    <textarea class="t-input" style="height:80px;" placeholder="Cookie String / JWT Token / Mongo URL"></textarea>
-                    <button class="t-btn" onclick="cli('Session strings injected into kernel.')">LINK DATABASE</button>
+            <div id="m-admin" class="mod">
+                <div class="card">
+                    <div class="card-h">SESSION & DATABASE LINK</div>
+                    <textarea id="sess-data" placeholder="Paste Session/Token/Mongo URL here..."></textarea>
+                    <button onclick="saveSess()">INJECT SESSION</button>
                 </div>
 
-                <div class="w-card">
-                    <div class="w-h">User & Role Control <span>SYSTEM_PRIV</span></div>
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
-                        <input type="text" class="t-input" placeholder="Codename" id="un">
-                        <input type="password" class="t-input" placeholder="Secret" id="up">
+                <div class="card">
+                    <div class="card-h">USER & AUTHORITY MANAGER</div>
+                    <div style="display:flex; gap:5px;">
+                        <input type="text" id="un" placeholder="User">
+                        <input type="password" id="up" placeholder="Pass">
                     </div>
-                    <select class="t-input" id="ur"><option>OPERATIVE (Standard)</option><option>COMMANDER (VIP)</option><option>GHOST (Root)</option></select>
-                    <button class="t-btn" onclick="addUser()">DEPLOY USER</button>
-                    <div id="u-list" style="margin-top:10px;"></div>
+                    <select id="ur"><option>OPERATIVE</option><option>ADMIN</option><option>ROOT</option></select>
+                    <button onclick="addUser()">DEPLOY USER</button>
+                    <div id="user-list" style="margin-top:10px; font-size:0.7rem;"></div>
                 </div>
 
-                <div class="w-card">
-                    <div class="w-h">Module Factory <span>HOT_SWAP</span></div>
-                    <input type="text" id="mn" class="t-input" placeholder="Module Name">
-                    <input type="text" id="mi" class="t-input" placeholder="FA Icon (e.g. fas fa-skull)">
-                    <button class="t-btn" onclick="inject()">INJECT NEW INTERFACE</button>
+                <div class="card">
+                    <div class="card-h">KERNEL MODULE INJECTOR</div>
+                    <input type="text" id="mn" placeholder="Menu Title">
+                    <input type="text" id="mi" placeholder="Icon (e.g: fas fa-skull)">
+                    <button onclick="inject()">INJECT MODULE</button>
                 </div>
 
-                <div class="w-card" style="grid-column: span 1;">
-                    <div class="w-h">Threat Level <span>DEFCON 1</span></div>
-                    <div class="cli-box" id="threat-cli"></div>
+                <div class="card">
+                    <div class="card-h">SYSTEM TRAFFIC LOGS</div>
+                    <div class="terminal" id="sys-log"></div>
                 </div>
             </div>
-
-            <div id="mod-ai" class="mod">
-                <div class="w-card" style="grid-column: span 2;">
-                    <div class="w-h">GemAI Neural Interface <span>V4.0</span></div>
-                    <div class="cli-box" id="ai-chat" style="height:250px;">System: Ready for cognitive tasks...</div>
-                    <div style="display:flex; gap:10px; margin-top:10px;">
-                        <input type="text" class="t-input" placeholder="Ask anything to the machine..." style="margin:0;">
-                        <button class="t-btn" style="width:100px;">ASK</button>
-                    </div>
-                </div>
-            </div>
-
         </div>
 
-        <nav id="master-nav">
-            <div class="n-item active" onclick="tab('mod-scan', this)"><i class="fas fa-satellite"></i><span>Scan</span></div>
-            <div class="n-item" onclick="tab('mod-ai', this)"><i class="fas fa-brain"></i><span>GemAI</span></div>
-            <div class="n-item" onclick="tab('mod-db', this)"><i class="fas fa-microchip"></i><span>Core</span></div>
-            <div class="n-item" onclick="tab('mod-admin', this)"><i class="fas fa-terminal"></i><span>Admin</span></div>
+        <nav id="navbar">
+            <div class="n-btn active" onclick="tab('m-scan', this)"><i class="fas fa-search"></i><span>SCAN</span></div>
+            <div class="n-btn" onclick="tab('m-admin', this)"><i class="fas fa-user-shield"></i><span>ADMIN</span></div>
         </nav>
     </div>
 
     <script>
-        function cli(m, id="threat-cli") {
+        function log(m, id="sys-log") {
             const e = document.getElementById(id);
             e.innerHTML += `<div>[${new Date().toLocaleTimeString()}] > ${m}</div>`;
             e.scrollTop = e.scrollHeight;
         }
 
-        function initSystem() {
-            if(document.getElementById('key').value !== 'baba') { window.location.href = "https://instagram.com/pxlat"; return; }
-            document.getElementById('auth-layer').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('auth-layer').style.display = 'none';
-                document.getElementById('shell').style.display = 'flex';
-                setTimeout(() => { 
-                    document.getElementById('shell').style.opacity = '1';
-                    cli("System Kernel Booted.", "scan-log");
-                    cli("Proxy: Connected.", "scan-log");
-                }, 100);
-            }, 1000);
+        function login() {
+            if(document.getElementById('pass').value === 'baba') {
+                document.getElementById('gate').style.display = 'none';
+                document.getElementById('app').style.display = 'flex';
+                log("Kernel Initialized.");
+                initStats();
+            } else { window.location.href = "https://instagram.com/pxlat"; }
         }
 
         function runScan() {
-            const t = document.getElementById('crawl-target').value;
+            const t = document.getElementById('target').value;
             if(!t) return;
-            cli(`Starting Deep Scan on target: ${t}`, "scan-log");
-            setTimeout(() => cli("Identifying attack vectors...", "scan-log"), 500);
-            setTimeout(() => cli("Database leak found! (ID: 0x992)", "scan-log"), 1500);
+            log(`Querying clusters for: ${t}`, "scan-log");
+            setTimeout(() => log("Connection established via Proxy...", "scan-log"), 1000);
+            setTimeout(() => log("DATA FOUND: 0x821-Leak-Package-TR", "scan-log"), 2500);
         }
 
         function addUser() {
             const n = document.getElementById('un').value;
             const r = document.getElementById('ur').value;
             if(n) {
-                document.getElementById('u-list').innerHTML += `<div class="data-row"><span>${n}</span><span class="tag">${r}</span></div>`;
-                cli(`User ${n} registered with level ${r}`);
+                document.getElementById('user-list').innerHTML += `<div style="padding:5px; border-bottom:1px solid #222;">${n} [${r}] - STATUS: ACTIVE</div>`;
+                log(`User ${n} deployed as ${r}`);
             }
         }
 
@@ -175,25 +138,31 @@
             const n = document.getElementById('mn').value;
             const i = document.getElementById('mi').value;
             if(n && i) {
-                document.getElementById('master-nav').innerHTML += `<div class="n-item" onclick="tab('mod-${n.toLowerCase()}', this)"><i class="${i}"></i><span>${n}</span></div>`;
-                document.querySelector('.v-port').innerHTML += `<div id="mod-${n.toLowerCase()}" class="mod"><div class="w-card"><h3>${n} Module</h3><p>Kernel link active.</p></div></div>`;
-                cli(`Kernel Injection Successful: Module ${n}`);
+                document.getElementById('navbar').innerHTML += `<div class="n-btn" onclick="tab('m-${n}', this)"><i class="${i}"></i><span>${n}</span></div>`;
+                document.getElementById('v-port').innerHTML += `<div id="m-${n}" class="mod"><div class="card"><h3>${n} Module</h3><p>Active and linked to core.</p></div></div>`;
+                log(`Kernel Injection: ${n} module added.`);
             }
+        }
+
+        function saveSess() {
+            localStorage.setItem('archera_session', document.getElementById('sess-data').value);
+            log("Session data encrypted and saved to local cache.");
         }
 
         function tab(id, el) {
             document.querySelectorAll('.mod').forEach(m => m.classList.remove('active'));
-            document.querySelectorAll('.n-item').forEach(n => n.classList.remove('active'));
-            const target = document.getElementById(id);
-            if(target) target.classList.add('active');
+            document.querySelectorAll('.n-btn').forEach(n => n.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
             el.classList.add('active');
         }
 
-        // AUTO-TRAFFIC SIMULATION
-        setInterval(() => {
-            const actions = ["Inbound Ping Detected", "DB Request: 200 OK", "Firewall Blocked: 45.12.x.x", "Parsing social_leak.gz"];
-            cli(actions[Math.floor(Math.random()*actions.length)]);
-        }, 5000);
+        function initStats() {
+            setInterval(() => {
+                document.getElementById('cpu').innerText = Math.floor(Math.random()*40+10) + "%";
+                document.getElementById('ram').innerText = Math.floor(Math.random()*20+40) + "%";
+                document.getElementById('clock').innerText = new Date().toLocaleTimeString();
+            }, 2000);
+        }
     </script>
 </body>
 </html>
