@@ -3,80 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA | DASHBOARD</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <title>ARCHERA | CORE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <style>
-        :root { --bg: #000000; --panel: #0a0a0a; --border: #1a1a1a; --text: #fff; --muted: #444; }
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text); padding-bottom: 90px; }
-
-        header { 
-            padding: 25px 20px; background: var(--panel); border-bottom: 1px solid var(--border);
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .header-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: 4px; font-size: 1.2rem; }
-
-        .top-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; padding: 20px; }
-        .stat-item { background: var(--panel); border: 1px solid var(--border); border-radius: 8px; padding: 15px; }
-        .stat-item span { display: block; font-size: 0.6rem; color: var(--muted); font-weight: 700; text-transform: uppercase; margin-bottom: 5px; }
-        .stat-item h2 { font-size: 1rem; font-weight: 700; color: #fff; }
-
-        .main-ui { padding: 0 20px; }
-        .query-box { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 25px; }
-        .query-box h3 { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; margin-bottom: 15px; letter-spacing: 1px; }
+        :root { --bg: #000; --line: #111; --text: #fff; --sub: #444; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); font-family: 'Space Grotesk', sans-serif; color: var(--text); padding-bottom: 90px; }
         
-        .main-input { 
-            width: 100%; background: #000; border: 1px solid var(--border); border-radius: 4px; 
-            padding: 16px; color: #fff; font-size: 0.9rem; margin-bottom: 15px;
+        header { padding: 30px 20px; border-bottom: 1px solid var(--line); display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: 700; letter-spacing: 5px; font-size: 1.1rem; }
+
+        .sys-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; background: var(--line); border-bottom: 1px solid var(--line); }
+        .sys-item { background: #000; padding: 20px; }
+        .sys-item span { font-size: 0.55rem; color: var(--sub); font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .sys-item p { font-size: 0.9rem; margin-top: 5px; font-weight: 700; }
+
+        .main-op { padding: 30px 20px; }
+        .op-box { border: 1px solid var(--line); padding: 25px; border-radius: 4px; }
+        .op-title { font-size: 0.6rem; color: var(--sub); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 20px; display: block; }
+        input { 
+            width: 100%; background: #050505; border: 1px solid var(--line); padding: 16px; 
+            color: #fff; font-family: 'Space Grotesk'; font-size: 0.9rem; margin-bottom: 20px; outline: none;
         }
-        .run-btn { 
+        .btn-op { 
             width: 100%; padding: 16px; background: #fff; color: #000; border: none; 
-            border-radius: 4px; font-weight: 900; text-transform: uppercase; cursor: pointer; letter-spacing: 1px;
+            font-weight: 700; font-size: 0.8rem; letter-spacing: 2px; cursor: pointer; text-transform: uppercase;
         }
 
-        /* ALT NAVİGASYON - MODERN & KLASİK */
+        /* BOTTOM NAVIGATION - PURE CLASSIC & MODERN */
         nav { 
-            position: fixed; bottom: 0; width: 100%; height: 75px; 
-            background: #050505; border-top: 1px solid var(--border); 
+            position: fixed; bottom: 0; width: 100%; height: 80px; 
+            background: #000; border-top: 1px solid var(--line); 
             display: flex; justify-content: space-around; align-items: center; z-index: 100;
         }
-        .nav-btn { 
+        .nav-item { 
             text-decoration: none; color: #333; display: flex; flex-direction: column; 
-            align-items: center; gap: 4px; transition: 0.3s; flex: 1;
+            align-items: center; gap: 5px; flex: 1; transition: 0.3s;
         }
-        .nav-btn.active { color: #fff; }
-        .nav-btn i { font-size: 24px; }
-        .nav-btn span { font-size: 0.55rem; font-weight: 700; text-transform: uppercase; }
+        .nav-item.active { color: #fff; }
+        .nav-item i { font-size: 24px; }
+        .nav-item span { font-size: 0.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="header-logo">ARCHERA</div>
-        <i class="material-icons-round" onclick="location.href='index.html'" style="color: #444;">power_settings_new</i>
+        <div class="logo">ARCHERA // CORE</div>
+        <i class="material-icons-round" style="color:#222" onclick="location.href='index.html'">power_settings_new</i>
     </header>
 
-    <div class="top-stats">
-        <div class="stat-item"><span>System Link</span><h2>ONLINE</h2></div>
-        <div class="stat-item"><span>Balance</span><h2>994.764 $</h2></div>
+    <div class="sys-grid">
+        <div class="sys-item"><span>Status</span><p>ENCRYPTED</p></div>
+        <div class="sys-item"><span>Credits</span><p>994.764 $</p></div>
     </div>
 
-    <div class="main-ui">
-        <div class="query-box">
-            <h3>Sorgu Terminali</h3>
-            <input type="text" class="main-input" placeholder="Kullanıcı Adı / Link / ID">
-            <button class="run-btn">Sorguyu Başlat</button>
+    <div class="main-op">
+        <div class="op-box">
+            <span class="op-title">Target Inquiry Terminal</span>
+            <input type="text" placeholder="USER_NAME // UID // LINK">
+            <button class="btn-op">Execute Query</button>
         </div>
     </div>
 
     <nav>
-        <a href="#" class="nav-btn active"><i class="material-icons-round">search</i><span>Sorgula</span></a>
-        <a href="#" class="nav-btn"><i class="material-icons-round">person_search</i><span>Hesaplar</span></a>
-        <a href="#" class="nav-btn"><i class="material-icons-round">storage</i><span>Database</span></a>
-        <a href="#" class="nav-btn"><i class="material-icons-round">collections</i><span>Galeri</span></a>
-        <a href="#" class="nav-link"><i class="material-icons-round">psychology</i><span>AI Chat</span></a>
-        <a href="#" class="nav-btn"><i class="material-icons-round">admin_panel_settings</i><span>Admin</span></a>
+        <a href="#" class="nav-item active"><i class="material-icons-round">radar</i><span>Sorgu</span></a>
+        <a href="#" class="nav-item"><i class="material-icons-round">fingerprint</i><span>Hesaplar</span></a>
+        <a href="#" class="nav-item"><i class="material-icons-round">dns</i><span>Database</span></a>
+        <a href="#" class="nav-item"><i class="material-icons-round">layers</i><span>Medya</span></a>
+        <a href="#" class="nav-item"><i class="material-icons-round">terminal</i><span>AI Chat</span></a>
+        <a href="#" class="nav-item"><i class="material-icons-round">settings_input_component</i><span>Yönetim</span></a>
     </nav>
 
 </body>
