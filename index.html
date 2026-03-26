@@ -2,166 +2,133 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARCHERA | CORE ENGINE</title>
+    <title>ARCHERA | OPERATIONAL</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --p: #00ff41; --bg: #0a0a0a; --b: #222; }
-        body { background: var(--bg); color: #eee; font-family: sans-serif; margin: 0; overflow: hidden; height: 100vh; }
+        :root { --p: #00ff41; --bg: #050505; --b: #222; }
+        body { background: var(--bg); color: #eee; font-family: 'Segoe UI', sans-serif; margin: 0; display: flex; height: 100vh; }
         
-        /* AUTH */
-        #gate { position: fixed; inset: 0; background: #000; z-index: 9999; display: flex; align-items: center; justify-content: center; }
-        .gate-box { width: 300px; padding: 30px; border: 1px solid var(--b); text-align: center; }
+        /* SIDEBAR (NAV) */
+        nav { width: 70px; background: #000; border-right: 1px solid var(--b); display: flex; flex-direction: column; align-items: center; padding: 20px 0; }
+        .n-item { color: #444; margin-bottom: 25px; font-size: 1.5rem; cursor: pointer; transition: 0.2s; }
+        .n-item.active { color: var(--p); }
+
+        /* CONTENT AREA */
+        main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+        header { height: 50px; background: #0a0a0a; border-bottom: 1px solid var(--b); display: flex; align-items: center; padding: 0 20px; font-weight: bold; font-size: 0.8rem; }
+        .viewport { flex: 1; overflow-y: auto; padding: 20px; }
+
+        /* GRID SYSTEM */
+        .grid { display: none; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 20px; }
+        .grid.active { display: grid; }
+
+        /* CARDS & TOOLS */
+        .card { background: #0d0d0d; border: 1px solid var(--b); padding: 20px; border-radius: 4px; }
+        .card-h { font-size: 0.7rem; color: var(--p); margin-bottom: 15px; border-bottom: 1px solid var(--b); padding-bottom: 5px; text-transform: uppercase; letter-spacing: 1px; }
         
-        /* LAYOUT */
-        #app { display: none; height: 100vh; flex-direction: column; }
-        header { height: 50px; border-bottom: 1px solid var(--b); display: flex; align-items: center; justify-content: space-between; padding: 0 15px; font-size: 0.8rem; }
-        .viewport { flex: 1; overflow-y: auto; padding: 15px; padding-bottom: 100px; }
+        input, select, textarea { width: 100%; background: #000; border: 1px solid var(--b); padding: 12px; color: #fff; margin-bottom: 10px; font-family: monospace; outline: none; }
+        button { width: 100%; padding: 12px; background: var(--p); color: #000; border: none; font-weight: 900; cursor: pointer; border-radius: 2px; }
         
-        /* COMPONENTS */
-        .mod { display: none; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 15px; }
-        .mod.active { display: grid; }
-        .card { background: #111; border: 1px solid var(--b); padding: 15px; border-radius: 4px; }
-        .card-h { font-size: 0.7rem; color: var(--p); font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid var(--b); padding-bottom: 5px; }
-        
-        input, select, textarea { width: 100%; background: #000; border: 1px solid var(--b); padding: 10px; color: var(--p); margin-bottom: 10px; outline: none; box-sizing: border-box; }
-        button { width: 100%; padding: 10px; background: var(--p); color: #000; border: none; font-weight: bold; cursor: pointer; }
-        
-        /* LOG TERMINAL */
-        .terminal { background: #000; height: 150px; overflow-y: auto; padding: 10px; font-family: monospace; font-size: 0.7rem; color: var(--p); border: 1px solid var(--b); }
-        
-        /* NAV */
-        nav { position: fixed; bottom: 0; width: 100%; height: 65px; background: #000; border-top: 1px solid var(--b); display: flex; justify-content: space-around; align-items: center; }
-        .n-btn { color: #555; text-align: center; font-size: 0.6rem; cursor: pointer; flex: 1; }
-        .n-btn i { font-size: 1.2rem; display: block; margin-bottom: 3px; }
-        .n-btn.active { color: var(--p); }
+        .perm-box { display: flex; align-items: center; gap: 10px; font-size: 0.7rem; margin-bottom: 8px; }
+        .perm-box input { width: auto; margin: 0; }
+
+        .log-box { background: #000; height: 150px; overflow-y: auto; padding: 10px; font-family: monospace; font-size: 0.7rem; color: var(--p); border: 1px solid var(--b); }
     </style>
 </head>
 <body>
 
-    <div id="gate">
-        <div class="gate-box">
-            <h2 style="color:var(--p)">ARCHERA</h2>
-            <input type="password" id="pass" placeholder="ACCESS_KEY">
-            <button onclick="login()">LOGIN</button>
-        </div>
-    </div>
+    <nav>
+        <div class="n-item active" onclick="tab('m-home', this)"><i class="fas fa-terminal"></i></div>
+        <div class="n-item" onclick="tab('m-admin', this)"><i class="fas fa-tools"></i></div>
+        <div class="n-item" onclick="tab('m-users', this)"><i class="fas fa-users-cog"></i></div>
+    </nav>
 
-    <div id="app">
-        <header>
-            <div>CORE_V16 // <span id="clock"></span></div>
-            <div style="color:var(--p)">CPU: <span id="cpu">0%</span> | RAM: <span id="ram">0%</span></div>
-        </header>
-
-        <div class="viewport" id="v-port">
-            <div id="m-scan" class="mod active">
-                <div class="card">
-                    <div class="card-h">INTELLIGENCE SCANNER</div>
-                    <input type="text" id="target" placeholder="GSM / ID / IP...">
-                    <button onclick="runScan()">EXECUTE QUERY</button>
-                    <div class="terminal" id="scan-log" style="margin-top:10px;">Idle...</div>
+    <main>
+        <header>ARCHERA // CORE V17.0 // <span id="st" style="margin-left:10px; color:var(--p)">CONNECTED</span></header>
+        
+        <div class="viewport">
+            <div id="m-home" class="grid active">
+                <div class="card" style="grid-column: span 2;">
+                    <div class="card-h">RAW QUERY TERMINAL</div>
+                    <textarea id="query" style="height:120px;" placeholder='{ "action": "find", "collection": "users", "query": { "id": "123" } }'></textarea>
+                    <button onclick="sendQuery()">EXECUTE REMOTE COMMAND</button>
+                    <div class="log-box" id="res-log" style="margin-top:10px;">Awaiting response from server...</div>
                 </div>
             </div>
 
-            <div id="m-admin" class="mod">
+            <div id="m-admin" class="grid">
                 <div class="card">
-                    <div class="card-h">SESSION & DATABASE LINK</div>
-                    <textarea id="sess-data" placeholder="Paste Session/Token/Mongo URL here..."></textarea>
-                    <button onclick="saveSess()">INJECT SESSION</button>
+                    <div class="card-h">DATABASE INFRASTRUCTURE</div>
+                    <input type="text" placeholder="MongoDB Connection String">
+                    <input type="text" placeholder="Render API Key">
+                    <input type="text" placeholder="Webhook URL (Discord/TG)">
+                    <button onclick="saveConf()">SAVE CONFIGURATION</button>
                 </div>
-
                 <div class="card">
-                    <div class="card-h">USER & AUTHORITY MANAGER</div>
-                    <div style="display:flex; gap:5px;">
-                        <input type="text" id="un" placeholder="User">
-                        <input type="password" id="up" placeholder="Pass">
-                    </div>
-                    <select id="ur"><option>OPERATIVE</option><option>ADMIN</option><option>ROOT</option></select>
-                    <button onclick="addUser()">DEPLOY USER</button>
-                    <div id="user-list" style="margin-top:10px; font-size:0.7rem;"></div>
+                    <div class="card-h">SYSTEM BACKUP</div>
+                    <p style="font-size:0.7rem; color:#888;">Tüm kullanıcıları, ayarları ve session verilerini dışa aktar.</p>
+                    <button style="background:#444; color:#fff;" onclick="exportData()">DOWNLOAD BACKUP (.JSON)</button>
                 </div>
-
                 <div class="card">
-                    <div class="card-h">KERNEL MODULE INJECTOR</div>
-                    <input type="text" id="mn" placeholder="Menu Title">
-                    <input type="text" id="mi" placeholder="Icon (e.g: fas fa-skull)">
-                    <button onclick="inject()">INJECT MODULE</button>
+                    <div class="card-h">BULK DATA INJECTOR</div>
+                    <input type="file" id="bulk" style="border:1px dashed var(--b); padding:20px;">
+                    <button onclick="alert('JSON Parsing...')">UPLOAD & MERGE DATA</button>
                 </div>
+            </div>
 
+            <div id="m-users" class="grid">
                 <div class="card">
-                    <div class="card-h">SYSTEM TRAFFIC LOGS</div>
-                    <div class="terminal" id="sys-log"></div>
+                    <div class="card-h">NEW OPERATIVE DEPLOYMENT</div>
+                    <input type="text" id="un" placeholder="Username">
+                    <input type="password" id="up" placeholder="Secret Key">
+                    <div class="card-h" style="border:none; margin-top:10px;">PERMISSIONS</div>
+                    <div class="perm-box"><input type="checkbox"> Read Access</div>
+                    <div class="perm-box"><input type="checkbox"> Write Access</div>
+                    <div class="perm-box"><input type="checkbox"> Delete Access</div>
+                    <div class="perm-box"><input type="checkbox"> Admin Privilege</div>
+                    <button onclick="addOp()">DEPLOY AGENT</button>
+                </div>
+                <div class="card">
+                    <div class="card-h">ACTIVE OPERATIVES</div>
+                    <div id="op-list"></div>
                 </div>
             </div>
         </div>
-
-        <nav id="navbar">
-            <div class="n-btn active" onclick="tab('m-scan', this)"><i class="fas fa-search"></i><span>SCAN</span></div>
-            <div class="n-btn" onclick="tab('m-admin', this)"><i class="fas fa-user-shield"></i><span>ADMIN</span></div>
-        </nav>
-    </div>
+    </main>
 
     <script>
-        function log(m, id="sys-log") {
-            const e = document.getElementById(id);
-            e.innerHTML += `<div>[${new Date().toLocaleTimeString()}] > ${m}</div>`;
-            e.scrollTop = e.scrollHeight;
-        }
-
-        function login() {
-            if(document.getElementById('pass').value === 'baba') {
-                document.getElementById('gate').style.display = 'none';
-                document.getElementById('app').style.display = 'flex';
-                log("Kernel Initialized.");
-                initStats();
-            } else { window.location.href = "https://instagram.com/pxlat"; }
-        }
-
-        function runScan() {
-            const t = document.getElementById('target').value;
-            if(!t) return;
-            log(`Querying clusters for: ${t}`, "scan-log");
-            setTimeout(() => log("Connection established via Proxy...", "scan-log"), 1000);
-            setTimeout(() => log("DATA FOUND: 0x821-Leak-Package-TR", "scan-log"), 2500);
-        }
-
-        function addUser() {
-            const n = document.getElementById('un').value;
-            const r = document.getElementById('ur').value;
-            if(n) {
-                document.getElementById('user-list').innerHTML += `<div style="padding:5px; border-bottom:1px solid #222;">${n} [${r}] - STATUS: ACTIVE</div>`;
-                log(`User ${n} deployed as ${r}`);
-            }
-        }
-
-        function inject() {
-            const n = document.getElementById('mn').value;
-            const i = document.getElementById('mi').value;
-            if(n && i) {
-                document.getElementById('navbar').innerHTML += `<div class="n-btn" onclick="tab('m-${n}', this)"><i class="${i}"></i><span>${n}</span></div>`;
-                document.getElementById('v-port').innerHTML += `<div id="m-${n}" class="mod"><div class="card"><h3>${n} Module</h3><p>Active and linked to core.</p></div></div>`;
-                log(`Kernel Injection: ${n} module added.`);
-            }
-        }
-
-        function saveSess() {
-            localStorage.setItem('archera_session', document.getElementById('sess-data').value);
-            log("Session data encrypted and saved to local cache.");
-        }
-
         function tab(id, el) {
-            document.querySelectorAll('.mod').forEach(m => m.classList.remove('active'));
-            document.querySelectorAll('.n-btn').forEach(n => n.classList.remove('active'));
+            document.querySelectorAll('.grid').forEach(g => g.classList.remove('active'));
+            document.querySelectorAll('.n-item').forEach(i => i.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             el.classList.add('active');
         }
 
-        function initStats() {
-            setInterval(() => {
-                document.getElementById('cpu').innerText = Math.floor(Math.random()*40+10) + "%";
-                document.getElementById('ram').innerText = Math.floor(Math.random()*20+40) + "%";
-                document.getElementById('clock').innerText = new Date().toLocaleTimeString();
-            }, 2000);
+        function sendQuery() {
+            const q = document.getElementById('query').value;
+            const log = document.getElementById('res-log');
+            log.innerHTML += `<div>[${new Date().toLocaleTimeString()}] -> Sending JSON to Render...</div>`;
+            // Burada gerçek fetch(RENDER_URL) tetiklenebilir
+        }
+
+        function addOp() {
+            const n = document.getElementById('un').value;
+            if(n) {
+                document.getElementById('op-list').innerHTML += `<div style="padding:10px; border-bottom:1px solid var(--b); font-size:0.7rem;">${n.toUpperCase()} - STATUS: AUTH_PENDING</div>`;
+                document.getElementById('un').value = "";
+            }
+        }
+
+        function exportData() {
+            const data = { users: [], config: "saved" };
+            const blob = new Blob([JSON.stringify(data)], {type: 'application/json'});
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = 'archera_backup.json'; a.click();
+        }
+
+        function saveConf() {
+            alert("Configuration Encrypted & Saved.");
         }
     </script>
 </body>
