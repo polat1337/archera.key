@@ -3,63 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA | INTELLIGENCE HUB</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <title>ARCHERA | OSINT PROTOCOL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <style>
-        /* Sadece senin tasarımını parlatacak modern renk paleti */
         :root { 
-            --accent: #00ff41; /* Oathnet Yeşili */
-            --bg: #020202; 
-            --panel: rgba(10, 10, 10, 0.98); 
-            --border: rgba(0, 255, 65, 0.15); 
+            --accent: #00ff41; 
+            --bg: #030303; 
+            --glass: rgba(15, 15, 15, 0.7);
+            --border: rgba(255, 255, 255, 0.05);
+            --glow: 0 0 20px rgba(0, 255, 65, 0.2);
         }
-        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); font-family: 'Inter', sans-serif; color: #fff; overflow: hidden; height: 100vh; }
 
-        .cyber-grid { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 30px 30px; z-index: -1; opacity: 0.3; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background: var(--bg); color: #fff; overflow: hidden; height: 100vh; }
 
-        /* GİRİŞ KATMANI */
-        #gatekeeper { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; transition: 0.8s ease; }
-        .gate-card { width: 90%; max-width: 380px; text-align: center; border: 1px solid var(--border); padding: 60px 30px; border-radius: 2px; background: var(--panel); box-shadow: 0 0 50px rgba(0,0,0,1); }
-        .gate-card h1 { font-family: 'Space Grotesk'; font-weight: 700; letter-spacing: 12px; font-size: 2.2rem; margin-bottom: 5px; text-shadow: 0 0 20px var(--accent); color: var(--accent); }
-        .gate-card p { font-size: 0.6rem; color: #444; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 40px; }
-        .key-input { width: 100%; background: #000; border: 1px solid #111; padding: 18px; color: var(--accent); text-align: center; font-size: 1.1rem; letter-spacing: 10px; transition: 0.4s; margin-bottom: 20px; }
-        .key-input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(0,255,65,0.1); }
-        .enter-btn { width: 100%; padding: 20px; background: var(--accent); color: #000; font-weight: 900; cursor: pointer; text-transform: uppercase; letter-spacing: 3px; border: none; transition: 0.4s; }
-        .enter-btn:hover { box-shadow: 0 0 30px var(--accent); transform: translateY(-2px); }
+        /* ARKA PLAN - DAHA ELİT BİR DOKU */
+        .cyber-grid { 
+            position: fixed; inset: 0; z-index: -1;
+            background: radial-gradient(circle at 50% 50%, #0a150a 0%, #030303 100%);
+            opacity: 0.8;
+        }
+        .cyber-grid::after {
+            content: ""; position: absolute; inset: 0;
+            background-image: linear-gradient(rgba(0,255,65,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,255,65,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
 
-        /* ANA PANEL */
-        #main-shell { display: none; height: 100vh; flex-direction: column; opacity: 0; transition: 1s; }
-        header { padding: 25px 20px; display: flex; justify-content: space-between; align-items: center; background: var(--panel); border-bottom: 1px solid var(--border); }
-        .header-logo { font-family: 'Space Grotesk'; font-weight: 700; letter-spacing: 5px; color: var(--accent); font-size: 1.1rem; }
-
-        .view-port { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px; }
-        .module { display: none; animation: slideUp 0.4s ease; }
-        .module.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* KARTLAR */
-        .glass-card { background: var(--panel); border: 1px solid var(--border); padding: 30px; margin-bottom: 20px; position: relative; }
-        .glass-card::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 30px; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
-        .card-label { font-size: 0.6rem; color: #444; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 20px; border-left: 2px solid var(--accent); padding-left: 10px; }
+        /* GİRİŞ EKRANI - RADİKAL DEĞİŞİM */
+        #gatekeeper { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px); }
+        .gate-card { 
+            width: 90%; max-width: 400px; padding: 50px; background: var(--glass); 
+            border: 1px solid var(--border); border-radius: 24px; text-align: center;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .gate-card h1 { font-size: 3rem; font-weight: 800; letter-spacing: -2px; margin-bottom: 10px; color: #fff; }
+        .gate-card p { font-size: 0.7rem; color: #555; text-transform: uppercase; letter-spacing: 4px; margin-bottom: 40px; }
         
-        input, select { width: 100%; background: #000; border: 1px solid #1a1a1a; padding: 16px; color: #fff; font-family: 'Space Grotesk'; margin-bottom: 15px; border-radius: 0; }
-        input:focus { border-color: var(--accent); }
-        .action-btn { width: 100%; padding: 16px; background: var(--accent); color: #000; border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; letter-spacing: 1px; }
+        .key-input { 
+            width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border); 
+            padding: 20px; color: var(--accent); border-radius: 12px; font-size: 1.2rem;
+            text-align: center; letter-spacing: 5px; margin-bottom: 15px; transition: 0.3s;
+        }
+        .key-input:focus { border-color: var(--accent); box-shadow: var(--glow); background: rgba(0,255,65,0.02); }
+        
+        .enter-btn { 
+            width: 100%; padding: 20px; background: #fff; color: #000; font-weight: 800;
+            border-radius: 12px; border: none; cursor: pointer; text-transform: uppercase;
+            letter-spacing: 1px; transition: 0.3s;
+        }
+        .enter-btn:hover { background: var(--accent); transform: translateY(-3px); box-shadow: var(--glow); }
 
-        /* NAVİGASYON */
-        nav { position: fixed; bottom: 0; width: 100%; height: 85px; background: #000; border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
-        .nav-item { text-decoration: none; color: #333; display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; transition: 0.3s; cursor: pointer; }
-        .nav-item.active { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
-        .nav-item i { font-size: 26px; }
-        .nav-item span { font-size: 0.5rem; font-weight: 800; text-transform: uppercase; }
+        .request-key { margin-top: 20px; display: block; color: #444; font-size: 0.7rem; text-decoration: none; transition: 0.3s; }
+        .request-key:hover { color: var(--accent); }
 
-        /* SONUÇLAR */
-        .identity-result { margin-top: 20px; display: none; background: #000; border: 1px solid var(--accent); padding: 25px; }
-        .data-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #111; font-size: 0.8rem; }
-        .data-row span { color: #444; font-weight: 800; text-transform: uppercase; }
-        .data-row p { color: #eee; font-family: 'Space Grotesk'; }
+        /* ANA PANEL - MODERN YAPI */
+        #main-shell { display: none; height: 100vh; flex-direction: column; opacity: 0; transition: 0.6s; }
+        header { 
+            padding: 30px; display: flex; justify-content: space-between; align-items: center;
+            background: rgba(0,0,0,0.5); border-bottom: 1px solid var(--border); backdrop-filter: blur(10px);
+        }
+        .header-logo { font-weight: 800; font-size: 1.4rem; color: #fff; display: flex; align-items: center; gap: 10px; }
+        .header-logo::before { content: ""; width: 8px; height: 8px; background: var(--accent); border-radius: 50%; box-shadow: var(--glow); }
+
+        .view-port { flex: 1; overflow-y: auto; padding: 25px; padding-bottom: 110px; }
+        .module { display: none; max-width: 800px; margin: 0 auto; }
+        .module.active { display: block; animation: modFade 0.4s ease-out; }
+        @keyframes modFade { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* KARTLAR - GLASSMORPHISM */
+        .glass-card { 
+            background: var(--glass); border: 1px solid var(--border); padding: 35px; 
+            border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); margin-bottom: 25px;
+        }
+        .card-label { font-size: 0.65rem; color: var(--accent); font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; display: block; opacity: 0.6; }
+        
+        input, select { 
+            width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border); 
+            padding: 18px; color: #fff; border-radius: 12px; margin-bottom: 15px; font-size: 0.9rem;
+        }
+        .action-btn { 
+            width: 100%; padding: 18px; background: var(--accent); color: #000; 
+            border: none; border-radius: 12px; font-weight: 800; text-transform: uppercase; cursor: pointer; transition: 0.3s;
+        }
+        .action-btn:hover { box-shadow: var(--glow); transform: scale(1.01); }
+
+        /* ALT NAVİGASYON - FLOATING STYLE */
+        nav { 
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 500px; height: 75px; 
+            background: rgba(15, 15, 15, 0.85); backdrop-filter: blur(20px);
+            border: 1px solid var(--border); border-radius: 20px;
+            display: flex; justify-content: space-around; align-items: center; z-index: 1000;
+        }
+        .nav-item { color: #444; display: flex; flex-direction: column; align-items: center; gap: 4px; transition: 0.3s; cursor: pointer; }
+        .nav-item.active { color: var(--accent); }
+        .nav-item i { font-size: 24px; }
+        .nav-item span { font-size: 0.55rem; font-weight: 700; text-transform: uppercase; }
+
+        /* SONUÇLAR - MODERN GRID */
+        .identity-result { margin-top: 30px; display: none; background: rgba(255,255,255,0.01); border-radius: 15px; overflow: hidden; border: 1px solid var(--border); }
+        .data-row { display: flex; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+        .data-row span { color: #555; font-weight: 700; }
+        .data-row p { font-family: 'JetBrains Mono'; color: var(--accent); }
     </style>
 </head>
 <body>
@@ -69,41 +115,53 @@
     <div id="gatekeeper">
         <div class="gate-card">
             <h1>ARCHERA</h1>
-            <p>INTELLIGENCE TERMINAL</p>
-            <input type="password" id="gateKey" class="key-input" placeholder="TOKEN">
-            <button class="enter-btn" onclick="tryLogin()">Sisteme Sız</button>
+            <p>Intelligence Protocol</p>
+            <input type="password" id="gateKey" class="key-input" placeholder="ACCESS KEY">
+            <button class="enter-btn" onclick="tryLogin()">Sistemi Başlat</button>
+            <a href="https://www.instagram.com/pxlat" target="_blank" class="request-key">Anahtarın yok mu? Key Talep Et</a>
         </div>
     </div>
 
     <div id="main-shell">
         <header>
-            <div class="header-logo">ARCHERA // CORE</div>
-            <div id="status-indicator" style="font-size: 0.5rem; color: #ff3333; border: 1px solid #ff3333; padding: 4px 10px; letter-spacing: 1px;">OFFLINE</div>
+            <div class="header-logo">ARCHERA</div>
+            <div id="status-indicator" style="font-size: 0.6rem; color: var(--accent); border: 1px solid var(--accent); padding: 5px 12px; border-radius: 20px; font-weight: 800;">CORE ONLINE</div>
         </header>
 
         <div class="view-port">
+            
             <div id="mod-sorgu" class="module active">
                 <div class="glass-card">
-                    <span class="card-label">Merkezi Sorgu Terminali</span>
-                    <input type="text" id="targetInput" placeholder="Kullanıcı Adı / ID">
-                    <button class="action-btn" onclick="executeSorgu()">Sorguyu Başlat</button>
-                    <div id="sorguLoading" style="display:none; text-align:center; margin-top:15px; color:var(--accent); font-size:0.6rem; letter-spacing:2px;">BOT KÖPRÜSÜNE BAĞLANILIYOR...</div>
+                    <span class="card-label">Terminal Query Engine</span>
+                    <input type="text" id="targetInput" placeholder="Hedef kullanıcı adını girin...">
+                    <button class="action-btn" onclick="executeSorgu()">RUN ANALYSIS</button>
+                    
+                    <div id="sorguLoading" style="display:none; text-align:center; margin-top:20px; color:var(--accent); font-size:0.7rem; font-family:'JetBrains Mono';">>> CONNECTING BOT BRIDGE...</div>
+
                     <div id="resCard" class="identity-result">
-                        <div class="data-row"><span>AD SOYAD:</span><p id="res-name">-</p></div>
-                        <div class="data-row"><span>GSM NO:</span><p style="color:var(--accent)">SORGULANIYOR...</p></div>
-                        <div class="data-row"><span>TC KİMLİK:</span><p style="color:var(--accent)">BEKLENİYOR...</p></div>
-                        <div class="data-row"><span>DURUM:</span><p id="res-priv">-</p></div>
+                        <div class="data-row"><span>IDENTITY</span><p id="res-name">-</p></div>
+                        <div class="data-row"><span>GSM</span><p style="color:white">SORGULANIYOR...</p></div>
+                        <div class="data-row"><span>T.C. ID</span><p style="color:white">BEKLENİYOR...</p></div>
+                        <div class="data-row"><span>SECURITY</span><p id="res-priv">-</p></div>
                     </div>
                 </div>
             </div>
+
+            <div id="mod-admin" class="module">
+                <div class="glass-card">
+                    <span class="card-label">System Control</span>
+                    <input type="text" id="sessionData" placeholder="New Session ID">
+                    <button class="action-btn" style="background:#fff; color:#000;" onclick="saveSession()">UPDATE CORE</button>
+                </div>
             </div>
+
+        </div>
 
         <nav>
             <div class="nav-item active" onclick="switchTab('mod-sorgu', this)"><i class="material-icons-round">radar</i><span>Sorgu</span></div>
-            <div class="nav-item" onclick="switchTab('mod-db', this)"><i class="material-icons-round">dns</i><span>DB</span></div>
-            <div class="nav-item" onclick="switchTab('mod-img', this)"><i class="material-icons-round">collections</i><span>Arşiv</span></div>
-            <div class="nav-item" onclick="switchTab('mod-ai', this)"><i class="material-icons-round">smart_toy</i><span>AI</span></div>
-            <div class="nav-item" onclick="switchTab('mod-admin', this)"><i class="material-icons-round">admin_panel_settings</i><span>Admin</span></div>
+            <div class="nav-item" onclick="switchTab('mod-db', this)"><i class="material-icons-round">dns</i><span>Database</span></div>
+            <div class="nav-item" onclick="switchTab('mod-ai', this)"><i class="material-icons-round">auto_awesome</i><span>AI Core</span></div>
+            <div class="nav-item" onclick="switchTab('mod-admin', this)"><i class="material-icons-round">terminal</i><span>Admin</span></div>
         </nav>
     </div>
 
@@ -117,24 +175,11 @@
                 setTimeout(() => {
                     document.getElementById('gatekeeper').style.display = "none";
                     document.getElementById('main-shell').style.display = "flex";
-                    setTimeout(() => { document.getElementById('main-shell').style.opacity = "1"; checkBackend(); }, 50);
-                }, 800);
+                    setTimeout(() => { document.getElementById('main-shell').style.opacity = "1"; }, 50);
+                }, 600);
             } else { 
-                // Yanlış key veya boşsa senin Instagram'a uçurur
                 window.location.href = "https://www.instagram.com/pxlat"; 
             }
-        }
-
-        async function checkBackend() {
-            try {
-                const res = await fetch(RENDER_URL + '/');
-                if(res.ok) {
-                    const status = document.getElementById('status-indicator');
-                    status.innerText = "ONLINE";
-                    status.style.color = var(--accent);
-                    status.style.borderColor = var(--accent);
-                }
-            } catch(e) { console.log("Engine waking up..."); }
         }
 
         function switchTab(modId, el) {
@@ -151,7 +196,7 @@
             if(!target) return;
             loading.style.display = "block";
             resultCard.style.display = "none";
-            // API Entegrasyonu buraya gelecek
+            // Backend bağlantısı buraya gelecek...
         }
     </script>
 </body>
