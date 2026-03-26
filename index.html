@@ -4,102 +4,62 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ARCHERA | INTELLIGENCE HUB</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <style>
+        /* Sadece senin tasarımını parlatacak modern renk paleti */
         :root { 
-            --accent: #00f2ff; 
-            --accent-soft: rgba(0, 242, 255, 0.15);
+            --accent: #00ff41; /* Oathnet Yeşili */
             --bg: #020202; 
-            --panel: rgba(20, 20, 20, 0.8); 
-            --border: rgba(255, 255, 255, 0.05); 
-            --text-main: #e0e0e0;
-            --text-dim: #666;
+            --panel: rgba(10, 10, 10, 0.98); 
+            --border: rgba(0, 255, 65, 0.15); 
         }
-
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text-main); overflow: hidden; height: 100vh; }
+        body { background: var(--bg); font-family: 'Inter', sans-serif; color: #fff; overflow: hidden; height: 100vh; }
 
-        /* --- PREMIUM ARKA PLAN --- */
-        .cyber-grid { 
-            position: fixed; inset: 0; 
-            background: radial-gradient(circle at center, #0a0a0a 0%, #020202 100%);
-            z-index: -2; 
-        }
-        .cyber-grid::after {
-            content: ''; position: absolute; inset: 0;
-            background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
-            background-size: 50px 50px; opacity: 0.2;
-        }
+        .cyber-grid { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 30px 30px; z-index: -1; opacity: 0.3; }
 
-        /* --- GATEKEEPER (PREMIUM LOGIN) --- */
-        #gatekeeper { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
-        .gate-card { 
-            width: 90%; max-width: 400px; text-align: center; border: 1px solid var(--border); 
-            padding: 60px 40px; background: var(--panel); position: relative;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
-        }
-        .gate-card::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 2px; background: var(--accent); box-shadow: 0 0 15px var(--accent); }
-        .gate-card h1 { font-family: 'Space Grotesk'; font-weight: 700; letter-spacing: 12px; font-size: 2.2rem; margin-bottom: 10px; color: #fff; }
-        .gate-card p { font-size: 0.65rem; color: var(--text-dim); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 45px; }
-        .key-input { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 18px; color: #fff; text-align: center; font-size: 1.1rem; letter-spacing: 6px; margin-bottom: 25px; transition: 0.3s; }
-        .key-input:focus { border-color: var(--accent); background: rgba(0, 242, 255, 0.02); }
-        .enter-btn { width: 100%; padding: 20px; background: var(--accent); color: #000; font-weight: 800; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 3px; transition: 0.4s; }
-        .enter-btn:hover { box-shadow: 0 0 30px var(--accent-soft); transform: translateY(-2px); }
+        /* GİRİŞ KATMANI */
+        #gatekeeper { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; transition: 0.8s ease; }
+        .gate-card { width: 90%; max-width: 380px; text-align: center; border: 1px solid var(--border); padding: 60px 30px; border-radius: 2px; background: var(--panel); box-shadow: 0 0 50px rgba(0,0,0,1); }
+        .gate-card h1 { font-family: 'Space Grotesk'; font-weight: 700; letter-spacing: 12px; font-size: 2.2rem; margin-bottom: 5px; text-shadow: 0 0 20px var(--accent); color: var(--accent); }
+        .gate-card p { font-size: 0.6rem; color: #444; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 40px; }
+        .key-input { width: 100%; background: #000; border: 1px solid #111; padding: 18px; color: var(--accent); text-align: center; font-size: 1.1rem; letter-spacing: 10px; transition: 0.4s; margin-bottom: 20px; }
+        .key-input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(0,255,65,0.1); }
+        .enter-btn { width: 100%; padding: 20px; background: var(--accent); color: #000; font-weight: 900; cursor: pointer; text-transform: uppercase; letter-spacing: 3px; border: none; transition: 0.4s; }
+        .enter-btn:hover { box-shadow: 0 0 30px var(--accent); transform: translateY(-2px); }
 
-        /* --- DASHBOARD STRUCTURE --- */
+        /* ANA PANEL */
         #main-shell { display: none; height: 100vh; flex-direction: column; opacity: 0; transition: 1s; }
-        header { 
-            padding: 25px 30px; display: flex; justify-content: space-between; align-items: center; 
-            background: rgba(10,10,10,0.9); border-bottom: 1px solid var(--border); backdrop-filter: blur(10px);
-        }
-        .header-logo { font-family: 'Space Grotesk'; font-weight: 700; letter-spacing: 5px; color: #fff; font-size: 1.1rem; }
-        #status-indicator { font-size: 0.6rem; font-weight: 700; color: #ff3333; border: 1px solid rgba(255,51,51,0.3); padding: 6px 14px; letter-spacing: 1px; }
+        header { padding: 25px 20px; display: flex; justify-content: space-between; align-items: center; background: var(--panel); border-bottom: 1px solid var(--border); }
+        .header-logo { font-family: 'Space Grotesk'; font-weight: 700; letter-spacing: 5px; color: var(--accent); font-size: 1.1rem; }
 
-        .view-port { flex: 1; overflow-y: auto; padding: 25px; padding-bottom: 110px; }
-        .module { display: none; max-width: 800px; margin: 0 auto; }
-        .module.active { display: block; animation: fadeInBlur 0.6s ease-out; }
+        .view-port { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px; }
+        .module { display: none; animation: slideUp 0.4s ease; }
+        .module.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        @keyframes fadeInBlur { from { opacity: 0; filter: blur(10px); transform: translateY(10px); } to { opacity: 1; filter: blur(0); transform: translateY(0); } }
-
-        /* --- PREMIUM GLASS CARDS --- */
-        .glass-card { 
-            background: var(--panel); border: 1px solid var(--border); padding: 35px; 
-            margin-bottom: 25px; position: relative; backdrop-filter: blur(10px);
-        }
-        .card-label { font-size: 0.65rem; color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
-        .card-label::after { content: ''; height: 1px; flex: 1; background: var(--border); }
+        /* KARTLAR */
+        .glass-card { background: var(--panel); border: 1px solid var(--border); padding: 30px; margin-bottom: 20px; position: relative; }
+        .glass-card::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 30px; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+        .card-label { font-size: 0.6rem; color: #444; text-transform: uppercase; letter-spacing: 2px; display: block; margin-bottom: 20px; border-left: 2px solid var(--accent); padding-left: 10px; }
         
-        input, select { 
-            width: 100%; background: rgba(255,255,255,0.02); border: 1px solid var(--border); 
-            padding: 18px; color: #fff; font-family: 'Inter'; margin-bottom: 15px; transition: 0.3s;
-        }
-        input:focus { border-color: var(--accent); background: rgba(0, 242, 255, 0.03); }
-        .action-btn { width: 100%; padding: 18px; background: transparent; border: 1px solid var(--accent); color: var(--accent); font-weight: 800; text-transform: uppercase; cursor: pointer; letter-spacing: 2px; transition: 0.3s; }
-        .action-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent-soft); }
+        input, select { width: 100%; background: #000; border: 1px solid #1a1a1a; padding: 16px; color: #fff; font-family: 'Space Grotesk'; margin-bottom: 15px; border-radius: 0; }
+        input:focus { border-color: var(--accent); }
+        .action-btn { width: 100%; padding: 16px; background: var(--accent); color: #000; border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; letter-spacing: 1px; }
 
-        /* --- RESULT UNIT (OSINT STYLE) --- */
-        .identity-result { margin-top: 25px; display: none; background: rgba(0,0,0,0.4); border: 1px solid var(--border); padding: 0; }
-        .data-row { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; border-bottom: 1px solid var(--border); transition: 0.2s; }
-        .data-row:hover { background: rgba(255,255,255,0.02); }
-        .data-row span { color: var(--text-dim); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .data-row p { color: #fff; font-weight: 600; font-size: 0.9rem; }
+        /* NAVİGASYON */
+        nav { position: fixed; bottom: 0; width: 100%; height: 85px; background: #000; border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
+        .nav-item { text-decoration: none; color: #333; display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; transition: 0.3s; cursor: pointer; }
+        .nav-item.active { color: var(--accent); text-shadow: 0 0 10px var(--accent); }
+        .nav-item i { font-size: 26px; }
+        .nav-item span { font-size: 0.5rem; font-weight: 800; text-transform: uppercase; }
 
-        /* --- NAVIGATION (PREMIUM DOCK) --- */
-        nav { 
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 500px; height: 75px; 
-            background: rgba(15, 15, 15, 0.9); border: 1px solid var(--border); 
-            backdrop-filter: blur(20px); border-radius: 15px;
-            display: flex; justify-content: space-around; align-items: center; z-index: 1000;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-        }
-        .nav-item { text-decoration: none; color: #444; display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; transition: 0.3s; cursor: pointer; }
-        .nav-item i { font-size: 24px; }
-        .nav-item span { font-size: 0.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
-        .nav-item.active { color: var(--accent); }
-        .nav-item.active i { text-shadow: 0 0 15px var(--accent); }
-
+        /* SONUÇLAR */
+        .identity-result { margin-top: 20px; display: none; background: #000; border: 1px solid var(--accent); padding: 25px; }
+        .data-row { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid #111; font-size: 0.8rem; }
+        .data-row span { color: #444; font-weight: 800; text-transform: uppercase; }
+        .data-row p { color: #eee; font-family: 'Space Grotesk'; }
     </style>
 </head>
 <body>
@@ -109,82 +69,41 @@
     <div id="gatekeeper">
         <div class="gate-card">
             <h1>ARCHERA</h1>
-            <p>Intelligence Protocol v1.5</p>
-            <input type="password" id="gateKey" class="key-input" placeholder="PASSKEY">
-            <button class="enter-btn" onclick="tryLogin()">Authorize Access</button>
+            <p>INTELLIGENCE TERMINAL</p>
+            <input type="password" id="gateKey" class="key-input" placeholder="TOKEN">
+            <button class="enter-btn" onclick="tryLogin()">Sisteme Sız</button>
         </div>
     </div>
 
     <div id="main-shell">
         <header>
-            <div class="header-logo">ARCHERA // SYSTEM</div>
-            <div id="status-indicator">SIGNAL_LOST</div>
+            <div class="header-logo">ARCHERA // CORE</div>
+            <div id="status-indicator" style="font-size: 0.5rem; color: #ff3333; border: 1px solid #ff3333; padding: 4px 10px; letter-spacing: 1px;">OFFLINE</div>
         </header>
 
         <div class="view-port">
-            
             <div id="mod-sorgu" class="module active">
                 <div class="glass-card">
-                    <span class="card-label"><i class="material-icons-round" style="font-size: 14px;">radar</i> Query Engine</span>
-                    <input type="text" id="targetInput" placeholder="Kullanıcı Adı veya ID giriniz...">
-                    <button class="action-btn" onclick="executeSorgu()">Execute Intelligence Search</button>
-                    
-                    <div id="sorguLoading" style="display:none; text-align:center; margin-top:20px; color:var(--accent); font-size:0.6rem; font-weight:800; letter-spacing:2px;">
-                        <span class="status-dot"></span> FETCHING ENCRYPTED DATA...
-                    </div>
-
+                    <span class="card-label">Merkezi Sorgu Terminali</span>
+                    <input type="text" id="targetInput" placeholder="Kullanıcı Adı / ID">
+                    <button class="action-btn" onclick="executeSorgu()">Sorguyu Başlat</button>
+                    <div id="sorguLoading" style="display:none; text-align:center; margin-top:15px; color:var(--accent); font-size:0.6rem; letter-spacing:2px;">BOT KÖPRÜSÜNE BAĞLANILIYOR...</div>
                     <div id="resCard" class="identity-result">
-                        <div class="data-row"><span>Identity Name</span><p id="res-name">-</p></div>
-                        <div class="data-row"><span>Network Reach</span><p id="res-followers">-</p></div>
-                        <div class="data-row"><span>GSM Registry</span><p style="color:var(--accent)">Sorgulanıyor...</p></div>
-                        <div class="data-row"><span>Locational Data</span><p id="res-loc">-</p></div>
-                        <div class="data-row"><span>Status</span><p id="res-priv">-</p></div>
+                        <div class="data-row"><span>AD SOYAD:</span><p id="res-name">-</p></div>
+                        <div class="data-row"><span>GSM NO:</span><p style="color:var(--accent)">SORGULANIYOR...</p></div>
+                        <div class="data-row"><span>TC KİMLİK:</span><p style="color:var(--accent)">BEKLENİYOR...</p></div>
+                        <div class="data-row"><span>DURUM:</span><p id="res-priv">-</p></div>
                     </div>
                 </div>
             </div>
-
-            <div id="mod-db" class="module">
-                <div class="glass-card">
-                    <span class="card-label">Encrypted Database</span>
-                    <input type="text" placeholder="Search Leak Archive...">
-                    <button class="action-btn">Scan Records</button>
-                </div>
             </div>
-
-            <div id="mod-img" class="module">
-                <div class="glass-card">
-                    <span class="card-label">Visual Archive</span>
-                    <div style="aspect-ratio:16/9; background:rgba(0,0,0,0.3); border:1px dashed var(--border); display:flex; align-items:center; justify-content:center; color:#333;">
-                        <i class="material-icons-round" style="font-size:48px;">biotech</i>
-                    </div>
-                </div>
-            </div>
-
-            <div id="mod-ai" class="module">
-                <div class="glass-card">
-                    <span class="card-label">AI Intelligence Assistant</span>
-                    <div id="ai-chat-box" style="height:180px; background:rgba(0,0,0,0.5); border:1px solid var(--border); margin-bottom:15px; padding:15px; font-size:0.75rem; color:#888; overflow-y:auto; line-height:1.6;">Awaiting command...</div>
-                    <input type="text" id="aiInput" placeholder="Send query to AI...">
-                </div>
-            </div>
-
-            <div id="mod-admin" class="module">
-                <div class="glass-card">
-                    <span class="card-label">System Configuration</span>
-                    <select id="sessionPlatform"><option value="ig">Instagram Core</option></select>
-                    <input type="text" id="sessionData" placeholder="Auth Token / Cookie">
-                    <button class="action-btn" style="background:#fff; color:#000; border:none;" onclick="saveSession()">Apply Config</button>
-                </div>
-            </div>
-
-        </div>
 
         <nav>
-            <div class="nav-item active" onclick="switchTab('mod-sorgu', this)"><i class="material-icons-round">radar</i><span>Search</span></div>
-            <div class="nav-item" onclick="switchTab('mod-db', this)"><i class="material-icons-round">storage</i><span>DB</span></div>
-            <div class="nav-item" onclick="switchTab('mod-img', this)"><i class="material-icons-round">layers</i><span>Media</span></div>
-            <div class="nav-item" onclick="switchTab('mod-ai', this)"><i class="material-icons-round">psychology</i><span>AI</span></div>
-            <div class="nav-item" onclick="switchTab('mod-admin', this)"><i class="material-icons-round">terminal</i><span>Core</span></div>
+            <div class="nav-item active" onclick="switchTab('mod-sorgu', this)"><i class="material-icons-round">radar</i><span>Sorgu</span></div>
+            <div class="nav-item" onclick="switchTab('mod-db', this)"><i class="material-icons-round">dns</i><span>DB</span></div>
+            <div class="nav-item" onclick="switchTab('mod-img', this)"><i class="material-icons-round">collections</i><span>Arşiv</span></div>
+            <div class="nav-item" onclick="switchTab('mod-ai', this)"><i class="material-icons-round">smart_toy</i><span>AI</span></div>
+            <div class="nav-item" onclick="switchTab('mod-admin', this)"><i class="material-icons-round">admin_panel_settings</i><span>Admin</span></div>
         </nav>
     </div>
 
@@ -193,18 +112,17 @@
 
         function tryLogin() {
             const key = document.getElementById('gateKey').value;
-            if(key === "reis") {
+            if(key === "baba") {
                 document.getElementById('gatekeeper').style.opacity = "0";
-                document.getElementById('gatekeeper').style.transform = "scale(1.1)";
                 setTimeout(() => {
                     document.getElementById('gatekeeper').style.display = "none";
                     document.getElementById('main-shell').style.display = "flex";
-                    setTimeout(() => { 
-                        document.getElementById('main-shell').style.opacity = "1"; 
-                        checkBackend();
-                    }, 50);
+                    setTimeout(() => { document.getElementById('main-shell').style.opacity = "1"; checkBackend(); }, 50);
                 }, 800);
-            } else { alert("ACCESS DENIED"); }
+            } else { 
+                // Yanlış key veya boşsa senin Instagram'a uçurur
+                window.location.href = "https://www.instagram.com/pxlat"; 
+            }
         }
 
         async function checkBackend() {
@@ -212,11 +130,11 @@
                 const res = await fetch(RENDER_URL + '/');
                 if(res.ok) {
                     const status = document.getElementById('status-indicator');
-                    status.innerText = "ENGINE ONLINE";
-                    status.style.color = "#00f2ff";
-                    status.style.borderColor = "#00f2ff";
+                    status.innerText = "ONLINE";
+                    status.style.color = var(--accent);
+                    status.style.borderColor = var(--accent);
                 }
-            } catch(e) { console.log("Engine connecting..."); }
+            } catch(e) { console.log("Engine waking up..."); }
         }
 
         function switchTab(modId, el) {
@@ -230,41 +148,10 @@
             const target = document.getElementById('targetInput').value;
             const loading = document.getElementById('sorguLoading');
             const resultCard = document.getElementById('resCard');
-
             if(!target) return;
             loading.style.display = "block";
             resultCard.style.display = "none";
-
-            try {
-                const response = await fetch(RENDER_URL + '/api/query', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ target: target })
-                });
-
-                const res = await response.json();
-                if(res.status === "success") {
-                    loading.style.display = "none";
-                    resultCard.style.display = "block";
-                    document.getElementById('res-name').innerText = res.data.full_name || "Unknown";
-                    document.getElementById('res-followers').innerText = res.data.followers.toLocaleString();
-                    document.getElementById('res-loc').innerText = res.data.location_inference;
-                    document.getElementById('res-priv').innerText = res.data.is_private ? "Private" : "Public";
-                } else {
-                    alert("Error: " + res.detail);
-                    loading.style.display = "none";
-                }
-            } catch (e) {
-                loading.style.display = "none";
-            }
-        }
-
-        function saveSession() {
-            const data = document.getElementById('sessionData').value;
-            if(data) {
-                localStorage.setItem('archera_session', data);
-                alert("SYSTEM CONFIG UPDATED.");
-            }
+            // API Entegrasyonu buraya gelecek
         }
     </script>
 </body>
