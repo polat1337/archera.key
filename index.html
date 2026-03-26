@@ -3,237 +3,162 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA | ULTIMATE COMMAND</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syncopate:wght@700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+    <title>ARCHERA | SECURE LOGIN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --core: #00f3ff;
-            --core-dark: #0066ff;
-            --bg: #030712;
-            --panel: rgba(15, 23, 42, 0.8);
-            --glow: 0 0 20px rgba(0, 243, 255, 0.3);
+            --accent: #00d2ff;
+            --bg: #05070a;
+            --card-bg: #0d1117;
+            --border: #21262d;
+            --input-focus: #30363d;
         }
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; cursor: crosshair; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
         body, html {
             margin: 0; padding: 0; height: 100vh; width: 100vw;
-            background: var(--bg);
+            background-color: var(--bg);
             font-family: 'Inter', sans-serif;
-            color: white;
+            color: #c9d1d9;
             display: flex; align-items: center; justify-content: center;
             overflow: hidden;
         }
 
-        /* Arka Plan Hareketli Işık Süzmeleri */
-        .vortex {
+        /* Arka Plan: Çok Hafif Grain (Kumlanma) ve Vinyet */
+        body::before {
+            content: "";
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(0, 243, 255, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(0, 102, 255, 0.05) 0%, transparent 50%);
+            background: radial-gradient(circle, transparent 20%, #000 100%);
             z-index: -1;
         }
 
-        /* Ultra Elit Panel */
-        .elite-card {
-            background: var(--panel);
-            backdrop-filter: blur(40px) saturate(200%);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-top: 1px solid rgba(0, 243, 255, 0.5);
-            border-radius: 20px;
-            padding: 60px 40px;
+        /* Ana Panel: Sert ve Otoriter */
+        .login-panel {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 48px 32px;
             width: 90%;
-            max-width: 440px;
+            max-width: 380px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.7);
             text-align: center;
             position: relative;
-            box-shadow: 0 50px 100px rgba(0,0,0,0.9), inset 0 0 40px rgba(0, 243, 255, 0.02);
-            animation: bootUp 1s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
-        @keyframes bootUp {
-            0% { opacity: 0; transform: scale(0.8) translateY(40px); filter: brightness(2); }
-            100% { opacity: 1; transform: scale(1) translateY(0); filter: brightness(1); }
-        }
-
-        /* Logo & Başlık */
-        .brand { margin-bottom: 50px; }
-        .brand h1 {
-            font-family: 'Syncopate', sans-serif;
-            font-size: 2.2rem;
+        /* Logo Alanı */
+        .brand-header { margin-bottom: 40px; }
+        .brand-header h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 2rem;
+            color: #fff;
             margin: 0;
-            letter-spacing: 15px;
-            background: linear-gradient(180deg, #fff 30%, var(--core) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(0, 243, 255, 0.6));
-        }
-        .brand .tag {
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 8px;
-            color: var(--core);
-            margin-top: 10px;
-            font-weight: 800;
-            opacity: 0.8;
-        }
-
-        /* Input Alanı: Agresif & Şık */
-        .field {
-            position: relative;
-            margin-bottom: 35px;
-            background: rgba(0,0,0,0.4);
-            border: 1px solid rgba(255,255,255,0.05);
-            border-radius: 12px;
-            transition: 0.3s;
-        }
-
-        .field:focus-within {
-            border-color: var(--core);
-            box-shadow: var(--glow);
-            transform: translateY(-2px);
-        }
-
-        .field input {
-            width: 100%;
-            padding: 20px;
-            background: transparent;
-            border: none;
-            color: white;
-            text-align: center;
-            font-size: 1.2rem;
-            outline: none;
-            font-family: 'Inter', sans-serif;
-            letter-spacing: 10px;
-            font-weight: 800;
-        }
-
-        /* Fenasal Buton: Işık Patlamalı */
-        .btn-ignite {
-            width: 100%;
-            padding: 20px;
-            background: linear-gradient(90deg, var(--core-dark), var(--core));
-            border: none;
-            border-radius: 12px;
-            color: #000;
-            font-weight: 900;
-            font-size: 1rem;
-            text-transform: uppercase;
             letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+        .brand-header p {
+            font-size: 0.75rem;
+            color: #8b949e;
+            margin-top: 8px;
+            letter-spacing: 2px;
+            font-weight: 500;
+        }
+
+        /* Form Elemanları */
+        .field-group { text-align: left; margin-bottom: 24px; }
+        .field-group label {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #8b949e;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .input-control {
+            background: #010409;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 14px;
+            width: 100%;
+            color: #fff;
+            font-size: 1rem;
+            outline: none;
+            transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            font-family: monospace;
+            letter-spacing: 4px;
+        }
+
+        .input-control:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 1px var(--accent);
+            background: #0d1117;
+        }
+
+        /* Giriş Butonu: Metalik ve Net */
+        .btn-access {
+            background: #fff;
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            padding: 16px;
+            width: 100%;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
             cursor: pointer;
-            transition: 0.4s;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.4);
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(255, 255, 255, 0.1);
         }
 
-        .btn-ignite::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-            transition: 0.5s;
+        .btn-access:hover {
+            background: var(--accent);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
         }
 
-        .btn-ignite:hover::before { left: 100%; }
-        .btn-ignite:hover {
-            transform: scale(1.02);
-            box-shadow: 0 0 50px var(--core);
-        }
-
-        /* BEKLE Ekranı: High-Tech Senkronizasyon */
-        #sync-layer {
+        /* Bekle Katmanı: Minimalist */
+        #wait-screen {
             display: none;
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg);
-            border-radius: 20px;
-            z-index: 100;
+            background: var(--card-bg);
+            border-radius: 16px;
+            z-index: 5;
             flex-direction: column; justify-content: center; align-items: center;
         }
 
-        .radar {
-            width: 80px; height: 80px;
-            border: 2px solid var(--core);
+        .loader-ring {
+            width: 40px; height: 40px;
+            border: 2px solid #30363d;
+            border-top-color: var(--accent);
             border-radius: 50%;
-            position: relative;
-            animation: radarPulse 2s infinite;
-        }
-        .radar::after {
-            content: '';
-            position: absolute; top: 50%; left: 50%;
-            width: 40px; height: 2px;
-            background: var(--core);
-            transform-origin: left center;
-            animation: sweep 1s linear infinite;
+            animation: spin 0.8s linear infinite;
         }
 
-        @keyframes sweep { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        @keyframes radarPulse { 0% { box-shadow: 0 0 0 0 rgba(0, 243, 255, 0.4); } 100% { box-shadow: 0 0 0 50px transparent; } }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        .sync-text {
-            margin-top: 30px;
-            font-family: 'Syncopate', sans-serif;
+        .wait-label {
+            margin-top: 16px;
             font-size: 0.8rem;
-            color: var(--core);
-            letter-spacing: 5px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            color: var(--accent);
         }
-
     </style>
 </head>
 <body>
 
-<div class="vortex"></div>
-
-<div class="elite-card">
-    <div id="sync-layer">
-        <div class="radar"></div>
-        <div class="sync-text">VERİ TABANI SENKRONİZE EDİLİYOR...</div>
+<div class="login-panel">
+    <div id="wait-screen">
+        <div class="loader-ring"></div>
+        <div class="wait-label">BEKLE</div>
     </div>
 
-    <div class="brand">
+    <div class="brand-header">
         <h1>ARCHERA</h1>
-        <div class="tag">INTEL COMMAND CENTER</div>
+        <p>TERMINAL ACCESS</p>
     </div>
 
-    <div class="field">
-        <input type="password" id="access_key" placeholder="••••••••">
-    </div>
-
-    <button class="btn-ignite" onclick="launch()">Sistemi Başlat</button>
-</div>
-
-<script>
-    function launch() {
-        const key = document.getElementById('access_key').value;
-        const sync = document.getElementById('sync-layer');
-        
-        if(key === "reis") {
-            sync.style.display = "flex";
-            // Hafif ekran titremesi (vibration simülasyonu)
-            document.body.style.animation = "shake 0.2s 3";
-            
-            setTimeout(() => {
-                alert("ERİŞİM YETKİSİ DOĞRULANDI. ARCHERA MAINFRAME BAĞLANTISI KURULDU.");
-                // Buraya Dashboard linki gelecek
-            }, 3500);
-        } else {
-            alert("ERİŞİM REDDEDİLDİ: Yetkisiz Terminal.");
-            document.getElementById('access_key').value = "";
-        }
-    }
-</script>
-
-<style>
-    @keyframes shake {
-        0% { transform: translate(1px, 1px) rotate(0deg); }
-        20% { transform: translate(-3px, 0px) rotate(1deg); }
-        40% { transform: translate(3px, 2px) rotate(-1deg); }
-        60% { transform: translate(-1px, -1px) rotate(1deg); }
-        80% { transform: translate(-3px, 1px) rotate(0deg); }
-        100% { transform: translate(1px, -2px) rotate(-1deg); }
-    }
-</style>
-
-</body>
-</html>
+    <div class="field-group">
