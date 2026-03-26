@@ -4,64 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>ARCHERA | ULTIMATE ADMIN</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #4e73df; --bg: #090b10; --card: #12151e; --border: rgba(255, 255, 255, 0.07); --text-dim: #858796; --danger: #e74a3b; --success: #1cc88a; --warning: #f6c23e; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        :root { --primary: #4e73df; --bg: #090b10; --card: #151921; --border: rgba(255, 255, 255, 0.08); --text-dim: #858796; --danger: #e74a3b; --success: #1cc88a; --purple: #6c5ce7; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         body { background: var(--bg); color: #fff; height: 100vh; overflow: hidden; }
 
-        /* --- LOGIN PAGE --- */
-        #gatekeeper { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; align-items: center; justify-content: center; }
-        .login-card { width: 90%; max-width: 400px; background: var(--card); padding: 50px 35px; border-radius: 20px; border: 1px solid var(--border); text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
-        .login-card h1 { font-weight: 800; font-size: 2rem; margin-bottom: 30px; letter-spacing: -1px; background: linear-gradient(to right, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        .input-box { width: 100%; padding: 16px; background: #07090d; border: 1px solid var(--border); border-radius: 12px; color: #fff; text-align: center; margin-bottom: 20px; outline: none; font-size: 1.1rem; transition: 0.3s; }
+        /* --- LOGIN (IKONLU) --- */
+        #gatekeeper { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; align-items: center; justify-content: center; transition: 0.6s ease; }
+        .login-card { width: 90%; max-width: 380px; background: var(--card); padding: 45px; border-radius: 20px; border: 1px solid var(--border); text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        .login-card h1 { font-weight: 800; margin-bottom: 30px; letter-spacing: -1px; color: var(--primary); }
+        .input-box { width: 100%; padding: 15px; background: #0b0e14; border: 1px solid var(--border); border-radius: 12px; color: #fff; text-align: center; margin-bottom: 20px; outline: none; font-size: 1.1rem; transition: 0.3s; }
         .input-box:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(78, 115, 223, 0.2); }
-        .login-btn { width: 100%; padding: 16px; background: var(--primary); color: #fff; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 1rem; transition: 0.3s; }
-        .login-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(78, 115, 223, 0.3); }
+        .login-btn { width: 100%; padding: 16px; background: var(--primary); color: #fff; border: none; border-radius: 12px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 1rem; }
 
-        /* --- DASHBOARD SHELL --- */
+        /* --- MAIN LAYOUT --- */
         #main-shell { display: none; height: 100vh; flex-direction: column; opacity: 0; transition: 0.5s; }
-        header { height: 70px; background: var(--card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 25px; }
+        header { height: 65px; background: var(--card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
+        .profile-snap { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+        #top-avatar { width: 35px; height: 35px; border-radius: 50%; object-fit: cover; border: 2px solid var(--primary); }
+
         .viewport { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 120px; }
-        
-        .module { display: none; max-width: 900px; margin: 0 auto; animation: slideUp 0.4s ease; }
-        .module.active { display: block; }
+        .module { display: none; max-width: 900px; margin: 0 auto; }
+        .module.active { display: block; animation: slideUp 0.4s ease; }
         @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* --- UI COMPONENTS --- */
-        .smm-card { background: var(--card); border-radius: 16px; border: 1px solid var(--border); padding: 25px; margin-bottom: 25px; }
-        .card-title { font-size: 0.85rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
-        
-        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-        .smm-input { width: 100%; background: #07090d; border: 1px solid var(--border); padding: 14px; color: #fff; border-radius: 10px; outline: none; transition: 0.3s; }
-        .smm-input:focus { border-color: var(--primary); }
-        .smm-btn { width: 100%; padding: 14px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; }
-        .smm-btn:active { transform: scale(0.98); }
+        /* --- ADMIN CARDS --- */
+        .admin-card { background: var(--card); border-radius: 16px; border: 1px solid var(--border); padding: 25px; margin-bottom: 20px; }
+        .card-label { font-size: 0.75rem; font-weight: 800; color: var(--purple); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        .smm-input { width: 100%; background: #0b0e14; border: 1px solid var(--border); padding: 14px; color: #fff; border-radius: 10px; margin-bottom: 15px; outline: none; font-size: 0.9rem; }
+        .smm-btn { width: 100%; padding: 15px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; }
 
-        /* --- MEMBER TABLE --- */
-        .user-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        .user-table th { text-align: left; font-size: 0.7rem; color: var(--text-dim); padding: 12px; border-bottom: 1px solid var(--border); }
-        .user-table td { padding: 15px 12px; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.02); }
-        .badge { padding: 4px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; }
-        .badge-active { background: rgba(28, 200, 138, 0.1); color: var(--success); }
-
-        /* --- STATS BOX --- */
-        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-bottom: 25px; }
-        .stat-item { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 16px; text-align: center; }
-        .stat-val { display: block; font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 5px; }
-        .stat-label { font-size: 0.65rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; }
-
-        /* --- LOGS --- */
-        .log-box { background: #07090d; border-radius: 10px; padding: 15px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; height: 150px; overflow-y: auto; border: 1px solid var(--border); color: #abb2bf; }
-        .log-entry { margin-bottom: 5px; border-left: 2px solid var(--primary); padding-left: 8px; }
+        /* --- USER TABLE --- */
+        .u-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.85rem; }
+        .u-table th { color: var(--text-dim); text-align: left; padding: 12px; border-bottom: 1px solid var(--border); font-size: 0.7rem; }
+        .u-table td { padding: 15px 12px; border-bottom: 1px solid rgba(255,255,255,0.02); }
+        .u-badge { padding: 4px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; background: rgba(28, 200, 138, 0.1); color: var(--success); }
 
         /* --- BOTTOM NAV --- */
-        nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 80px; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 1000; padding-bottom: 15px; }
-        .nav-link { color: var(--text-dim); text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; cursor: pointer; transition: 0.3s; }
+        nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 80px; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 1000; padding: 0 10px; }
+        .nav-link { color: var(--text-dim); text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; cursor: pointer; transition: 0.3s; min-width: 50px; }
         .nav-link.active { color: var(--primary); }
-        .nav-link i { font-size: 1.4rem; }
-        .nav-link span { font-size: 0.65rem; font-weight: 700; }
+        .nav-link i { font-size: 1.3rem; }
+        .nav-link span { font-size: 0.55rem; font-weight: 700; text-transform: uppercase; text-align: center; }
+
+        /* AVATAR UPLOAD CSS */
+        #avatar-preview { width: 80px; height: 80px; border-radius: 50%; background: #222; margin: 0 auto 15px; border: 3px solid var(--purple); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        #avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
     </style>
 </head>
 <body>
@@ -71,140 +61,167 @@
             <h1>ARCHERA</h1>
             <input type="password" id="gateKey" class="input-box" placeholder="Access Key">
             <button class="login-btn" onclick="tryLogin()">
-                SİSTEMİ BAŞLAT <i class="fas fa-sign-in-alt"></i>
+                SİSTEME GİRİŞ YAP <i class="fas fa-arrow-right-to-bracket"></i>
             </button>
-            <a href="https://instagram.com/pxlat" target="_blank" style="display:block; margin-top:25px; color:var(--text-dim); text-decoration:none; font-size:0.75rem; font-weight:600;">
-                <i class="fab fa-instagram"></i> KEY REQUEST @PXLAT
-            </a>
+            <a href="https://instagram.com/pxlat" target="_blank" style="display:block; margin-top:25px; color:#444; text-decoration:none; font-size:0.7rem;">KEY TALEBİ: @PXLAT <i class="fab fa-instagram"></i></a>
         </div>
     </div>
 
     <div id="main-shell">
         <header>
-            <div style="font-weight:800; letter-spacing:-0.5px; color:#fff;">CORE <span style="color:var(--primary)">COMMAND</span></div>
-            <div id="engine-status" class="badge badge-active"><i class="fas fa-circle" style="font-size:6px; vertical-align:middle;"></i> LIVE</div>
+            <div style="font-weight:900; color:var(--primary); letter-spacing:1px;">ARCHERA <span style="color:var(--text-dim); font-size:0.6rem;">CORE V12</span></div>
+            <div class="profile-snap" onclick="tab('mod-admin', document.querySelector('.nav-link[onclick*=\'admin\']'))">
+                <span id="display-name" style="font-size:0.75rem; font-weight:700;">Admin</span>
+                <div id="top-avatar-container"><img id="top-avatar" src="https://ui-avatars.com/api/?name=Admin&background=4e73df&color=fff"></div>
+            </div>
         </header>
 
-        <div class="viewport">
-            <div id="mod-home" class="module active">
-                <div class="stats-grid">
-                    <div class="stat-item"><span class="stat-val" id="count-users">0</span><span class="stat-label">Toplam Üye</span></div>
-                    <div class="stat-item"><span class="stat-val">1.2ms</span><span class="stat-label">Gecikme</span></div>
-                    <div class="stat-item"><span class="stat-val" style="color:var(--success)">UP</span><span class="stat-label">Server #1</span></div>
-                </div>
-                
-                <div class="smm-card">
-                    <div class="card-title"><i class="fas fa-terminal"></i> İşlem Günlüğü (Live Logs)</div>
-                    <div class="log-box" id="logBox">
-                        <div class="log-entry">[SYSTEM] Archera Core v12 initialized...</div>
-                    </div>
+        <div class="viewport" id="viewport">
+            
+            <div id="mod-sorgu" class="module active">
+                <div class="admin-card">
+                    <div class="card-label"><i class="fas fa-radar"></i> Terminal Sorgu</div>
+                    <input type="text" class="smm-input" placeholder="Hedef ID / Kullanıcı Adı...">
+                    <button class="smm-btn">ANALİZİ BAŞLAT</button>
                 </div>
             </div>
 
-            <div id="mod-users" class="module">
-                <div class="smm-card">
-                    <div class="card-header card-title"><i class="fas fa-user-plus"></i> Yeni Üye Tanımla</div>
-                    <div class="grid-2">
-                        <input type="text" id="newU" class="smm-input" placeholder="Kullanıcı Adı">
-                        <input type="password" id="newP" class="smm-input" placeholder="Şifre">
-                    </div>
-                    <button class="smm-btn" onclick="addUser()">ÜYEYİ SİSTEME KAYDET</button>
-                </div>
+            <div id="mod-img" class="module"><div class="admin-card"><div class="card-label"><i class="fas fa-images"></i> Medya Arşivi</div><p style="color:var(--text-dim)">Arşiv boş.</p></div></div>
 
-                <div class="smm-card">
-                    <div class="card-title"><i class="fas fa-users-cog"></i> Mevcut Üyeler</div>
-                    <table class="user-table">
-                        <thead><tr><th>USER</th><th>PASS</th><th>STATUS</th><th>OP</th></tr></thead>
-                        <tbody id="userList"></tbody>
-                    </table>
-                </div>
-            </div>
+            <div id="mod-ai" class="module"><div class="admin-card"><div class="card-label"><i class="fas fa-brain"></i> GemAI Asistan</div><input type="text" class="smm-input" placeholder="AI'ya sor..."><button class="smm-btn">GÖNDER</button></div></div>
+
+            <div id="mod-db" class="module"><div class="admin-card"><div class="card-label"><i class="fas fa-database"></i> Veri Tabanı</div><p style="color:var(--text-dim)">Bağlantı aktif değil.</p></div></div>
+
+            <div id="mod-accounts" class="module"><div class="admin-card"><div class="card-label"><i class="fas fa-user-lock"></i> Kayıtlı Hesaplar</div><p style="color:var(--text-dim)">Hesap bulunamadı.</p></div></div>
 
             <div id="mod-admin" class="module">
-                <div class="smm-card">
-                    <div class="card-title"><i class="fas fa-code"></i> Render / Session Config</div>
-                    <input type="text" id="sid" class="smm-input" placeholder="Session ID (Cookie)">
-                    <button class="smm-btn" onclick="saveSid()">YAPILANDIRMAYI KAYDET</button>
+                
+                <div class="admin-card">
+                    <div class="card-label"><i class="fas fa-user-circle"></i> Profil Ayarları</div>
+                    <div id="avatar-preview"><img id="preview-img" src="https://ui-avatars.com/api/?name=Admin&background=4e73df&color=fff"></div>
+                    <input type="text" id="prof-name" class="smm-input" placeholder="Görünen Adın">
+                    <input type="text" id="prof-img" class="smm-input" placeholder="Avatar URL (Veya Base64)">
+                    <button class="smm-btn" onclick="updateProfile()">PROFİLİ GÜNCELLE</button>
                 </div>
 
-                <div class="smm-card">
-                    <div class="card-title"><i class="fas fa-user-edit"></i> Profil Düzenle</div>
-                    <div class="grid-2">
-                        <input type="text" id="profName" class="smm-input" placeholder="Görünen Ad">
-                        <input type="text" id="profImg" class="smm-input" placeholder="Avatar URL">
-                    </div>
-                    <button class="smm-btn" style="background:#222;" onclick="addLog('Profil güncellendi.')">PROFİLİ GÜNCELLE</button>
+                <div class="admin-card">
+                    <div class="card-label"><i class="fas fa-fingerprint"></i> System Session (Render/Mango)</div>
+                    <input type="text" id="sessionInput" class="smm-input" placeholder="Cookie / Session Token Yapıştır...">
+                    <button class="smm-btn" style="background:var(--purple)" onclick="saveSession()">SESSION AKTİFLEŞTİR</button>
                 </div>
+
+                <div class="admin-card">
+                    <div class="card-label"><i class="fas fa-users-cog"></i> Üye & Yetki Yönetimi</div>
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:15px;">
+                        <input type="text" id="u-name" class="smm-input" placeholder="Üye Adı" style="margin:0">
+                        <input type="password" id="u-pass" class="smm-input" placeholder="Şifre" style="margin:0">
+                    </div>
+                    <button class="smm-btn" onclick="addUser()">YENİ ÜYE EKLE</button>
+                    <table class="u-table">
+                        <thead><tr><th>ÜYE</th><th>ŞİFRE</th><th>DURUM</th><th>SİL</th></tr></thead>
+                        <tbody id="u-list"></tbody>
+                    </table>
+                </div>
+
+                <div class="admin-card">
+                    <div class="card-label"><i class="fas fa-folder-plus"></i> Dinamik Menü Oluşturucu</div>
+                    <input type="text" id="menu-name" class="smm-input" placeholder="Menü Adı (Örn: Loglar)">
+                    <input type="text" id="menu-icon" class="smm-input" placeholder="FontAwesome İkonu (Örn: fas fa-file-invoice)">
+                    <button class="smm-btn" style="background:#222" onclick="addDynamicMenu()">NAVİGASYONA EKLE</button>
+                </div>
+
             </div>
         </div>
 
-        <nav>
-            <div class="nav-link active" onclick="tab('mod-home', this)"><i class="fas fa-house"></i><span>Merkez</span></div>
-            <div class="nav-link" onclick="tab('mod-users', this)"><i class="fas fa-users"></i><span>Üyeler</span></div>
-            <div class="nav-link" onclick="tab('mod-admin', this)"><i class="fas fa-shield-halved"></i><span>Admin</span></div>
+        <nav id="main-nav">
+            <div class="nav-link active" onclick="tab('mod-sorgu', this)"><i class="fas fa-search"></i><span>Sorgu</span></div>
+            <div class="nav-link" onclick="tab('mod-img', this)"><i class="fas fa-images"></i><span>Görüntüler</span></div>
+            <div class="nav-link" onclick="tab('mod-ai', this)"><i class="fas fa-brain"></i><span>GemAI</span></div>
+            <div class="nav-link" onclick="tab('mod-db', this)"><i class="fas fa-database"></i><span>Data</span></div>
+            <div class="nav-link" onclick="tab('mod-accounts', this)"><i class="fas fa-users-viewfinder"></i><span>Hesaplar</span></div>
+            <div class="nav-link" onclick="tab('mod-admin', this)"><i class="fas fa-shield-halved"></i><span>Yönetim</span></div>
         </nav>
     </div>
 
     <script>
-        let users = JSON.parse(localStorage.getItem('arch_users')) || [];
-
-        function addLog(msg) {
-            const lb = document.getElementById('logBox');
-            const time = new Date().toLocaleTimeString();
-            lb.innerHTML += `<div class="log-entry">[${time}] ${msg}</div>`;
-            lb.scrollTop = lb.scrollHeight;
+        // 1. PROFİL YÖNETİMİ
+        function updateProfile() {
+            const name = document.getElementById('prof-name').value;
+            const img = document.getElementById('prof-img').value;
+            if(name) {
+                document.getElementById('display-name').innerText = name;
+                localStorage.setItem('archera_name', name);
+            }
+            if(img) {
+                document.getElementById('top-avatar').src = img;
+                document.getElementById('preview-img').src = img;
+                localStorage.setItem('archera_avatar', img);
+            }
+            alert("Profil Güncellendi!");
         }
 
+        // 2. ÜYE & ŞİFRE YÖNETİMİ
+        let users = JSON.parse(localStorage.getItem('archera_membership')) || [];
         function addUser() {
-            const u = document.getElementById('newU').value;
-            const p = document.getElementById('newP').value;
-            if(u && p) {
-                users.push({name: u, pass: p});
-                document.getElementById('newU').value = "";
-                document.getElementById('newP').value = "";
-                addLog(`Yeni üye eklendi: ${u}`);
+            const n = document.getElementById('u-name').value;
+            const p = document.getElementById('u-pass').value;
+            if(n && p) {
+                users.push({name: n, pass: p});
                 renderUsers();
+                document.getElementById('u-name').value = ""; document.getElementById('u-pass').value = "";
             }
         }
-
-        function removeUser(idx) {
-            addLog(`Üye silindi: ${users[idx].name}`);
-            users.splice(idx, 1);
-            renderUsers();
-        }
-
         function renderUsers() {
-            const list = document.getElementById('userList');
+            const list = document.getElementById('u-list');
             list.innerHTML = "";
             users.forEach((u, i) => {
-                list.innerHTML += `<tr>
-                    <td><b>${u.name}</b></td>
-                    <td><code>${u.pass}</code></td>
-                    <td><span class="badge badge-active">Aktif</span></td>
-                    <td><i class="fas fa-trash-alt" style="color:var(--danger); cursor:pointer;" onclick="removeUser(${i})"></i></td>
-                </tr>`;
+                list.innerHTML += `<tr><td>${u.name}</td><td>••••</td><td><span class="u-badge">AKTİF</span></td><td><i class="fas fa-trash" style="color:var(--danger)" onclick="removeUser(${i})"></i></td></tr>`;
             });
-            document.getElementById('count-users').innerText = users.length;
-            localStorage.setItem('arch_users', JSON.stringify(users));
+            localStorage.setItem('archera_membership', JSON.stringify(users));
+        }
+        function removeUser(i) { users.splice(i,1); renderUsers(); }
+
+        // 3. DİNAMİK MENÜ EKLEME (KRİTİK)
+        function addDynamicMenu() {
+            const name = document.getElementById('menu-name').value;
+            const icon = document.getElementById('menu-icon').value;
+            if(name && icon) {
+                const nav = document.getElementById('main-nav');
+                const id = "mod-" + name.toLowerCase();
+                
+                // Navigasyona ekle
+                nav.innerHTML += `<div class="nav-link" onclick="tab('${id}', this)"><i class="${icon}"></i><span>${name}</span></div>`;
+                
+                // Viewport'a boş modül ekle
+                document.getElementById('viewport').innerHTML += `<div id="${id}" class="module"><div class="admin-card"><h3>${name}</h3><p>Yeni dinamik modül hazır.</p></div></div>`;
+                
+                alert(name + " Menüsü Başarıyla Eklendi!");
+            }
         }
 
-        function saveSid() {
-            const val = document.getElementById('sid').value;
-            if(val) {
-                localStorage.setItem('arch_sid', val);
-                addLog("Session ID güncellendi. Engine senkronize ediliyor...");
-                alert("Session Kaydedildi!");
-            }
+        // 4. SESSION & GİRİŞ
+        function saveSession() {
+            const s = document.getElementById('sessionInput').value;
+            if(s) { localStorage.setItem('archera_sid', s); alert("Session Aktif!"); }
         }
 
         function tryLogin() {
             if(document.getElementById('gateKey').value === "baba") {
-                document.getElementById('gatekeeper').style.transform = "translateY(-100%)";
+                document.getElementById('gatekeeper').style.opacity = "0";
                 setTimeout(() => {
                     document.getElementById('gatekeeper').style.display = "none";
                     document.getElementById('main-shell').style.display = "flex";
-                    setTimeout(() => { document.getElementById('main-shell').style.opacity = "1"; renderUsers(); }, 50);
-                }, 500);
+                    setTimeout(() => { 
+                        document.getElementById('main-shell').style.opacity = "1";
+                        renderUsers();
+                        // Kayıtlı profil bilgilerini yükle
+                        if(localStorage.getItem('archera_name')) document.getElementById('display-name').innerText = localStorage.getItem('archera_name');
+                        if(localStorage.getItem('archera_avatar')) {
+                            document.getElementById('top-avatar').src = localStorage.getItem('archera_avatar');
+                            document.getElementById('preview-img').src = localStorage.getItem('archera_avatar');
+                        }
+                    }, 50);
+                }, 600);
             } else { window.location.href = "https://instagram.com/pxlat"; }
         }
 
@@ -213,7 +230,6 @@
             document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             el.classList.add('active');
-            addLog(`${id.replace('mod-', '').toUpperCase()} sekmesine geçildi.`);
         }
     </script>
 </body>
