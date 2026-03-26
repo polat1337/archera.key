@@ -3,201 +3,182 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIM | Intelligence Center</title>
+    <title>ARCHERA | SYSTEM PANEL</title>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;600&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #00f3ff;
-            --bg: #050505;
-            --panel: rgba(20, 20, 20, 0.7);
+            --accent: #00f3ff;
+            --bg-dark: #02040a;
+            --glass: rgba(255, 255, 255, 0.03);
+            --border: rgba(0, 243, 255, 0.3);
         }
 
         body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: var(--bg);
+            margin: 0; padding: 0; height: 100%;
+            background: var(--bg-dark);
+            font-family: 'Exo 2', sans-serif;
             color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             overflow: hidden;
         }
 
-        /* Arka Plan Grid Efekti */
-        .grid-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background-image: linear-gradient(var(--primary) 1px, transparent 1px),
-                              linear-gradient(90deg, var(--primary) 1px, transparent 1px);
-            background-size: 50px 50px;
-            background-position: center;
-            opacity: 0.05;
+        /* Arka Plan Hareketli Toz Efekti */
+        .particles {
+            position: absolute; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #111 0%, #000 100%);
             z-index: -1;
         }
 
-        .login-card {
-            background: var(--panel);
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(0, 243, 255, 0.2);
-            padding: 40px;
-            border-radius: 20px;
+        .panel-container {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            border: 1px solid var(--border);
+            border-radius: 35px;
+            padding: 60px 40px;
+            width: 380px;
             text-align: center;
-            box-shadow: 0 0 30px rgba(0, 243, 255, 0.1);
-            width: 320px;
-            animation: fadeIn 1.5s ease-out;
-        }
-
-        h1 {
-            font-size: 1.5rem;
-            letter-spacing: 5px;
-            margin-bottom: 30px;
-            color: var(--primary);
-            text-shadow: 0 0 10px var(--primary);
-        }
-
-        .input-group {
-            margin-bottom: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,243,255,0.05);
             position: relative;
+            animation: emerge 1s ease-out;
+        }
+
+        @keyframes emerge {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .logo-area h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.8rem;
+            margin: 0;
+            letter-spacing: 8px;
+            background: linear-gradient(to bottom, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 15px rgba(0,243,255,0.5));
+        }
+
+        .subtitle {
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            color: var(--accent);
+            opacity: 0.8;
+            margin-bottom: 40px;
+            text-transform: uppercase;
+        }
+
+        .input-box {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid #222;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 25px;
+            transition: 0.4s;
+        }
+
+        .input-box:focus-within {
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(0,243,255,0.2);
         }
 
         input {
-            width: 100%;
-            padding: 12px;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid #333;
-            border-radius: 8px;
-            color: white;
-            outline: none;
-            transition: 0.3s;
-            box-sizing: border-box;
-            text-align: center;
-            font-family: monospace;
+            background: none; border: none; color: white; width: 100%;
+            text-align: center; font-size: 1.1rem; outline: none;
+            font-family: 'Orbitron', sans-serif; letter-spacing: 2px;
         }
 
-        input:focus {
-            border-color: var(--primary);
-            box-shadow: 0 0 10px rgba(0, 243, 255, 0.3);
-        }
-
-        .btn-enter {
-            width: 100%;
-            padding: 12px;
+        .btn-main {
             background: transparent;
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: bold;
-            text-transform: uppercase;
+            border: 2px solid var(--accent);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 18px;
+            font-weight: 600;
             letter-spacing: 2px;
-            transition: 0.4s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-
-        .btn-enter:hover {
-            background: var(--primary);
-            color: black;
-            box-shadow: 0 0 20px var(--primary);
-        }
-
-        .status-msg {
-            margin-top: 15px;
-            font-size: 0.8rem;
-            height: 20px;
-            color: #ff4d4d;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Yükleme Ekranı */
-        #loader {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg);
-            z-index: 100;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .loading-bar {
-            width: 200px;
-            height: 2px;
-            background: #111;
-            margin-top: 20px;
+            cursor: pointer;
+            transition: 0.5s;
             position: relative;
             overflow: hidden;
+            width: 100%;
         }
 
-        .loading-progress {
-            width: 0%;
-            height: 100%;
-            background: var(--primary);
-            animation: load 2.5s forwards;
+        .btn-main:hover {
+            background: var(--accent);
+            color: #000;
+            box-shadow: 0 0 30px var(--accent);
         }
 
-        @keyframes load {
-            to { width: 100%; }
+        /* BEKLE Ekranı */
+        #loader-screen {
+            display: none;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-dark);
+            border-radius: 35px;
+            flex-direction: column; justify-content: center; align-items: center;
+            z-index: 10;
         }
-    </style>
+
+        .spinner {
+            width: 60px; height: 60px;
+            border: 3px solid rgba(0,243,255,0.1);
+            border-top: 3px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-text {
+            margin-top: 20px;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            letter-spacing: 10px;
+            color: var(--accent);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    </script>
 </head>
 <body>
 
-    <div class="grid-bg"></div>
+<div class="particles"></div>
 
-    <div id="loader">
-        <div style="letter-spacing: 10px; color: var(--primary);">INITIALIZING...</div>
-        <div class="loading-bar">
-            <div class="loading-progress"></div>
-        </div>
+<div class="panel-container" id="mainPanel">
+    <div id="loader-screen">
+        <div class="spinner"></div>
+        <div class="loading-text">BEKLE</div>
     </div>
 
-    <div class="login-card" id="loginCard">
-        <h1>SIM V1.0</h1>
-        <div class="input-group">
-            <input type="password" id="accessKey" placeholder="GİRİŞ ANAHTARI">
-        </div>
-        <button class="btn-enter" onclick="checkKey()">
-            SİSTEME GİR 
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4M10 17l5-5-5-5M13.8 12H3"/></svg>
-        </button>
-        <div class="status-msg" id="statusMsg"></div>
+    <div class="logo-area">
+        <h1>ARCHERA</h1>
+        <div class="subtitle">SYSTEM PANEL</div>
     </div>
 
-    <script>
-        const VALID_KEY = "reis"; // Mevcut sistem anahtarı
+    <div class="input-box">
+        <input type="password" id="key" placeholder="ACCESS KEY">
+    </div>
 
-        function checkKey() {
-            const key = document.getElementById('accessKey').value;
-            const msg = document.getElementById('statusMsg');
-            
-            if(key === VALID_KEY) {
-                msg.style.color = "#00f3ff";
-                msg.innerText = "ERİŞİM ONAYLANDI...";
-                
-                setTimeout(() => {
-                    document.getElementById('loginCard').style.display = 'none';
-                    document.getElementById('loader').style.display = 'flex';
-                    
-                    // Ana Dashboard'a yönlendirme simülasyonu
-                    setTimeout(() => {
-                        alert("Sistem Hazır. Bir sonraki faz (Dashboard) için bekleyiniz.");
-                        // Buraya dashboard linki gelecek: window.location.href = "dashboard.html";
-                    }, 3000);
-                }, 1000);
-            } else {
-                msg.innerText = "GEÇERSİZ ANAHTAR!";
-                document.getElementById('accessKey').style.borderColor = "#ff4d4d";
-            }
+    <button class="btn-main" onclick="initSystem()">SİSTEME GİR</button>
+</div>
+
+<script>
+    function initSystem() {
+        const key = document.getElementById('key').value;
+        const loader = document.getElementById('loader-screen');
+        
+        if(key === "6363") { // Örnek Anahtar
+            loader.style.display = "flex";
+            setTimeout(() => {
+                alert("ARCHERA Core Sistemine Bağlanılıyor...");
+                // Buraya Dashboard linki gelecek
+            }, 3000);
+        } else {
+            alert("ERİŞİM REDDEDİLDİ: Geçersiz Anahtar.");
         }
-    </script>
+    }
+</script>
+
 </body>
 </html>
