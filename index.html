@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA | MULTI-MODULE SYSTEM</title>
+    <title>ARCHERA | ADMIN PANEL</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #4e73df; --bg: #0b0e14; --card: #151921; --border: rgba(255, 255, 255, 0.08); --text-dim: #858796; }
+        :root { --primary: #4e73df; --bg: #0b0e14; --card: #151921; --border: rgba(255, 255, 255, 0.08); --text-dim: #858796; --danger: #e74a3b; --success: #1cc88a; }
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
         body { background: var(--bg); color: #fff; height: 100vh; overflow: hidden; }
 
@@ -22,25 +22,30 @@
         header { height: 60px; background: var(--card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; }
         .viewport { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 120px; }
         
-        /* MODÜL MANTIĞI (Buraya dikkat, burası bozulmayı engeller) */
-        .module { display: none; max-width: 600px; margin: 0 auto; }
+        .module { display: none; max-width: 800px; margin: 0 auto; }
         .module.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .smm-card { background: var(--card); border-radius: 12px; border: 1px solid var(--border); padding: 25px; margin-bottom: 20px; }
+        .card-header { font-size: 0.8rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        
+        /* INPUTS */
         .smm-input { width: 100%; background: #0b0e14; border: 1px solid var(--border); padding: 15px; color: #fff; border-radius: 8px; margin-bottom: 15px; outline: none; }
-        .smm-btn { width: 100%; padding: 15px; background: var(--primary); color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; }
+        .smm-btn { width: 100%; padding: 15px; background: var(--primary); color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .smm-btn.danger { background: var(--danger); }
 
-        /* ALT NAVİGASYON (SMM STYLE FIXED) */
-        nav { 
-            position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; 
-            background: var(--card); border-top: 1px solid var(--border); 
-            display: flex; justify-content: space-around; align-items: center; z-index: 1000;
-        }
+        /* ÜYE TABLOSU */
+        .user-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        .user-table th { text-align: left; font-size: 0.7rem; color: var(--text-dim); padding: 10px; border-bottom: 1px solid var(--border); }
+        .user-table td { padding: 12px 10px; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.02); }
+        .delete-icon { color: var(--danger); cursor: pointer; }
+
+        /* NAV */
+        nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
         .nav-link { color: var(--text-dim); text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; cursor: pointer; transition: 0.3s; }
         .nav-link.active { color: var(--primary); }
         .nav-link i { font-size: 1.2rem; }
-        .nav-link span { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; }
+        .nav-link span { font-size: 0.6rem; font-weight: 700; }
     </style>
 </head>
 <body>
@@ -49,54 +54,106 @@
         <div class="login-card">
             <h1 style="margin-bottom:20px;">ARCHERA</h1>
             <input type="password" id="gateKey" class="input-box" placeholder="••••••••">
-            <button class="login-btn" onclick="tryLogin()">SİSTEME GİRİŞ <i class="fas fa-sign-in-alt"></i></button>
+            <button class="login-btn" onclick="tryLogin()">SİSTEME GİRİŞ</button>
             <a href="https://instagram.com/pxlat" target="_blank" style="display:block; margin-top:20px; color:#444; text-decoration:none; font-size:0.7rem;">KEY TALEBİ: @PXLAT</a>
         </div>
     </div>
 
     <div id="main-shell">
-        <header><div style="font-weight:800; color:var(--primary);">ARCHERA</div><div style="font-size:0.6rem; color:#1cc88a;">ONLINE</div></header>
+        <header><div style="font-weight:800; color:var(--primary);">ARCHERA COMMAND</div><div id="engine-status" style="font-size:0.6rem; color:var(--text-dim);">ENGINE: STANDBY</div></header>
 
         <div class="viewport">
             <div id="mod-sorgu" class="module active">
                 <div class="smm-card">
-                    <p style="font-size:0.7rem; color:var(--text-dim); margin-bottom:15px;">ISTIHBARAT_SCANNER</p>
-                    <input type="text" class="smm-input" placeholder="Hedef Bilgi Girin...">
-                    <button class="smm-btn">SORGULA <i class="fas fa-bolt"></i></button>
+                    <div class="card-header"><i class="fas fa-search"></i> İstihbarat Sorgu</div>
+                    <input type="text" id="target" class="smm-input" placeholder="Kullanıcı Adı / ID...">
+                    <button class="smm-btn" onclick="alert('Sorgu Backend Bekliyor...')">SORGULA</button>
                 </div>
-            </div>
-
-            <div id="mod-db" class="module">
-                <div class="smm-card"><h3>DATABASE</h3><p style="color:var(--text-dim); margin-top:10px;">Veri tabanı bağlantısı bekleniyor...</p></div>
-            </div>
-
-            <div id="mod-archive" class="module">
-                <div class="smm-card"><h3>ARCHIVE</h3><p style="color:var(--text-dim); margin-top:10px;">Geçmiş sorgular burada listelenecek.</p></div>
             </div>
 
             <div id="mod-admin" class="module">
                 <div class="smm-card">
-                    <h3>SYSTEM_CONFIG</h3>
-                    <input type="text" class="smm-input" placeholder="Render API Key" style="margin-top:15px;">
-                    <button class="smm-btn" style="background:#333;">KAYDET</button>
+                    <div class="card-header"><i class="fas fa-key"></i> Session & Cookie Yönetimi</div>
+                    <p style="font-size:0.7rem; color:var(--text-dim); margin-bottom:10px;">Render ve Mango servisleri için Session ID girin:</p>
+                    <input type="text" id="sessionId" class="smm-input" placeholder="Session ID (Cookie) Yapıştır...">
+                    <button class="smm-btn" onclick="saveSession()">SESSION GÜNCELLE</button>
+                </div>
+
+                <div class="smm-card">
+                    <div class="card-header"><i class="fas fa-users"></i> Üye Yönetimi</div>
+                    <div style="display:flex; gap:10px; margin-bottom:15px;">
+                        <input type="text" id="newUserName" class="smm-input" placeholder="Üye Adı" style="margin-bottom:0;">
+                        <button class="smm-btn" style="width:100px;" onclick="addUser()">EKLE</button>
+                    </div>
+                    <table class="user-table">
+                        <thead><tr><th>ÜYE ADI</th><th>DURUM</th><th>İŞLEM</th></tr></thead>
+                        <tbody id="userList">
+                            </tbody>
+                    </table>
                 </div>
             </div>
         </div>
 
         <nav>
             <div class="nav-link active" onclick="tab('mod-sorgu', this)"><i class="fas fa-search"></i><span>Sorgu</span></div>
-            <div class="nav-link" onclick="tab('mod-db', this)"><i class="fas fa-database"></i><span>Data</span></div>
-            <div class="nav-link" onclick="tab('mod-archive', this)"><i class="fas fa-box-archive"></i><span>Arşiv</span></div>
-            <div class="nav-link" onclick="tab('mod-admin', this)"><i class="fas fa-tools"></i><span>Admin</span></div>
+            <div class="nav-item nav-link" onclick="tab('mod-db', this)"><i class="fas fa-database"></i><span>Database</span></div>
+            <div class="nav-item nav-link" onclick="tab('mod-admin', this)"><i class="fas fa-user-shield"></i><span>Yönetim</span></div>
         </nav>
     </div>
 
     <script>
+        // SESSION & RENDER LOGIC
+        function saveSession() {
+            const sid = document.getElementById('sessionId').value;
+            if(sid) {
+                localStorage.setItem('archera_sid', sid);
+                document.getElementById('engine-status').innerText = "ENGINE: ACTIVE";
+                document.getElementById('engine-status').style.color = "#1cc88a";
+                alert("Session Başarıyla Kaydedildi!");
+            }
+        }
+
+        // ÜYE YÖNETİMİ LOGIC
+        let users = JSON.parse(localStorage.getItem('archera_users')) || [];
+
+        function renderUsers() {
+            const list = document.getElementById('userList');
+            list.innerHTML = "";
+            users.forEach((u, index) => {
+                list.innerHTML += `
+                    <tr>
+                        <td>${u}</td>
+                        <td><span style="color:#1cc88a">Aktif</span></td>
+                        <td><i class="fas fa-trash delete-icon" onclick="removeUser(${index})"></i></td>
+                    </tr>
+                `;
+            });
+            localStorage.setItem('archera_users', JSON.stringify(users));
+        }
+
+        function addUser() {
+            const name = document.getElementById('newUserName').value;
+            if(name) {
+                users.push(name);
+                document.getElementById('newUserName').value = "";
+                renderUsers();
+            }
+        }
+
+        function removeUser(index) {
+            users.splice(index, 1);
+            renderUsers();
+        }
+
+        // TEMEL FONKSİYONLAR
         function tryLogin() {
             if(document.getElementById('gateKey').value === "baba") {
                 document.getElementById('gatekeeper').style.display = "none";
                 document.getElementById('main-shell').style.display = "flex";
-                setTimeout(() => { document.getElementById('main-shell').style.opacity = "1"; }, 50);
+                setTimeout(() => { 
+                    document.getElementById('main-shell').style.opacity = "1";
+                    renderUsers(); 
+                }, 50);
             } else { window.location.href = "https://instagram.com/pxlat"; }
         }
 
