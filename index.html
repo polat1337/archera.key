@@ -3,45 +3,56 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA | LOGIN</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <title>ARCHERA | SYSTEM ACCESS</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <style>
-        :root { --bg: #030712; --accent: #00d2ff; --card: #0d111c; --border: #1f2937; }
+        :root { --bg: #050505; --accent: #ffffff; --sub: #666; --card: #0a0a0a; --border: #1a1a1a; }
         * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; color: white; overflow: hidden; }
-        .login-card { background: var(--card); border: 1px solid var(--border); border-radius: 24px; padding: 40px 30px; width: 90%; max-width: 380px; text-align: center; box-shadow: 0 20px 60px rgba(0,0,0,0.8); }
-        h1 { font-family: 'Space Grotesk', sans-serif; font-size: 2rem; letter-spacing: 5px; margin-bottom: 10px; color: #fff; }
-        p { color: #64748b; font-size: 0.75rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 35px; }
-        .field { position: relative; margin-bottom: 25px; }
-        .field i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--accent); font-size: 22px; }
-        input { width: 100%; background: #010409; border: 1px solid var(--border); border-radius: 14px; padding: 18px 15px 18px 55px; color: white; font-size: 1rem; outline: none; transition: 0.3s; }
-        input:focus { border-color: var(--accent); box-shadow: 0 0 15px rgba(0, 210, 255, 0.1); }
-        .btn-access { width: 100%; padding: 18px; background: var(--accent); border: none; border-radius: 14px; color: #000; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; cursor: pointer; transition: 0.3s; }
-        .btn-access:active { transform: scale(0.96); }
-        .footer-link { margin-top: 30px; font-size: 0.8rem; color: #64748b; font-weight: 700; }
-        .footer-link a { color: var(--accent); text-decoration: none; border-bottom: 1px solid var(--accent); }
+        body { background: var(--bg); font-family: 'Inter', sans-serif; display: flex; align-items: center; justify-content: center; height: 100vh; color: var(--accent); }
+        
+        .login-wrap { width: 90%; max-width: 360px; text-align: center; }
+        .logo-area { margin-bottom: 40px; }
+        .logo-area h1 { font-weight: 900; letter-spacing: 12px; font-size: 2.2rem; }
+        .logo-area p { font-size: 0.65rem; color: var(--sub); letter-spacing: 4px; text-transform: uppercase; margin-top: 5px; }
+
+        .input-field { position: relative; margin-bottom: 20px; }
+        .input-field i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--sub); font-size: 20px; }
+        input { 
+            width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 8px; 
+            padding: 18px 15px 18px 50px; color: #fff; font-size: 0.9rem; outline: none; transition: 0.3s;
+        }
+        input:focus { border-color: #fff; }
+
+        .btn-access { 
+            width: 100%; padding: 18px; background: var(--accent); color: #000; border: none; 
+            border-radius: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 2px; 
+            cursor: pointer; transition: 0.3s; margin-top: 10px;
+        }
+        .btn-access:active { transform: scale(0.97); }
+
+        .request-area { margin-top: 30px; font-size: 0.75rem; color: var(--sub); }
+        .request-area a { color: #fff; text-decoration: none; font-weight: 700; border-bottom: 1px solid #333; }
     </style>
 </head>
 <body>
-    <div class="login-card">
-        <h1>ARCHERA</h1>
-        <p>TERMINAL ACCESS</p>
-        <div class="field">
-            <i class="material-icons-round">vpn_key</i>
-            <input type="password" id="accessKey" placeholder="Access Key" onkeypress="if(event.key === 'Enter') check()">
+    <div class="login-wrap">
+        <div class="logo-area">
+            <h1>ARCHERA</h1>
+            <p>Admin Terminal V1.0</p>
         </div>
-        <button class="btn-access" onclick="check()">SISTEME BAGLAN</button>
-        <div class="footer-link">Anahtarın yok mu? <a href="https://instagram.com/pxlat" target="_blank">Talep Et @pxlat</a></div>
+        <div class="input-field">
+            <i class="material-icons-round">lock_open</i>
+            <input type="password" id="key" placeholder="ACCESS KEY">
+        </div>
+        <button class="btn-access" onclick="enter()">Bağlan</button>
+        <div class="request-area">Key Talep Et: <a href="https://instagram.com/pxlat" target="_blank">@pxlat</a></div>
     </div>
     <script>
-        function check() {
-            const key = document.getElementById('accessKey').value;
-            if(key === "reis") {
+        function enter() {
+            if(document.getElementById('key').value === "reis") {
                 window.location.href = "dashboard.html";
-            } else {
-                alert("ERİŞİM REDDEDİLDİ!");
-            }
+            } else { alert("ACCESS DENIED"); }
         }
     </script>
 </body>
