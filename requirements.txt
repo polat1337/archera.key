@@ -1,4 +1,4 @@
 fastapi
-import instaloader
 uvicorn
+instaloader
 pydantic
