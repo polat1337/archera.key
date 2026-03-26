@@ -3,163 +3,188 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA | OATHNET EDITION</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <title>ARCHERA | INTELLIGENCE HUB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <style>
         :root { 
-            --accent: #00ff41; 
-            --accent-glow: rgba(0, 255, 65, 0.3);
-            --bg: #030303; 
-            --panel: #0a0a0a; 
-            --border: rgba(255, 255, 255, 0.05);
-            --glass: rgba(15, 15, 15, 0.8);
+            --accent: #00f2ff; 
+            --accent-soft: rgba(0, 242, 255, 0.15);
+            --bg: #020202; 
+            --panel: rgba(20, 20, 20, 0.8); 
+            --border: rgba(255, 255, 255, 0.05); 
+            --text-main: #e0e0e0;
+            --text-dim: #666;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); font-family: 'Space Grotesk', sans-serif; color: #fff; overflow: hidden; height: 100vh; }
+        body { background: var(--bg); font-family: 'Inter', sans-serif; color: var(--text-main); overflow: hidden; height: 100vh; }
 
-        /* --- SİBER ARKA PLAN --- */
+        /* --- PREMIUM ARKA PLAN --- */
         .cyber-grid { 
             position: fixed; inset: 0; 
-            background: linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.9)), 
-                        url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
-            z-index: -1; 
+            background: radial-gradient(circle at center, #0a0a0a 0%, #020202 100%);
+            z-index: -2; 
         }
-        .scanline { width: 100%; height: 2px; background: rgba(0, 255, 65, 0.05); position: fixed; top: 0; z-index: 10000; animation: scan 8s linear infinite; pointer-events: none; }
-        @keyframes scan { from { top: 0; } to { top: 100%; } }
+        .cyber-grid::after {
+            content: ''; position: absolute; inset: 0;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 50px 50px; opacity: 0.2;
+        }
 
-        /* --- PREMIUM GİRİŞ KATMANI --- */
-        #gatekeeper { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(20px); }
+        /* --- GATEKEEPER (PREMIUM LOGIN) --- */
+        #gatekeeper { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(15px); }
         .gate-card { 
-            width: 380px; padding: 60px 40px; background: var(--panel); border: 1px solid var(--accent); 
-            text-align: center; position: relative; box-shadow: 0 0 50px rgba(0,0,0,1);
+            width: 90%; max-width: 400px; text-align: center; border: 1px solid var(--border); 
+            padding: 60px 40px; background: var(--panel); position: relative;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.8);
         }
-        .gate-card::before { content: ''; position: absolute; inset: -1px; background: var(--accent); z-index: -1; opacity: 0.1; filter: blur(10px); }
-        .gate-card h1 { font-size: 2.8rem; letter-spacing: 15px; margin-bottom: 10px; color: var(--accent); text-shadow: 0 0 20px var(--accent); }
-        .gate-card p { font-size: 0.6rem; letter-spacing: 5px; color: #555; text-transform: uppercase; margin-bottom: 40px; }
-        .key-input { width: 100%; background: #000; border: 1px solid var(--border); padding: 18px; color: var(--accent); text-align: center; font-size: 1.2rem; letter-spacing: 8px; margin-bottom: 25px; transition: 0.3s; }
-        .key-input:focus { border-color: var(--accent); box-shadow: 0 0 15px var(--accent-glow); }
-        .enter-btn { width: 100%; padding: 20px; background: var(--accent); color: #000; font-weight: 900; border: none; cursor: pointer; letter-spacing: 4px; text-transform: uppercase; transition: 0.3s; }
-        .enter-btn:hover { box-shadow: 0 0 30px var(--accent); transform: translateY(-2px); }
+        .gate-card::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 60px; height: 2px; background: var(--accent); box-shadow: 0 0 15px var(--accent); }
+        .gate-card h1 { font-family: 'Space Grotesk'; font-weight: 700; letter-spacing: 12px; font-size: 2.2rem; margin-bottom: 10px; color: #fff; }
+        .gate-card p { font-size: 0.65rem; color: var(--text-dim); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 45px; }
+        .key-input { width: 100%; background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 18px; color: #fff; text-align: center; font-size: 1.1rem; letter-spacing: 6px; margin-bottom: 25px; transition: 0.3s; }
+        .key-input:focus { border-color: var(--accent); background: rgba(0, 242, 255, 0.02); }
+        .enter-btn { width: 100%; padding: 20px; background: var(--accent); color: #000; font-weight: 800; border: none; cursor: pointer; text-transform: uppercase; letter-spacing: 3px; transition: 0.4s; }
+        .enter-btn:hover { box-shadow: 0 0 30px var(--accent-soft); transform: translateY(-2px); }
 
-        /* --- ANA DASHBOARD --- */
+        /* --- DASHBOARD STRUCTURE --- */
         #main-shell { display: none; height: 100vh; flex-direction: column; opacity: 0; transition: 1s; }
-        
         header { 
-            padding: 25px 30px; background: var(--panel); border-bottom: 1px solid var(--border); 
-            display: flex; justify-content: space-between; align-items: center;
+            padding: 25px 30px; display: flex; justify-content: space-between; align-items: center; 
+            background: rgba(10,10,10,0.9); border-bottom: 1px solid var(--border); backdrop-filter: blur(10px);
         }
-        .header-logo { font-weight: 700; letter-spacing: 6px; color: var(--accent); font-size: 1.4rem; }
-        .sys-status { font-size: 0.6rem; color: var(--accent); display: flex; align-items: center; gap: 8px; border: 1px solid var(--accent); padding: 6px 12px; border-radius: 2px; }
-        .status-dot { width: 6px; height: 6px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 10px var(--accent); animation: pulse 1.5s infinite; }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.3; } 100% { opacity: 1; } }
+        .header-logo { font-family: 'Space Grotesk'; font-weight: 700; letter-spacing: 5px; color: #fff; font-size: 1.1rem; }
+        #status-indicator { font-size: 0.6rem; font-weight: 700; color: #ff3333; border: 1px solid rgba(255,51,51,0.3); padding: 6px 14px; letter-spacing: 1px; }
 
-        /* --- VIEWPORT DÜZENİ --- */
-        .view-port { flex: 1; overflow-y: auto; padding: 30px; padding-bottom: 120px; }
-        .module { display: none; max-width: 900px; margin: 0 auto; }
-        .module.active { display: block; animation: fadeInUp 0.5s ease forwards; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .view-port { flex: 1; overflow-y: auto; padding: 25px; padding-bottom: 110px; }
+        .module { display: none; max-width: 800px; margin: 0 auto; }
+        .module.active { display: block; animation: fadeInBlur 0.6s ease-out; }
 
-        /* --- PREMIUM KARTLAR --- */
+        @keyframes fadeInBlur { from { opacity: 0; filter: blur(10px); transform: translateY(10px); } to { opacity: 1; filter: blur(0); transform: translateY(0); } }
+
+        /* --- PREMIUM GLASS CARDS --- */
         .glass-card { 
-            background: var(--glass); border: 1px solid var(--border); padding: 35px; 
-            border-radius: 4px; position: relative; margin-bottom: 30px;
+            background: var(--panel); border: 1px solid var(--border); padding: 35px; 
+            margin-bottom: 25px; position: relative; backdrop-filter: blur(10px);
         }
-        .glass-card::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 40px; background: var(--accent); box-shadow: 0 0 15px var(--accent); }
-        .card-label { font-size: 0.65rem; color: #666; font-weight: 800; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 25px; display: block; }
+        .card-label { font-size: 0.65rem; color: var(--accent); font-weight: 800; text-transform: uppercase; letter-spacing: 3px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px; }
+        .card-label::after { content: ''; height: 1px; flex: 1; background: var(--border); }
         
-        .input-group { position: relative; margin-bottom: 20px; }
-        .input-group i { position: absolute; left: 15px; top: 16px; color: var(--accent); font-size: 20px; }
-        .input-group input { width: 100%; background: #000; border: 1px solid var(--border); padding: 18px 18px 18px 50px; color: #fff; font-family: 'JetBrains Mono'; transition: 0.3s; }
-        .input-group input:focus { border-color: var(--accent); box-shadow: 0 0 10px var(--accent-glow); }
-
-        .premium-btn { width: 100%; padding: 18px; background: transparent; border: 1px solid var(--accent); color: var(--accent); font-weight: 900; letter-spacing: 2px; cursor: pointer; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        .premium-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 25px var(--accent); }
-
-        /* --- SONUÇ TABLOSU --- */
-        .result-panel { margin-top: 30px; display: none; }
-        .data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        .data-item { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 20px; transition: 0.3s; }
-        .data-item:hover { border-color: var(--accent); background: rgba(0, 255, 65, 0.05); }
-        .item-label { font-size: 0.55rem; color: #555; margin-bottom: 8px; letter-spacing: 1px; }
-        .item-value { font-size: 0.95rem; color: #eee; font-family: 'JetBrains Mono'; }
-
-        /* --- PREMIUM ALT NAVİGASYON --- */
-        nav { 
-            position: fixed; bottom: 0; width: 100%; height: 90px; background: #000; 
-            border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 1000; 
+        input, select { 
+            width: 100%; background: rgba(255,255,255,0.02); border: 1px solid var(--border); 
+            padding: 18px; color: #fff; font-family: 'Inter'; margin-bottom: 15px; transition: 0.3s;
         }
-        .nav-item { color: #333; display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; transition: 0.4s; cursor: pointer; position: relative; }
-        .nav-item i { font-size: 28px; transition: 0.3s; }
-        .nav-item span { font-size: 0.55rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        input:focus { border-color: var(--accent); background: rgba(0, 242, 255, 0.03); }
+        .action-btn { width: 100%; padding: 18px; background: transparent; border: 1px solid var(--accent); color: var(--accent); font-weight: 800; text-transform: uppercase; cursor: pointer; letter-spacing: 2px; transition: 0.3s; }
+        .action-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 20px var(--accent-soft); }
+
+        /* --- RESULT UNIT (OSINT STYLE) --- */
+        .identity-result { margin-top: 25px; display: none; background: rgba(0,0,0,0.4); border: 1px solid var(--border); padding: 0; }
+        .data-row { display: flex; justify-content: space-between; align-items: center; padding: 18px 20px; border-bottom: 1px solid var(--border); transition: 0.2s; }
+        .data-row:hover { background: rgba(255,255,255,0.02); }
+        .data-row span { color: var(--text-dim); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .data-row p { color: #fff; font-weight: 600; font-size: 0.9rem; }
+
+        /* --- NAVIGATION (PREMIUM DOCK) --- */
+        nav { 
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 500px; height: 75px; 
+            background: rgba(15, 15, 15, 0.9); border: 1px solid var(--border); 
+            backdrop-filter: blur(20px); border-radius: 15px;
+            display: flex; justify-content: space-around; align-items: center; z-index: 1000;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+        .nav-item { text-decoration: none; color: #444; display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; transition: 0.3s; cursor: pointer; }
+        .nav-item i { font-size: 24px; }
+        .nav-item span { font-size: 0.5rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
         .nav-item.active { color: var(--accent); }
-        .nav-item.active i { transform: translateY(-5px); text-shadow: 0 0 15px var(--accent); }
-        .nav-item.active::after { content: ''; position: absolute; top: -10px; width: 20px; height: 2px; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
+        .nav-item.active i { text-shadow: 0 0 15px var(--accent); }
 
     </style>
 </head>
 <body>
 
     <div class="cyber-grid"></div>
-    <div class="scanline"></div>
 
     <div id="gatekeeper">
         <div class="gate-card">
             <h1>ARCHERA</h1>
-            <p>Oathnet Intelligence Protocol</p>
-            <input type="password" id="gateKey" class="key-input" placeholder="ACCESS_KEY">
+            <p>Intelligence Protocol v1.5</p>
+            <input type="password" id="gateKey" class="key-input" placeholder="PASSKEY">
             <button class="enter-btn" onclick="tryLogin()">Authorize Access</button>
         </div>
     </div>
 
     <div id="main-shell">
         <header>
-            <div class="header-logo">ARCHERA</div>
-            <div class="sys-status">
-                <div class="status-dot"></div>
-                <span id="status-text">SYSTEM_OFFLINE</span>
-            </div>
+            <div class="header-logo">ARCHERA // SYSTEM</div>
+            <div id="status-indicator">SIGNAL_LOST</div>
         </header>
 
         <div class="view-port">
             
             <div id="mod-sorgu" class="module active">
                 <div class="glass-card">
-                    <span class="card-label">Terminal Query Base</span>
-                    <div class="input-group">
-                        <i class="material-icons-round">radar</i>
-                        <input type="text" id="targetInput" placeholder="Kullanıcı adı veya ID giriniz...">
-                    </div>
-                    <button class="premium-btn" onclick="executeSorgu()">
-                        <i class="material-icons-round">bolt</i> RUN_EXPLOIT
-                    </button>
+                    <span class="card-label"><i class="material-icons-round" style="font-size: 14px;">radar</i> Query Engine</span>
+                    <input type="text" id="targetInput" placeholder="Kullanıcı Adı veya ID giriniz...">
+                    <button class="action-btn" onclick="executeSorgu()">Execute Intelligence Search</button>
                     
-                    <div id="loading" style="display:none; text-align:center; margin-top:20px; color:var(--accent); font-size:0.7rem; font-family:'JetBrains Mono';">
-                        >> FETCHING_DATA_FROM_BOT_BRIDGE...
+                    <div id="sorguLoading" style="display:none; text-align:center; margin-top:20px; color:var(--accent); font-size:0.6rem; font-weight:800; letter-spacing:2px;">
+                        <span class="status-dot"></span> FETCHING ENCRYPTED DATA...
                     </div>
 
-                    <div id="resPanel" class="result-panel">
-                        <div class="data-grid">
-                            <div class="data-item"><div class="item-label">FULL NAME</div><div class="item-value" id="res-name">-</div></div>
-                            <div class="data-item"><div class="item-label">FOLLOWERS</div><div class="item-value" id="res-followers">-</div></div>
-                            <div class="data-item"><div class="item-label">GSM NUMBER</div><div class="item-value" style="color:var(--accent)">SORGULANIYOR...</div></div>
-                            <div class="data-item"><div class="item-label">IDENTITY NO</div><div class="item-value" style="color:var(--accent)">BEKLENİYOR...</div></div>
-                            <div class="data-item"><div class="item-label">LOCATION</div><div class="item-value" id="res-loc">-</div></div>
-                            <div class="data-item"><div class="item-label">PRIVACY</div><div class="item-value" id="res-priv">-</div></div>
-                        </div>
+                    <div id="resCard" class="identity-result">
+                        <div class="data-row"><span>Identity Name</span><p id="res-name">-</p></div>
+                        <div class="data-row"><span>Network Reach</span><p id="res-followers">-</p></div>
+                        <div class="data-row"><span>GSM Registry</span><p style="color:var(--accent)">Sorgulanıyor...</p></div>
+                        <div class="data-row"><span>Locational Data</span><p id="res-loc">-</p></div>
+                        <div class="data-row"><span>Status</span><p id="res-priv">-</p></div>
                     </div>
                 </div>
             </div>
 
+            <div id="mod-db" class="module">
+                <div class="glass-card">
+                    <span class="card-label">Encrypted Database</span>
+                    <input type="text" placeholder="Search Leak Archive...">
+                    <button class="action-btn">Scan Records</button>
+                </div>
             </div>
 
+            <div id="mod-img" class="module">
+                <div class="glass-card">
+                    <span class="card-label">Visual Archive</span>
+                    <div style="aspect-ratio:16/9; background:rgba(0,0,0,0.3); border:1px dashed var(--border); display:flex; align-items:center; justify-content:center; color:#333;">
+                        <i class="material-icons-round" style="font-size:48px;">biotech</i>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mod-ai" class="module">
+                <div class="glass-card">
+                    <span class="card-label">AI Intelligence Assistant</span>
+                    <div id="ai-chat-box" style="height:180px; background:rgba(0,0,0,0.5); border:1px solid var(--border); margin-bottom:15px; padding:15px; font-size:0.75rem; color:#888; overflow-y:auto; line-height:1.6;">Awaiting command...</div>
+                    <input type="text" id="aiInput" placeholder="Send query to AI...">
+                </div>
+            </div>
+
+            <div id="mod-admin" class="module">
+                <div class="glass-card">
+                    <span class="card-label">System Configuration</span>
+                    <select id="sessionPlatform"><option value="ig">Instagram Core</option></select>
+                    <input type="text" id="sessionData" placeholder="Auth Token / Cookie">
+                    <button class="action-btn" style="background:#fff; color:#000; border:none;" onclick="saveSession()">Apply Config</button>
+                </div>
+            </div>
+
+        </div>
+
         <nav>
-            <div class="nav-item active" onclick="switchTab('mod-sorgu', this)"><i class="material-icons-round">radar</i><span>Sorgu</span></div>
-            <div class="nav-item" onclick="switchTab('mod-db', this)"><i class="material-icons-round">database</i><span>DB</span></div>
-            <div class="nav-item" onclick="switchTab('mod-img', this)"><i class="material-icons-round">auto_awesome_motion</i><span>Arşiv</span></div>
+            <div class="nav-item active" onclick="switchTab('mod-sorgu', this)"><i class="material-icons-round">radar</i><span>Search</span></div>
+            <div class="nav-item" onclick="switchTab('mod-db', this)"><i class="material-icons-round">storage</i><span>DB</span></div>
+            <div class="nav-item" onclick="switchTab('mod-img', this)"><i class="material-icons-round">layers</i><span>Media</span></div>
             <div class="nav-item" onclick="switchTab('mod-ai', this)"><i class="material-icons-round">psychology</i><span>AI</span></div>
-            <div class="nav-item" onclick="switchTab('mod-admin', this)"><i class="material-icons-round">settings_input_component</i><span>Yönetim</span></div>
+            <div class="nav-item" onclick="switchTab('mod-admin', this)"><i class="material-icons-round">terminal</i><span>Core</span></div>
         </nav>
     </div>
 
@@ -168,9 +193,9 @@
 
         function tryLogin() {
             const key = document.getElementById('gateKey').value;
-            if(key === "pxlat63") {
-                document.getElementById('gatekeeper').style.transform = "scale(1.5)";
+            if(key === "reis") {
                 document.getElementById('gatekeeper').style.opacity = "0";
+                document.getElementById('gatekeeper').style.transform = "scale(1.1)";
                 setTimeout(() => {
                     document.getElementById('gatekeeper').style.display = "none";
                     document.getElementById('main-shell').style.display = "flex";
@@ -178,7 +203,7 @@
                         document.getElementById('main-shell').style.opacity = "1"; 
                         checkBackend();
                     }, 50);
-                }, 600);
+                }, 800);
             } else { alert("ACCESS DENIED"); }
         }
 
@@ -186,9 +211,12 @@
             try {
                 const res = await fetch(RENDER_URL + '/');
                 if(res.ok) {
-                    document.getElementById('status-text').innerText = "ENGINE_ONLINE";
+                    const status = document.getElementById('status-indicator');
+                    status.innerText = "ENGINE ONLINE";
+                    status.style.color = "#00f2ff";
+                    status.style.borderColor = "#00f2ff";
                 }
-            } catch(e) { console.log("Engine waking up..."); }
+            } catch(e) { console.log("Engine connecting..."); }
         }
 
         function switchTab(modId, el) {
@@ -200,38 +228,42 @@
 
         async function executeSorgu() {
             const target = document.getElementById('targetInput').value;
-            const loading = document.getElementById('loading');
-            const resPanel = document.getElementById('resPanel');
+            const loading = document.getElementById('sorguLoading');
+            const resultCard = document.getElementById('resCard');
 
             if(!target) return;
             loading.style.display = "block";
-            resPanel.style.display = "none";
+            resultCard.style.display = "none";
 
             try {
                 const response = await fetch(RENDER_URL + '/api/query', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        session_id: localStorage.getItem('archera_session') || "default", 
-                        target: target 
-                    })
+                    body: JSON.stringify({ target: target })
                 });
 
                 const res = await response.json();
                 if(res.status === "success") {
                     loading.style.display = "none";
-                    resPanel.style.display = "block";
-                    document.getElementById('res-name').innerText = res.data.full_name;
+                    resultCard.style.display = "block";
+                    document.getElementById('res-name').innerText = res.data.full_name || "Unknown";
                     document.getElementById('res-followers').innerText = res.data.followers.toLocaleString();
                     document.getElementById('res-loc').innerText = res.data.location_inference;
                     document.getElementById('res-priv').innerText = res.data.is_private ? "Private" : "Public";
                 } else {
-                    alert("ERROR: " + res.detail);
+                    alert("Error: " + res.detail);
                     loading.style.display = "none";
                 }
             } catch (e) {
                 loading.style.display = "none";
-                alert("CORE_ERROR: Connection failed.");
+            }
+        }
+
+        function saveSession() {
+            const data = document.getElementById('sessionData').value;
+            if(data) {
+                localStorage.setItem('archera_session', data);
+                alert("SYSTEM CONFIG UPDATED.");
             }
         }
     </script>
