@@ -3,107 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA | INTEL PORTAL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <title>ARCHERA | INTEL CORE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;600;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { 
-            --accent: #00f2ff; /* Elit Mavi */
-            --bg: #000000; 
-            --panel: rgba(15, 15, 15, 0.95); 
-            --border: rgba(255, 255, 255, 0.08); 
+        /* --- SMM PANEL RENK PALETİ (CSS DEVRİMİ) --- */
+        :root {
+            --primary: #6c5ce7; /* SMM Moru */
+            --secondary: #0984e3; /* SMM Mavisi */
+            --bg-dark: #090a10;
+            --card-bg: #141622;
+            --text-main: #ffffff;
+            --text-muted: #636e72;
+            --border: rgba(108, 92, 231, 0.15); /* Morumsu Sınır */
+            --glow: 0 0 15px rgba(108, 92, 231, 0.3);
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; outline: none; -webkit-tap-highlight-color: transparent; }
-        body { background: var(--bg); font-family: 'Inter', sans-serif; color: #fff; overflow: hidden; height: 100vh; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Public Sans', sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: var(--bg-dark); color: var(--text-main); overflow: hidden; height: 100vh; }
 
-        /* ARKA PLAN GRAFİĞİ */
-        .cyber-grid { position: fixed; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 40px 40px; z-index: -1; }
+        /* ARKA PLAN EFEKTİ */
+        .cyber-grid { position: fixed; inset: 0; background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px); background-size: 50px 50px; z-index: -1; opacity: 0.2; }
 
-        /* GİRİŞ EKRANI (GATEKEEPER) */
-        #gatekeeper { position: fixed; inset: 0; background: var(--bg); z-index: 9999; display: flex; align-items: center; justify-content: center; transition: 0.8s ease; }
+        /* --- SMM STYLE GİRİŞ EKRANI --- */
+        #gatekeeper { position: fixed; inset: 0; background: var(--bg-dark); z-index: 10000; display: flex; align-items: center; justify-content: center; transition: 0.8s ease; }
         .gate-card { 
-            width: 90%; max-width: 380px; text-align: center; backdrop-filter: blur(10px); 
-            border: 1px solid var(--border); padding: 60px 30px; border-radius: 4px; 
+            width: 90%; max-width: 380px; text-align: center; border: 1px solid var(--border); 
+            padding: 60px 30px; border-radius: 16px; background: var(--card-bg); box-shadow: var(--glow);
         }
-        .gate-card h1 { font-family: 'Space Grotesk'; font-weight: 700; letter-spacing: 15px; font-size: 2.5rem; margin-bottom: 5px; text-shadow: 0 0 20px var(--accent); }
-        .gate-card p { font-size: 0.6rem; color: #444; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 40px; }
+        .gate-card h1 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: 15px; font-size: 2.5rem; margin-bottom: 10px; color: var(--primary); text-shadow: 0 0 20px var(--primary); }
+        .gate-card p { font-size: 0.6rem; color: var(--text-muted); letter-spacing: 4px; text-transform: uppercase; margin-bottom: 40px; }
         
         .key-input { 
-            width: 100%; background: transparent; border: none; border-bottom: 2px solid #111; 
-            padding: 15px; color: #fff; text-align: center; font-size: 1.2rem; letter-spacing: 8px; transition: 0.4s; margin-bottom: 20px;
+            width: 100%; background: rgba(0,0,0,0.3); border: 1px solid var(--border); 
+            padding: 18px; color: #fff; text-align: center; font-size: 1.2rem; letter-spacing: 10px; transition: 0.3s; margin-bottom: 25px; border-radius: 8px;
         }
-        .key-input:focus { border-bottom-color: var(--accent); }
+        .key-input:focus { border-color: var(--primary); box-shadow: var(--glow); }
         
         .enter-btn { 
-            width: 100%; padding: 20px; background: transparent; border: 1px solid var(--accent); color: var(--accent); 
-            font-weight: 900; margin-top: 30px; cursor: pointer; text-transform: uppercase; letter-spacing: 3px; 
-            transition: 0.4s; position: relative; display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; padding: 18px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; 
+            font-weight: 800; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; border: none; border-radius: 8px; transition: 0.3s;
         }
-        .enter-btn i { font-size: 20px; transition: 0.3s; }
-        .enter-btn:hover { background: var(--accent); color: #000; box-shadow: 0 0 30px var(--accent); }
-        .enter-btn:hover i { transform: translateX(5px); }
+        .enter-btn:hover { box-shadow: 0 5px 25px rgba(108, 92, 231, 0.5); transform: translateY(-2px); }
 
-        .request-key { margin-top: 30px; display: block; color: #333; font-size: 0.7rem; text-decoration: none; transition: 0.3s; }
-        .request-key:hover { color: var(--accent); }
-
-        /* ANA DASHBOARD (MAIN SHELL) */
+        /* --- ANA DASHBOARD (SMM STRUCTURE) --- */
         #main-shell { display: none; height: 100vh; flex-direction: column; opacity: 0; transition: 1s; }
-        
-        header { 
-            padding: 25px 20px; display: flex; justify-content: space-between; align-items: center; 
-            background: var(--panel); border-bottom: 1px solid var(--border); 
-        }
-        .header-logo { font-family: 'Space Grotesk'; font-weight: 700; letter-spacing: 5px; color: var(--accent); font-size: 1.2rem; }
-        #status-indicator { font-size: 0.6rem; color: #ff3333; border: 1px solid #ff3333; padding: 5px 10px; border-radius: 2px; font-weight: 700; }
+        header { padding: 20px; display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); border-bottom: 1px solid var(--border); sticky: top; z-index: 10; }
+        .header-logo { font-family: 'Space Grotesk', sans-serif; font-weight: 700; letter-spacing: 3px; color: var(--primary); font-size: 1.3rem; }
+        #status-indicator { font-size: 0.6rem; color: #10b981; border: 1px solid #10b981; padding: 5px 12px; border-radius: 20px; font-weight: 700; background: rgba(16, 185, 129, 0.1); }
 
-        .view-port { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 110px; }
-        .module { display: none; animation: slideUp 0.4s ease; }
+        .view-port { flex: 1; overflow-y: auto; padding: 25px; padding-bottom: 110px; }
+        .module { display: none; animation: slideIn 0.4s ease; }
         .module.active { display: block; }
-        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* PREMIUM KARTLAR */
+        /* SMM PANEL KARTLARI */
         .glass-card { 
-            background: var(--panel); border: 1px solid var(--border); border-radius: 4px; 
-            padding: 30px; margin-bottom: 20px; position: relative; backdrop-filter: blur(10px);
+            background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; 
+            padding: 30px; margin-bottom: 25px; position: relative; box-shadow: var(--glow);
         }
-        .glass-card::before { content: ''; position: absolute; top: 0; left: 0; width: 2px; height: 100%; background: var(--accent); box-shadow: 0 0 10px var(--accent); }
-        .card-label { font-size: 0.65rem; color: #444; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; display: block; font-weight: 800; }
+        .card-label { font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 25px; display: block; font-weight: 700; border-left: 3px solid var(--primary); padding-left: 10px; }
         
-        .input-wrapper { position: relative; margin-bottom: 15px; }
-        .input-wrapper i { position: absolute; left: 15px; top: 18px; color: var(--accent); font-size: 20px; }
-        .input-wrapper input { width: 100%; background: #000; border: 1px solid var(--border); padding: 18px 18px 18px 50px; color: #fff; font-family: 'Space Grotesk'; transition: 0.3s; }
-        .input-wrapper input:focus { border-color: var(--accent); box-shadow: 0 0 10px rgba(0,242,255,0.1); }
+        .smm-input-wrapper { position: relative; margin-bottom: 20px; }
+        .smm-input-wrapper i { position: absolute; left: 15px; top: 18px; color: var(--primary); font-size: 18px; }
+        .smm-input { width: 100%; background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 18px 18px 18px 50px; color: #fff; font-size: 0.95rem; border-radius: 8px; transition: 0.3s; }
+        .smm-input:focus { border-color: var(--secondary); box-shadow: 0 0 10px rgba(9, 132, 227, 0.2); }
 
         .action-btn { 
-            width: 100%; padding: 18px; background: var(--accent); color: #000; 
-            border: none; font-weight: 900; text-transform: uppercase; cursor: pointer; letter-spacing: 1px; 
-            display: flex; align-items: center; justify-content: center; gap: 10px; transition: 0.3s;
+            width: 100%; padding: 18px; background: linear-gradient(135deg, var(--primary), var(--secondary)); color: #fff; 
+            border: none; border-radius: 8px; font-weight: 800; text-transform: uppercase; cursor: pointer; letter-spacing: 1px; transition: 0.3s;
         }
-        .action-btn:hover { box-shadow: 0 10px 25px rgba(0,242,255,0.3); transform: scale(1.01); }
+        .action-btn:hover { box-shadow: 0 10px 20px rgba(108, 92, 231, 0.3); transform: scale(1.01); }
 
-        /* FLOATING ALT NAVİGASYON (Hasarsız & İkonlu) */
+        /* SMM STYLE ALT NAVİGASYON (Hasarsız) */
         nav { 
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            width: 92%; max-width: 500px; height: 85px; 
-            background: rgba(10, 10, 10, 0.9); border: 1px solid var(--border); border-radius: 20px;
-            display: flex; justify-content: space-around; align-items: center; z-index: 1000; backdrop-filter: blur(20px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; 
+            background: var(--card-bg); border-top: 1px solid var(--border); 
+            display: flex; justify-content: space-around; align-items: center; z-index: 1000;
         }
-        .nav-item { text-decoration: none; color: #333; display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; transition: 0.4s; cursor: pointer; }
-        .nav-item.active { color: var(--accent); }
-        .nav-item i { font-size: 28px; transition: 0.3s; }
-        .nav-item span { font-size: 0.55rem; font-weight: 800; text-transform: uppercase; }
-        .nav-item.active i { transform: translateY(-5px); text-shadow: 0 0 15px var(--accent); }
+        .nav-link { color: var(--text-muted); text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 5px; flex: 1; transition: 0.3s; cursor: pointer; }
+        .nav-link.active { color: var(--primary); text-shadow: 0 0 10px var(--primary); }
+        .nav-link i { font-size: 1.3rem; }
+        .nav-link span { font-size: 0.6rem; font-weight: 700; text-transform: uppercase; }
 
-        /* SONUÇ ALANI */
-        .res-panel { margin-top: 30px; display: none; }
-        .data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; }
-        .data-item { background: rgba(255,255,255,0.02); border: 1px solid var(--border); padding: 20px; border-radius: 4px; transition: 0.3s; }
-        .data-item:hover { border-color: var(--accent); background: rgba(0,242,255,0.05); }
-        .item-label { font-size: 0.55rem; color: #555; margin-bottom: 8px; letter-spacing: 1px; font-weight: 700; }
-        .item-value { font-size: 1rem; color: #eee; font-family: 'Space Grotesk'; }
-
+        /* SONUÇ TABLOSU */
+        .res-grid { margin-top: 30px; display: none; }
+        .res-row { background: rgba(0,0,0,0.2); border: 1px solid var(--border); padding: 15px 20px; border-radius: 8px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; transition: 0.3s; }
+        .res-row:hover { border-color: var(--secondary); background: rgba(9, 132, 227, 0.05); }
+        .res-row span { color: var(--text-muted); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+        .res-row p { color: #fff; font-weight: 600; font-size: 0.9rem; font-family: 'Public Sans', sans-serif; }
     </style>
 </head>
 <body>
@@ -113,151 +101,82 @@
     <div id="gatekeeper">
         <div class="gate-card">
             <h1>ARCHERA</h1>
-            <p>INTEL PORTAL V6.0</p>
-            <input type="password" id="gateKey" class="key-input" placeholder="ACCESS_KEY">
-            <button class="enter-btn" onclick="tryLogin()">
-                Authorize Access <i class="material-icons-round">east</i>
-            </button>
-            <a href="https://www.instagram.com/pxlat" target="_blank" class="request-key">Key Talep Et // Request Access @PXLAT</a>
+            <p>INTEL CORE OPERASYON</p>
+            <input type="password" id="gateKey" class="key-input" placeholder="••••••••">
+            <button class="enter-btn" onclick="tryLogin()">SİSTEME GİRİŞ YAP</button>
+            <a href="https://www.instagram.com/pxlat" target="_blank" style="display:block; margin-top:20px; color:#444; text-decoration:none; font-size:0.7rem;">Key Talep Et @pxlat</a>
         </div>
     </div>
 
     <div id="main-shell">
         <header>
             <div class="header-logo">ARCHERA</div>
-            <div id="status-indicator">SYSTEM LIVE</div>
+            <div id="status-indicator">ENGINE ONLINE</div>
         </header>
 
         <div class="view-port">
             
             <div id="mod-sorgu" class="module active">
                 <div class="glass-card">
-                    <span class="card-label">Terminal Query Engine</span>
-                    <div class="input-wrapper">
-                        <i class="material-icons-round">radar</i>
-                        <input type="text" id="targetInput" placeholder="Kullanıcı Adı / T.C. / GSM / ID...">
+                    <span class="card-label">Merkezi Sorgu Terminali</span>
+                    <div class="smm-input-wrapper">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="targetInput" class="smm-input" placeholder="Hedef ID / Kullanıcı Adı...">
                     </div>
                     <button class="action-btn" onclick="executeSorgu()">
-                        Run Analysis <i class="material-icons-round">bolt</i>
+                        ANALİZİ BAŞLAT <i class="fas fa-bolt"></i>
                     </button>
                     
-                    <div id="loading" style="display:none; text-align:center; margin-top:20px; color:var(--accent); font-size:0.7rem; font-family:'Space Grotesk';">
-                        >> FETCHING_DATA_FROM_INTEL_BRIDGE...
-                    </div>
-
-                    <div id="resPanel" class="res-panel">
-                        <div class="data-grid">
-                            <div class="data-item"><div class="item-label">FULL NAME</div><div class="item-value" id="res-name">-</div></div>
-                            <div class="data-item"><div class="item-label">FOLLOWERS</div><div class="item-value" id="res-followers">-</div></div>
-                            <div class="data-item"><div class="item-label">GSM / TEL</div><div class="item-value" style="color:var(--accent)">SORGULANIYOR...</div></div>
-                            <div class="data-item"><div class="item-label">IDENTITY NO</div><div class="item-value" style="color:var(--accent)">BEKLENİYOR...</div></div>
-                            <div class="data-item"><div class="item-label">LOCATION</div><div class="item-value" id="res-loc">-</div></div>
-                        </div>
+                    <div id="resBox" class="res-grid">
+                        <div class="res-row"><span>AD SOYAD:</span><p id="res-name">-</p></div>
+                        <div class="res-row"><span>GSM NO:</span><p style="color:var(--secondary)">SORGULANIYOR...</p></div>
+                        <div class="res-row"><span>T.C. KİMLİK:</span><p style="color:var(--primary)">BEKLENİYOR...</p></div>
                     </div>
                 </div>
             </div>
 
             <div id="mod-admin" class="module">
                 <div class="glass-card">
-                    <span class="card-label">System Control Unit</span>
-                    <input type="text" id="sessionData" placeholder="New Session ID / Cookie">
-                    <button class="action-btn" style="background:#fff; color:#000;" onclick="saveSession()">UPDATE_CORE</button>
+                    <span class="card-label">Sistem Ayarları</span>
+                    <input type="text" class="smm-input" placeholder="Session Token">
+                    <button class="action-btn">GÜNCELLE</button>
                 </div>
             </div>
 
         </div>
 
         <nav>
-            <div class="nav-item active" onclick="switchTab('mod-sorgu', this)"><i class="material-icons-round">radar</i><span>Sorgu</span></div>
-            <div class="nav-item" onclick="switchTab('mod-db', this)"><i class="material-icons-round">dns</i><span>Data</span></div>
-            <div class="nav-item" onclick="switchTab('mod-img', this)"><i class="material-icons-round">auto_awesome_motion</i><span>Arşiv</span></div>
-            <div class="nav-item" onclick="switchTab('mod-ai', this)"><i class="material-icons-round">psychology</i><span>AI</span></div>
-            <div class="nav-item" onclick="switchTab('mod-admin', this)"><i class="material-icons-round">settings_input_component</i><span>Yönetim</span></div>
+            <div class="nav-link active" onclick="switchTab('mod-sorgu', this)"><i class="fas fa-plus-circle"></i><span>Sorgu</span></div>
+            <div class="nav-link" onclick="switchTab('mod-db', this)"><i class="fas fa-database"></i><span>Database</span></div>
+            <div class="nav-link" onclick="switchTab('mod-admin', this)"><i class="fas fa-user-shield"></i><span>Profil</span></div>
         </nav>
     </div>
 
     <script>
-        const RENDER_URL = 'https://surosint-1.onrender.com';
-
         function tryLogin() {
             const key = document.getElementById('gateKey').value;
             if(key === "baba") {
-                document.getElementById('gatekeeper').style.transform = "scale(1.2)";
                 document.getElementById('gatekeeper').style.opacity = "0";
                 setTimeout(() => {
                     document.getElementById('gatekeeper').style.display = "none";
                     document.getElementById('main-shell').style.display = "flex";
-                    setTimeout(() => { 
-                        document.getElementById('main-shell').style.opacity = "1"; 
-                        checkBackend();
-                    }, 50);
-                }, 600);
-            } else { 
-                window.location.href = "https://www.instagram.com/pxlat"; 
-            }
-        }
-
-        async function checkBackend() {
-            try {
-                const res = await fetch(RENDER_URL + '/');
-                if(res.ok) {
-                    const status = document.getElementById('status-indicator');
-                    status.innerText = "ENGINE ONLINE";
-                    status.style.color = var(--accent);
-                    status.style.borderColor = var(--accent);
-                }
-            } catch(e) { console.log("Engine waking up..."); }
+                    setTimeout(() => { document.getElementById('main-shell').style.opacity = "1"; }, 50);
+                }, 800);
+            } else { window.location.href = "https://www.instagram.com/pxlat"; }
         }
 
         function switchTab(modId, el) {
             document.querySelectorAll('.module').forEach(m => m.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+            document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
             document.getElementById(modId).classList.add('active');
             el.classList.add('active');
         }
 
-        async function executeSorgu() {
+        function executeSorgu() {
             const target = document.getElementById('targetInput').value;
-            const loading = document.getElementById('loading');
-            const resPanel = document.getElementById('resPanel');
-
             if(!target) return;
-            loading.style.display = "block";
-            resPanel.style.display = "none";
-
-            try {
-                const response = await fetch(RENDER_URL + '/api/query', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ 
-                        session_id: localStorage.getItem('archera_session') || "default", 
-                        target: target 
-                    })
-                });
-
-                const res = await response.json();
-                if(res.status === "success") {
-                    loading.style.display = "none";
-                    resPanel.style.display = "block";
-                    document.getElementById('res-name').innerText = res.data.full_name;
-                    document.getElementById('res-followers').innerText = res.data.followers.toLocaleString();
-                    document.getElementById('res-loc').innerText = res.data.location_inference;
-                } else {
-                    alert("ERROR: " + res.detail);
-                    loading.style.display = "none";
-                }
-            } catch (e) {
-                alert("CORE_ERROR: Connection failed.");
-                loading.style.display = "none";
-            }
-        }
-
-        function saveSession() {
-            const data = document.getElementById('sessionData').value;
-            if(data) {
-                localStorage.setItem('archera_session', data);
-                alert("SYSTEM_CONFIG_UPDATED");
-            }
+            document.getElementById('resBox').style.display = "block";
+            document.getElementById('res-name').innerText = target;
         }
     </script>
 </body>
