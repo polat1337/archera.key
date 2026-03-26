@@ -3,14 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA | TERMINAL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+    <title>ARCHERA | Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
     <style>
         :root {
-            --accent: #00d2ff;
-            --bg: #000000;
-            --card-bg: #0d1117;
-            --border: #30363d;
+            --bg: #0b0f19;       /* Koyu Arka Plan */
+            --card-bg: #111827;  /* Form Arka Planı */
+            --primary: #6366f1;  /* Referans Mor Buton */
+            --text-main: #ffffff;
+            --text-muted: #9ca3af;
+            --border: #1f2937;
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
@@ -19,147 +22,112 @@
             margin: 0; padding: 0; height: 100vh; width: 100vw;
             background-color: var(--bg);
             font-family: 'Inter', sans-serif;
-            color: #ffffff;
+            color: var(--text-main);
             display: flex; align-items: center; justify-content: center;
         }
 
-        .login-panel {
-            background: var(--card-bg);
+        .login-container {
+            background-color: var(--card-bg);
             border: 1px solid var(--border);
             border-radius: 20px;
-            padding: 40px 25px;
+            padding: 40px 30px;
             width: 90%;
-            max-width: 360px;
-            text-align: center;
-            position: relative;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.8);
-        }
-
-        .brand-header { margin-bottom: 30px; }
-        .brand-header h1 {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 2.2rem;
-            margin: 0;
-            letter-spacing: 5px;
-            font-weight: 700;
-        }
-        .brand-header p {
-            font-size: 0.8rem;
-            color: #8b949e;
-            margin-top: 5px;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        .input-wrap {
-            margin-bottom: 20px;
+            max-width: 400px;
             text-align: left;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
         }
 
-        label {
-            display: block;
-            font-size: 0.7rem;
-            color: #8b949e;
-            margin-bottom: 8px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
+        .header h1 { font-size: 1.75rem; font-weight: 700; margin: 0; }
+        .header p { font-size: 0.9rem; color: var(--text-muted); margin-top: 8px; margin-bottom: 35px; }
 
-        input {
-            background: #010409;
+        .input-group { margin-bottom: 20px; position: relative; }
+        
+        .input-box {
+            background-color: #0b0f19; /* Daha koyu input içi */
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 15px;
+            border-radius: 12px;
+            padding: 16px 16px 16px 52px; /* Sol ikon için padding */
             width: 100%;
             color: #fff;
             font-size: 1rem;
-            outline: none;
             transition: 0.3s;
-            text-align: center;
-            font-family: monospace;
-            display: block; /* Görünürlüğü zorla */
+            display: block;
         }
 
-        input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 10px rgba(0, 210, 255, 0.2);
+        .input-box:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.2); }
+
+        .input-icon {
+            position: absolute; left: 16px; top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 24px;
         }
 
-        .btn-access {
-            background: #ffffff;
-            color: #000000;
+        .remember-forgot {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.85rem; color: var(--text-muted); margin-bottom: 25px;
+        }
+        
+        .checkbox-wrap { display: flex; align-items: center; gap: 8px; }
+        
+        .btn-login {
+            background-color: var(--primary);
+            color: #ffffff;
             border: none;
-            border-radius: 10px;
+            border-radius: 12px;
             padding: 16px;
             width: 100%;
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-transform: uppercase;
+            font-weight: 600;
+            font-size: 1rem;
             cursor: pointer;
             transition: 0.3s;
-            display: block; /* Görünürlüğü zorla */
-            margin-top: 10px;
+            display: block;
         }
 
-        .btn-access:hover {
-            background: var(--accent);
-            color: #fff;
-        }
+        .btn-login:hover { background-color: #4f46e5; }
 
-        /* Bekle Katmanı */
-        #wait-screen {
-            display: none;
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--card-bg);
-            border-radius: 20px;
-            z-index: 10;
-            flex-direction: column; justify-content: center; align-items: center;
+        .register-link {
+            text-align: center; margin-top: 25px;
+            font-size: 0.9rem; color: var(--text-muted);
         }
-
-        .loader {
-            width: 40px; height: 40px;
-            border: 3px solid rgba(0,210,255,0.1);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .wait-text { margin-top: 15px; color: var(--accent); font-weight: 700; letter-spacing: 3px; }
+        .register-link a { color: var(--primary); text-decoration: none; font-weight: 600; }
     </style>
 </head>
 <body>
 
-<div class="login-panel">
-    <div id="wait-screen">
-        <div class="loader"></div>
-        <div class="wait-text">BEKLE</div>
+<div class="login-container">
+    <div class="header">
+        <h1>Hoşgeldiniz!</h1>
+        <p>ARCHERA Terminal Access key girin.</p>
     </div>
 
-    <div class="brand-header">
-        <h1>ARCHERA</h1>
-        <p>TERMINAL ACCESS</p>
+    <div class="input-group">
+        <span class="material-icons-round input-icon">vpn_key</span>
+        <input type="password" id="keyInput" class="input-box" placeholder="Terminal Anahtarı">
     </div>
 
-    <div class="input-wrap">
-        <label>Security Key</label>
-        <input type="password" id="passkey" placeholder="••••">
+    <div class="remember-forgot">
+        <div class="checkbox-wrap">
+            <input type="checkbox" id="remember">
+            <label for="remember">Beni Hatırla</label>
+        </div>
     </div>
 
-    <button class="btn-access" onclick="access()">Sisteme Bağlan</button>
+    <button class="btn-login" onclick="login()">Sisteme Bağlan</button>
+
+    <div class="register-link">
+        Anahtarınız yok mu? <a href="#">Talep Et</a>
+    </div>
 </div>
 
 <script>
-    function access() {
-        const key = document.getElementById('passkey').value;
-        const wait = document.getElementById('wait-screen');
-        
-        if(key === "reis") {
-            wait.style.display = "flex";
-            setTimeout(() => {
-                alert("Hoşgeldin Admin. Giriş Başarılı.");
-            }, 2500);
+    function login() {
+        const val = document.getElementById('keyInput').value;
+        if(val === "reis") {
+            alert("Giriş Başarılı! Yönlendiriliyorsunuz.");
+            window.location.href = "dashboard.html"; // Dashboard'a yönlendir
         } else {
-            alert("Anahtar Yanlış.");
+            alert("Hatalı Anahtar.");
         }
     }
 </script>
