@@ -9,117 +9,111 @@
         :root {
             --accent: #00f3ff;
             --bg-dark: #02040a;
-            --glass: rgba(255, 255, 255, 0.03);
+            --glass: rgba(255, 255, 255, 0.05);
             --border: rgba(0, 243, 255, 0.3);
         }
 
+        * { box-sizing: border-box; }
+
         body, html {
-            margin: 0; padding: 0; height: 100%;
+            margin: 0; padding: 0; height: 100vh;
             background: var(--bg-dark);
             font-family: 'Exo 2', sans-serif;
             color: white;
             display: flex; align-items: center; justify-content: center;
-            overflow: hidden;
         }
 
-        /* Arka Plan Hareketli Toz Efekti */
-        .particles {
-            position: absolute; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #111 0%, #000 100%);
+        /* Arka Plan Grid Katmanı */
+        .bg-layer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #0a111a 0%, #02040a 100%);
             z-index: -1;
         }
 
         .panel-container {
             background: var(--glass);
-            backdrop-filter: blur(25px);
+            backdrop-filter: blur(20px);
             border: 1px solid var(--border);
-            border-radius: 35px;
-            padding: 60px 40px;
-            width: 380px;
+            border-radius: 30px;
+            padding: 50px 30px;
+            width: 90%;
+            max-width: 400px;
             text-align: center;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.5), inset 0 0 20px rgba(0,243,255,0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
             position: relative;
-            animation: emerge 1s ease-out;
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out;
         }
 
-        @keyframes emerge {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .logo-area h1 {
             font-family: 'Orbitron', sans-serif;
-            font-size: 2.8rem;
+            font-size: 2.5rem;
             margin: 0;
-            letter-spacing: 8px;
-            background: linear-gradient(to bottom, #fff, var(--accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 15px rgba(0,243,255,0.5));
+            letter-spacing: 6px;
+            color: #fff;
+            text-shadow: 0 0 15px var(--accent);
         }
 
         .subtitle {
-            font-size: 0.9rem;
-            letter-spacing: 4px;
+            font-size: 0.8rem;
+            letter-spacing: 3px;
             color: var(--accent);
-            opacity: 0.8;
+            margin-top: 5px;
             margin-bottom: 40px;
             text-transform: uppercase;
+            font-weight: 600;
         }
 
         .input-box {
-            background: rgba(0,0,0,0.4);
-            border: 1px solid #222;
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 25px;
-            transition: 0.4s;
-        }
-
-        .input-box:focus-within {
-            border-color: var(--accent);
-            box-shadow: 0 0 15px rgba(0,243,255,0.2);
+            background: rgba(0,0,0,0.6);
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 12px;
+            margin-bottom: 20px;
         }
 
         input {
             background: none; border: none; color: white; width: 100%;
-            text-align: center; font-size: 1.1rem; outline: none;
-            font-family: 'Orbitron', sans-serif; letter-spacing: 2px;
+            text-align: center; font-size: 1rem; outline: none;
+            font-family: 'Orbitron', sans-serif; letter-spacing: 3px;
         }
 
         .btn-main {
             background: transparent;
             border: 2px solid var(--accent);
-            color: white;
-            padding: 15px 30px;
-            border-radius: 18px;
-            font-weight: 600;
+            color: var(--accent);
+            padding: 15px;
+            border-radius: 12px;
+            font-weight: 700;
             letter-spacing: 2px;
             cursor: pointer;
-            transition: 0.5s;
-            position: relative;
-            overflow: hidden;
             width: 100%;
+            transition: 0.3s;
+            text-transform: uppercase;
         }
 
         .btn-main:hover {
             background: var(--accent);
             color: #000;
-            box-shadow: 0 0 30px var(--accent);
+            box-shadow: 0 0 25px var(--accent);
         }
 
-        /* BEKLE Ekranı */
+        /* BEKLE Ekranı (Üst Katman) */
         #loader-screen {
             display: none;
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-dark);
-            border-radius: 35px;
+            background: #02040a;
             flex-direction: column; justify-content: center; align-items: center;
-            z-index: 10;
+            z-index: 100;
         }
 
         .spinner {
-            width: 60px; height: 60px;
+            width: 50px; height: 50px;
             border: 3px solid rgba(0,243,255,0.1);
             border-top: 3px solid var(--accent);
             border-radius: 50%;
@@ -131,21 +125,17 @@
         .loading-text {
             margin-top: 20px;
             font-family: 'Orbitron', sans-serif;
-            font-size: 1.5rem;
-            letter-spacing: 10px;
+            font-size: 1.2rem;
+            letter-spacing: 8px;
             color: var(--accent);
-            animation: pulse 1.5s infinite;
         }
-
-        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
-
-    </script>
+    </style>
 </head>
 <body>
 
-<div class="particles"></div>
+<div class="bg-layer"></div>
 
-<div class="panel-container" id="mainPanel">
+<div class="panel-container">
     <div id="loader-screen">
         <div class="spinner"></div>
         <div class="loading-text">BEKLE</div>
@@ -153,29 +143,32 @@
 
     <div class="logo-area">
         <h1>ARCHERA</h1>
-        <div class="subtitle">SYSTEM PANEL</div>
+        <div class="subtitle">System Panel</div>
     </div>
 
     <div class="input-box">
-        <input type="password" id="key" placeholder="ACCESS KEY">
+        <input type="password" id="keyInput" placeholder="ACCESS KEY">
     </div>
 
-    <button class="btn-main" onclick="initSystem()">SİSTEME GİR</button>
+    <button class="btn-main" onclick="startAuth()">SİSTEME GİR</button>
 </div>
 
 <script>
-    function initSystem() {
-        const key = document.getElementById('key').value;
+    function startAuth() {
+        const key = document.getElementById('keyInput').value;
         const loader = document.getElementById('loader-screen');
         
-        if(key === "6363") { // Örnek Anahtar
+        // Anahtar kontrolü: reis
+        if(key === "reis") {
             loader.style.display = "flex";
+            
+            // 3 saniye bekleme simülasyonu
             setTimeout(() => {
-                alert("ARCHERA Core Sistemine Bağlanılıyor...");
-                // Buraya Dashboard linki gelecek
+                alert("ARCHERA GİRİŞ BAŞARILI. Ana sisteme yönlendiriliyorsunuz...");
+                // Gelecekteki dashboard linki buraya eklenecek
             }, 3000);
         } else {
-            alert("ERİŞİM REDDEDİLDİ: Geçersiz Anahtar.");
+            alert("GEÇERSİZ ANAHTAR!");
         }
     }
 </script>
