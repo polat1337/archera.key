@@ -3,157 +3,208 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ARCHERA | ADMIN PANEL</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <title>ARCHERA | ULTIMATE ADMIN</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        :root { --primary: #4e73df; --bg: #0b0e14; --card: #151921; --border: rgba(255, 255, 255, 0.08); --text-dim: #858796; --danger: #e74a3b; --success: #1cc88a; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+        :root { --primary: #4e73df; --bg: #090b10; --card: #12151e; --border: rgba(255, 255, 255, 0.07); --text-dim: #858796; --danger: #e74a3b; --success: #1cc88a; --warning: #f6c23e; }
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
         body { background: var(--bg); color: #fff; height: 100vh; overflow: hidden; }
 
-        /* GİRİŞ */
+        /* --- LOGIN PAGE --- */
         #gatekeeper { position: fixed; inset: 0; background: var(--bg); z-index: 10000; display: flex; align-items: center; justify-content: center; }
-        .login-card { width: 90%; max-width: 380px; background: var(--card); padding: 40px; border-radius: 15px; border: 1px solid var(--border); text-align: center; }
-        .input-box { width: 100%; padding: 15px; background: #0b0e14; border: 1px solid var(--border); border-radius: 10px; color: #fff; text-align: center; margin-bottom: 20px; outline: none; font-size: 1.1rem; }
-        .login-btn { width: 100%; padding: 15px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; }
+        .login-card { width: 90%; max-width: 400px; background: var(--card); padding: 50px 35px; border-radius: 20px; border: 1px solid var(--border); text-align: center; box-shadow: 0 25px 50px rgba(0,0,0,0.5); }
+        .login-card h1 { font-weight: 800; font-size: 2rem; margin-bottom: 30px; letter-spacing: -1px; background: linear-gradient(to right, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .input-box { width: 100%; padding: 16px; background: #07090d; border: 1px solid var(--border); border-radius: 12px; color: #fff; text-align: center; margin-bottom: 20px; outline: none; font-size: 1.1rem; transition: 0.3s; }
+        .input-box:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(78, 115, 223, 0.2); }
+        .login-btn { width: 100%; padding: 16px; background: var(--primary); color: #fff; border: none; border-radius: 12px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 12px; font-size: 1rem; transition: 0.3s; }
+        .login-btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(78, 115, 223, 0.3); }
 
-        /* DASHBOARD */
+        /* --- DASHBOARD SHELL --- */
         #main-shell { display: none; height: 100vh; flex-direction: column; opacity: 0; transition: 0.5s; }
-        header { height: 60px; background: var(--card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; flex-shrink: 0; }
+        header { height: 70px; background: var(--card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 25px; }
         .viewport { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 120px; }
         
-        .module { display: none; max-width: 800px; margin: 0 auto; }
-        .module.active { display: block; animation: fadeIn 0.3s ease; }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .module { display: none; max-width: 900px; margin: 0 auto; animation: slideUp 0.4s ease; }
+        .module.active { display: block; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
-        .smm-card { background: var(--card); border-radius: 12px; border: 1px solid var(--border); padding: 25px; margin-bottom: 20px; }
-        .card-header { font-size: 0.8rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
+        /* --- UI COMPONENTS --- */
+        .smm-card { background: var(--card); border-radius: 16px; border: 1px solid var(--border); padding: 25px; margin-bottom: 25px; }
+        .card-title { font-size: 0.85rem; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 20px; display: flex; align-items: center; gap: 10px; }
         
-        /* INPUTS */
-        .smm-input { width: 100%; background: #0b0e14; border: 1px solid var(--border); padding: 15px; color: #fff; border-radius: 8px; margin-bottom: 15px; outline: none; }
-        .smm-btn { width: 100%; padding: 15px; background: var(--primary); color: #fff; border: none; border-radius: 8px; font-weight: 700; cursor: pointer; transition: 0.3s; }
-        .smm-btn.danger { background: var(--danger); }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .smm-input { width: 100%; background: #07090d; border: 1px solid var(--border); padding: 14px; color: #fff; border-radius: 10px; outline: none; transition: 0.3s; }
+        .smm-input:focus { border-color: var(--primary); }
+        .smm-btn { width: 100%; padding: 14px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-weight: 700; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; transition: 0.3s; }
+        .smm-btn:active { transform: scale(0.98); }
 
-        /* ÜYE TABLOSU */
-        .user-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-        .user-table th { text-align: left; font-size: 0.7rem; color: var(--text-dim); padding: 10px; border-bottom: 1px solid var(--border); }
-        .user-table td { padding: 12px 10px; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.02); }
-        .delete-icon { color: var(--danger); cursor: pointer; }
+        /* --- MEMBER TABLE --- */
+        .user-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        .user-table th { text-align: left; font-size: 0.7rem; color: var(--text-dim); padding: 12px; border-bottom: 1px solid var(--border); }
+        .user-table td { padding: 15px 12px; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.02); }
+        .badge { padding: 4px 8px; border-radius: 6px; font-size: 0.65rem; font-weight: 800; text-transform: uppercase; }
+        .badge-active { background: rgba(28, 200, 138, 0.1); color: var(--success); }
 
-        /* NAV */
-        nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 1000; }
-        .nav-link { color: var(--text-dim); text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; cursor: pointer; transition: 0.3s; }
+        /* --- STATS BOX --- */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 15px; margin-bottom: 25px; }
+        .stat-item { background: var(--card); border: 1px solid var(--border); padding: 20px; border-radius: 16px; text-align: center; }
+        .stat-val { display: block; font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 5px; }
+        .stat-label { font-size: 0.65rem; color: var(--text-dim); font-weight: 700; text-transform: uppercase; }
+
+        /* --- LOGS --- */
+        .log-box { background: #07090d; border-radius: 10px; padding: 15px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem; height: 150px; overflow-y: auto; border: 1px solid var(--border); color: #abb2bf; }
+        .log-entry { margin-bottom: 5px; border-left: 2px solid var(--primary); padding-left: 8px; }
+
+        /* --- BOTTOM NAV --- */
+        nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 80px; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 1000; padding-bottom: 15px; }
+        .nav-link { color: var(--text-dim); text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1; cursor: pointer; transition: 0.3s; }
         .nav-link.active { color: var(--primary); }
-        .nav-link i { font-size: 1.2rem; }
-        .nav-link span { font-size: 0.6rem; font-weight: 700; }
+        .nav-link i { font-size: 1.4rem; }
+        .nav-link span { font-size: 0.65rem; font-weight: 700; }
     </style>
 </head>
 <body>
 
     <div id="gatekeeper">
         <div class="login-card">
-            <h1 style="margin-bottom:20px;">ARCHERA</h1>
-            <input type="password" id="gateKey" class="input-box" placeholder="••••••••">
-            <button class="login-btn" onclick="tryLogin()">SİSTEME GİRİŞ</button>
-            <a href="https://instagram.com/pxlat" target="_blank" style="display:block; margin-top:20px; color:#444; text-decoration:none; font-size:0.7rem;">KEY TALEBİ: @PXLAT</a>
+            <h1>ARCHERA</h1>
+            <input type="password" id="gateKey" class="input-box" placeholder="Access Key">
+            <button class="login-btn" onclick="tryLogin()">
+                SİSTEMİ BAŞLAT <i class="fas fa-sign-in-alt"></i>
+            </button>
+            <a href="https://instagram.com/pxlat" target="_blank" style="display:block; margin-top:25px; color:var(--text-dim); text-decoration:none; font-size:0.75rem; font-weight:600;">
+                <i class="fab fa-instagram"></i> KEY REQUEST @PXLAT
+            </a>
         </div>
     </div>
 
     <div id="main-shell">
-        <header><div style="font-weight:800; color:var(--primary);">ARCHERA COMMAND</div><div id="engine-status" style="font-size:0.6rem; color:var(--text-dim);">ENGINE: STANDBY</div></header>
+        <header>
+            <div style="font-weight:800; letter-spacing:-0.5px; color:#fff;">CORE <span style="color:var(--primary)">COMMAND</span></div>
+            <div id="engine-status" class="badge badge-active"><i class="fas fa-circle" style="font-size:6px; vertical-align:middle;"></i> LIVE</div>
+        </header>
 
         <div class="viewport">
-            <div id="mod-sorgu" class="module active">
+            <div id="mod-home" class="module active">
+                <div class="stats-grid">
+                    <div class="stat-item"><span class="stat-val" id="count-users">0</span><span class="stat-label">Toplam Üye</span></div>
+                    <div class="stat-item"><span class="stat-val">1.2ms</span><span class="stat-label">Gecikme</span></div>
+                    <div class="stat-item"><span class="stat-val" style="color:var(--success)">UP</span><span class="stat-label">Server #1</span></div>
+                </div>
+                
                 <div class="smm-card">
-                    <div class="card-header"><i class="fas fa-search"></i> İstihbarat Sorgu</div>
-                    <input type="text" id="target" class="smm-input" placeholder="Kullanıcı Adı / ID...">
-                    <button class="smm-btn" onclick="alert('Sorgu Backend Bekliyor...')">SORGULA</button>
+                    <div class="card-title"><i class="fas fa-terminal"></i> İşlem Günlüğü (Live Logs)</div>
+                    <div class="log-box" id="logBox">
+                        <div class="log-entry">[SYSTEM] Archera Core v12 initialized...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mod-users" class="module">
+                <div class="smm-card">
+                    <div class="card-header card-title"><i class="fas fa-user-plus"></i> Yeni Üye Tanımla</div>
+                    <div class="grid-2">
+                        <input type="text" id="newU" class="smm-input" placeholder="Kullanıcı Adı">
+                        <input type="password" id="newP" class="smm-input" placeholder="Şifre">
+                    </div>
+                    <button class="smm-btn" onclick="addUser()">ÜYEYİ SİSTEME KAYDET</button>
+                </div>
+
+                <div class="smm-card">
+                    <div class="card-title"><i class="fas fa-users-cog"></i> Mevcut Üyeler</div>
+                    <table class="user-table">
+                        <thead><tr><th>USER</th><th>PASS</th><th>STATUS</th><th>OP</th></tr></thead>
+                        <tbody id="userList"></tbody>
+                    </table>
                 </div>
             </div>
 
             <div id="mod-admin" class="module">
                 <div class="smm-card">
-                    <div class="card-header"><i class="fas fa-key"></i> Session & Cookie Yönetimi</div>
-                    <p style="font-size:0.7rem; color:var(--text-dim); margin-bottom:10px;">Render ve Mango servisleri için Session ID girin:</p>
-                    <input type="text" id="sessionId" class="smm-input" placeholder="Session ID (Cookie) Yapıştır...">
-                    <button class="smm-btn" onclick="saveSession()">SESSION GÜNCELLE</button>
+                    <div class="card-title"><i class="fas fa-code"></i> Render / Session Config</div>
+                    <input type="text" id="sid" class="smm-input" placeholder="Session ID (Cookie)">
+                    <button class="smm-btn" onclick="saveSid()">YAPILANDIRMAYI KAYDET</button>
                 </div>
 
                 <div class="smm-card">
-                    <div class="card-header"><i class="fas fa-users"></i> Üye Yönetimi</div>
-                    <div style="display:flex; gap:10px; margin-bottom:15px;">
-                        <input type="text" id="newUserName" class="smm-input" placeholder="Üye Adı" style="margin-bottom:0;">
-                        <button class="smm-btn" style="width:100px;" onclick="addUser()">EKLE</button>
+                    <div class="card-title"><i class="fas fa-user-edit"></i> Profil Düzenle</div>
+                    <div class="grid-2">
+                        <input type="text" id="profName" class="smm-input" placeholder="Görünen Ad">
+                        <input type="text" id="profImg" class="smm-input" placeholder="Avatar URL">
                     </div>
-                    <table class="user-table">
-                        <thead><tr><th>ÜYE ADI</th><th>DURUM</th><th>İŞLEM</th></tr></thead>
-                        <tbody id="userList">
-                            </tbody>
-                    </table>
+                    <button class="smm-btn" style="background:#222;" onclick="addLog('Profil güncellendi.')">PROFİLİ GÜNCELLE</button>
                 </div>
             </div>
         </div>
 
         <nav>
-            <div class="nav-link active" onclick="tab('mod-sorgu', this)"><i class="fas fa-search"></i><span>Sorgu</span></div>
-            <div class="nav-item nav-link" onclick="tab('mod-db', this)"><i class="fas fa-database"></i><span>Database</span></div>
-            <div class="nav-item nav-link" onclick="tab('mod-admin', this)"><i class="fas fa-user-shield"></i><span>Yönetim</span></div>
+            <div class="nav-link active" onclick="tab('mod-home', this)"><i class="fas fa-house"></i><span>Merkez</span></div>
+            <div class="nav-link" onclick="tab('mod-users', this)"><i class="fas fa-users"></i><span>Üyeler</span></div>
+            <div class="nav-link" onclick="tab('mod-admin', this)"><i class="fas fa-shield-halved"></i><span>Admin</span></div>
         </nav>
     </div>
 
     <script>
-        // SESSION & RENDER LOGIC
-        function saveSession() {
-            const sid = document.getElementById('sessionId').value;
-            if(sid) {
-                localStorage.setItem('archera_sid', sid);
-                document.getElementById('engine-status').innerText = "ENGINE: ACTIVE";
-                document.getElementById('engine-status').style.color = "#1cc88a";
-                alert("Session Başarıyla Kaydedildi!");
-            }
-        }
+        let users = JSON.parse(localStorage.getItem('arch_users')) || [];
 
-        // ÜYE YÖNETİMİ LOGIC
-        let users = JSON.parse(localStorage.getItem('archera_users')) || [];
-
-        function renderUsers() {
-            const list = document.getElementById('userList');
-            list.innerHTML = "";
-            users.forEach((u, index) => {
-                list.innerHTML += `
-                    <tr>
-                        <td>${u}</td>
-                        <td><span style="color:#1cc88a">Aktif</span></td>
-                        <td><i class="fas fa-trash delete-icon" onclick="removeUser(${index})"></i></td>
-                    </tr>
-                `;
-            });
-            localStorage.setItem('archera_users', JSON.stringify(users));
+        function addLog(msg) {
+            const lb = document.getElementById('logBox');
+            const time = new Date().toLocaleTimeString();
+            lb.innerHTML += `<div class="log-entry">[${time}] ${msg}</div>`;
+            lb.scrollTop = lb.scrollHeight;
         }
 
         function addUser() {
-            const name = document.getElementById('newUserName').value;
-            if(name) {
-                users.push(name);
-                document.getElementById('newUserName').value = "";
+            const u = document.getElementById('newU').value;
+            const p = document.getElementById('newP').value;
+            if(u && p) {
+                users.push({name: u, pass: p});
+                document.getElementById('newU').value = "";
+                document.getElementById('newP').value = "";
+                addLog(`Yeni üye eklendi: ${u}`);
                 renderUsers();
             }
         }
 
-        function removeUser(index) {
-            users.splice(index, 1);
+        function removeUser(idx) {
+            addLog(`Üye silindi: ${users[idx].name}`);
+            users.splice(idx, 1);
             renderUsers();
         }
 
-        // TEMEL FONKSİYONLAR
+        function renderUsers() {
+            const list = document.getElementById('userList');
+            list.innerHTML = "";
+            users.forEach((u, i) => {
+                list.innerHTML += `<tr>
+                    <td><b>${u.name}</b></td>
+                    <td><code>${u.pass}</code></td>
+                    <td><span class="badge badge-active">Aktif</span></td>
+                    <td><i class="fas fa-trash-alt" style="color:var(--danger); cursor:pointer;" onclick="removeUser(${i})"></i></td>
+                </tr>`;
+            });
+            document.getElementById('count-users').innerText = users.length;
+            localStorage.setItem('arch_users', JSON.stringify(users));
+        }
+
+        function saveSid() {
+            const val = document.getElementById('sid').value;
+            if(val) {
+                localStorage.setItem('arch_sid', val);
+                addLog("Session ID güncellendi. Engine senkronize ediliyor...");
+                alert("Session Kaydedildi!");
+            }
+        }
+
         function tryLogin() {
             if(document.getElementById('gateKey').value === "baba") {
-                document.getElementById('gatekeeper').style.display = "none";
-                document.getElementById('main-shell').style.display = "flex";
-                setTimeout(() => { 
-                    document.getElementById('main-shell').style.opacity = "1";
-                    renderUsers(); 
-                }, 50);
+                document.getElementById('gatekeeper').style.transform = "translateY(-100%)";
+                setTimeout(() => {
+                    document.getElementById('gatekeeper').style.display = "none";
+                    document.getElementById('main-shell').style.display = "flex";
+                    setTimeout(() => { document.getElementById('main-shell').style.opacity = "1"; renderUsers(); }, 50);
+                }, 500);
             } else { window.location.href = "https://instagram.com/pxlat"; }
         }
 
@@ -162,6 +213,7 @@
             document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             el.classList.add('active');
+            addLog(`${id.replace('mod-', '').toUpperCase()} sekmesine geçildi.`);
         }
     </script>
 </body>
