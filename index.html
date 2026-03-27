@@ -21,19 +21,14 @@
     </div>
     <script>
         const tg = window.Telegram.WebApp;
+        tg.ready();
         tg.expand();
-        tg.ready(); // HATA 1: Sistem hazır komutu eklendi.
 
         function sendData() {
             const val = document.getElementById('key').value;
             if(!val) return;
-            
-            // HATA 2: Veriyi gönderdikten sonra paneli kapatmadan önce ufak bir bekleme eklendi.
-            tg.sendData(val); 
-            
-            setTimeout(() => {
-                tg.close();
-            }, 150);
+            tg.sendData(val); // Botun MessageHandler'ına veriyi gönderir.
+            setTimeout(() => { tg.close(); }, 150); // 150ms bekle ve kapat.
         }
     </script>
 </body>
