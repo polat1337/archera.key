@@ -22,11 +22,18 @@
     <script>
         const tg = window.Telegram.WebApp;
         tg.expand();
+        tg.ready(); // HATA 1: Sistem hazır komutu eklendi.
+
         function sendData() {
             const val = document.getElementById('key').value;
             if(!val) return;
-            tg.sendData(val); // Veriyi Telegram bota fırlatır
-            tg.close(); // Paneli kapatır
+            
+            // HATA 2: Veriyi gönderdikten sonra paneli kapatmadan önce ufak bir bekleme eklendi.
+            tg.sendData(val); 
+            
+            setTimeout(() => {
+                tg.close();
+            }, 150);
         }
     </script>
 </body>
