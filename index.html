@@ -2,215 +2,188 @@
 <html lang="tr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARCHERA | PANEL</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ARCHERA</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root { --primary: #3498db; --dark: #0f111a; --card: #161b22; --border: #30363d; --text: #c9d1d9; --admin-red: #f85149; --vip-purple: #a371f7; --success: #3fb950; }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background: var(--dark); color: var(--text); height: 100vh; overflow: hidden; }
+        /* Ana Tema ve Arkaplan */
+        body { 
+            background: #0d1117; /* Koyu, asil bir gri-siyah */
+            color: #fff; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            height: 100vh; 
+            margin: 0; 
+            overflow: hidden;
+            position: relative;
+        }
 
-        /* --- LOGIN SECTION --- */
-        #login-screen { position: fixed; inset: 0; background: var(--dark); z-index: 9999; display: flex; align-items: center; justify-content: center; }
-        .login-box { width: 340px; background: var(--card); padding: 30px; border-radius: 8px; border: 1px solid var(--border); text-align: center; }
-        .login-box h2 { margin-bottom: 20px; font-weight: 600; color: #fff; }
-        .input-group { position: relative; margin-bottom: 15px; }
-        .input-group i { position: absolute; left: 12px; top: 14px; color: #8b949e; }
-        .input-group input { width: 100%; padding: 12px 12px 12px 35px; background: #0d1117; border: 1px solid var(--border); border-radius: 6px; color: #fff; outline: none; }
-        .login-btn { width: 100%; padding: 12px; background: #238636; color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .footer-links { margin-top: 20px; font-size: 13px; }
-        .footer-links a { color: var(--primary); text-decoration: none; }
+        /* Arkaplan Hareketli Animasyon (Hafif ve Sade) */
+        body::before {
+            content: "";
+            position: absolute;
+            width: 200%; height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 20px 20px;
+            animation: moveGrid 60s linear infinite;
+            opacity: 0.5;
+            z-index: 0;
+        }
+        @keyframes moveGrid {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-20px, -20px); }
+        }
 
-        /* --- APP LAYOUT --- */
-        #app { display: none; height: 100vh; flex-direction: column; }
-        header { height: 60px; background: var(--card); border-bottom: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; padding: 0 20px; }
-        .header-user { display: flex; align-items: center; gap: 10px; }
-        .header-user img { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border); }
+        /* Ana Konteyner */
+        .container { 
+            background: rgba(22, 27, 34, 0.8); /* Şeffaf gri panel */
+            padding: 40px 30px; 
+            border-radius: 20px; /* Kavisli hatlar */
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5); 
+            text-align: center; 
+            width: 85%; 
+            max-width: 350px;
+            backdrop-filter: blur(10px); /* Arkaplanı bulandırma (Premium hissi) */
+            border: 1px solid rgba(255,255,255,0.05);
+            z-index: 1;
+            transition: all 0.3s ease;
+        }
 
-        .content { flex: 1; overflow-y: auto; padding: 20px; padding-bottom: 100px; }
-        .view { display: none; max-width: 1000px; margin: 0 auto; }
-        .view.active { display: block; }
+        /* Logo Alanı */
+        .logo-area {
+            margin-bottom: 35px;
+        }
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: 4px;
+            color: #fff;
+            text-transform: uppercase;
+            margin: 0;
+            position: relative;
+            display: inline-block;
+        }
+        .logo-text::after {
+            content: "®";
+            font-size: 0.8rem;
+            position: absolute;
+            top: 0; right: -15px;
+            opacity: 0.5;
+        }
+        .subtitle {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 5px;
+            letter-spacing: 1px;
+        }
 
-        /* --- TABLES & CARDS --- */
-        .card { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 20px; margin-bottom: 20px; }
-        .card-title { font-size: 14px; font-weight: 600; color: #8b949e; margin-bottom: 15px; text-transform: uppercase; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
-        
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th { text-align: left; font-size: 12px; color: #8b949e; padding: 10px; border-bottom: 1px solid var(--border); }
-        td { padding: 12px 10px; font-size: 14px; border-bottom: 1px solid #21262d; }
+        /* Giriş Alanı */
+        input { 
+            background: rgba(0,0,0,0.2); 
+            border: 1px solid rgba(255,255,255,0.1); 
+            color: #fff; 
+            padding: 15px; 
+            width: 100%; 
+            box-sizing: border-box; 
+            text-align: center; 
+            margin-bottom: 25px; 
+            outline: none; 
+            font-size: 1.1rem; 
+            border-radius: 12px; /* Kavisli input */
+            transition: all 0.3s ease;
+        }
+        input:focus {
+            border-color: rgba(255,255,255,0.3);
+            background: rgba(0,0,0,0.3);
+            box-shadow: 0 0 10px rgba(255,255,255,0.05);
+        }
 
-        /* ROLES & BADGES */
-        .badge { padding: 3px 8px; border-radius: 12px; font-size: 11px; font-weight: 600; }
-        .badge-admin { background: rgba(248, 81, 73, 0.15); color: var(--admin-red); border: 1px solid rgba(248, 81, 73, 0.4); }
-        .badge-vip { background: rgba(163, 113, 247, 0.15); color: var(--vip-purple); border: 1px solid rgba(163, 113, 247, 0.4); }
-        .badge-user { background: rgba(56, 139, 253, 0.15); color: var(--primary); border: 1px solid rgba(56, 139, 253, 0.4); }
+        /* Buton ve Animasyonlar */
+        button { 
+            background: #fff; /* Temiz beyaz buton */
+            color: #000; 
+            border: none; 
+            padding: 15px; 
+            width: 100%; 
+            font-weight: 700; 
+            cursor: pointer; 
+            border-radius: 12px; /* Kavisli buton */
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Havalı geçiş */
+            position: relative;
+            overflow: hidden;
+        }
 
-        /* --- NAVIGATION --- */
-        nav { position: fixed; bottom: 0; left: 0; width: 100%; height: 75px; background: var(--card); border-top: 1px solid var(--border); display: flex; justify-content: space-around; align-items: center; z-index: 100; }
-        .nav-item { color: #8b949e; text-decoration: none; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; flex: 1; transition: 0.2s; }
-        .nav-item.active { color: #fff; }
-        .nav-item i { font-size: 18px; }
-        .nav-item span { font-size: 10px; font-weight: 600; text-transform: uppercase; }
+        /* Tıklama Animasyonu (Ripple Effect) */
+        button::after {
+            content: "";
+            position: absolute;
+            background: rgba(0,0,0,0.1);
+            width: 100px; height: 100px;
+            border-radius: 50%;
+            transform: scale(0);
+            opacity: 0;
+            transition: transform 0.5s, opacity 1s;
+        }
+        button:active::after {
+            transform: scale(4);
+            opacity: 1;
+            transition: 0s;
+        }
 
-        /* ADMIN SPECIFIC */
-        .admin-form-group { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
-        .st-input { width: 100%; background: #0d1117; border: 1px solid var(--border); padding: 10px; color: #fff; border-radius: 6px; outline: none; }
-        .st-btn { padding: 10px; background: var(--primary); color: #fff; border: none; border-radius: 6px; font-weight: 600; cursor: pointer; }
+        button:active { 
+            transform: scale(0.97); /* Basılma hissi */
+        }
+
+        /* İkon */
+        .icon {
+            width: 18px; height: 18px;
+            fill: #000;
+        }
     </style>
 </head>
 <body>
-
-    <div id="login-screen">
-        <div class="login-box">
-            <h2>ARCHERA LOGIN</h2>
-            <div class="input-group">
-                <i class="fas fa-lock"></i>
-                <input type="password" id="accessKey" placeholder="Erişim Anahtarı">
-            </div>
-            <button class="login-btn" onclick="checkAuth()">
-                GİRİŞ YAP <i class="fas fa-sign-in-alt"></i>
-            </button>
-            <div class="footer-links">
-                <a href="https://instagram.com/pxlat" target="_blank">Key Talep Et & Instagram</a>
-            </div>
+    <div class="container">
+        <div class="logo-area">
+            <h1 class="logo-text">ARCHERA</h1>
+            <div class="subtitle">Giris Paneli</div>
         </div>
-    </div>
-
-    <div id="app">
-        <header>
-            <div style="font-weight: 700; letter-spacing: 1px;">ARCHERA <span style="color:var(--primary)">V18</span></div>
-            <div class="header-user">
-                <span id="user-display-name" style="font-size: 13px; font-weight: 600;">Admin</span>
-                <img id="user-avatar" src="https://ui-avatars.com/api/?name=Admin&background=0d1117&color=58a6ff">
-            </div>
-        </header>
-
-        <div class="content">
-            <div id="view-sorgu" class="view active">
-                <div class="card">
-                    <div class="card-title">Hızlı Sorgulama Paneli</div>
-                    <input type="text" class="st-input" placeholder="ID, GSM veya İsim Giriniz...">
-                    <button class="st-btn" style="width:100%">SORGULA</button>
-                </div>
-            </div>
-
-            <div id="view-goruntu" class="view"><div class="card"><div class="card-title">Medya Arşivi</div><p style="font-size:13px; color:#8b949e">Henüz medya yüklenmedi.</p></div></div>
-            
-            <div id="view-ai" class="view"><div class="card"><div class="card-title">GemAI Yapay Zeka</div><textarea class="st-input" rows="4" placeholder="AI'ya talimat ver..."></textarea><button class="st-btn">GÖNDER</button></div></div>
-            
-            <div id="view-db" class="view"><div class="card"><div class="card-title">Veritabanı Bağlantıları</div><p style="font-size:13px; color:#8b949e">Bağlantı aktif: MongoDB_Cluster_01</p></div></div>
-            
-            <div id="view-hesap" class="view"><div class="card"><div class="card-title">Kayıtlı Vault Hesapları</div><p style="font-size:13px; color:#8b949e">Liste boş.</p></div></div>
-
-            <div id="view-admin" class="view">
-                
-                <div class="card">
-                    <div class="card-title">Üye & Personel Yönetimi</div>
-                    <div class="admin-form-group">
-                        <input type="text" id="new-user" class="st-input" placeholder="Kullanıcı Adı">
-                        <input type="password" id="new-pass" class="st-input" placeholder="Şifre Belirle">
-                    </div>
-                    <div class="admin-form-group">
-                        <select id="new-role" class="st-input">
-                            <option value="badge-user">STANDART ÜYE</option>
-                            <option value="badge-vip">VIP ÜYE</option>
-                            <option value="badge-admin">ADMINISTRATOR</option>
-                        </select>
-                        <button class="st-btn" onclick="addNewUser()">ÜYEYİ KAYDET</button>
-                    </div>
-                    <table>
-                        <thead><tr><th>KULLANICI</th><th>ROL</th><th>DURUM</th><th>İŞLEM</th></tr></thead>
-                        <tbody id="member-table-body">
-                            </tbody>
-                    </table>
-                </div>
-
-                <div class="card">
-                    <div class="card-title">Profil ve Arayüz Ayarları</div>
-                    <div class="admin-form-group">
-                        <input type="text" id="set-name" class="st-input" placeholder="Görünen Adın">
-                        <input type="text" id="set-avatar" class="st-input" placeholder="Avatar URL">
-                    </div>
-                    <button class="st-btn" style="background:#444" onclick="updateProfile()">AYARLARI KAYDET</button>
-                </div>
-
-            </div>
-        </div>
-
-        <nav>
-            <div class="nav-item active" onclick="changeTab('view-sorgu', this)"><i class="fas fa-search"></i><span>Sorgu</span></div>
-            <div class="nav-item" onclick="changeTab('view-goruntu', this)"><i class="fas fa-images"></i><span>Medya</span></div>
-            <div class="nav-item" onclick="changeTab('view-ai', this)"><i class="fas fa-robot"></i><span>GemAI</span></div>
-            <div class="nav-item" onclick="changeTab('view-db', this)"><i class="fas fa-database"></i><span>DB</span></div>
-            <div class="nav-item" onclick="changeTab('view-hesap', this)"><i class="fas fa-user-lock"></i><span>Hesaplar</span></div>
-            <div class="nav-item" onclick="changeTab('view-admin', this)" style="color:var(--admin-red)"><i class="fas fa-user-shield"></i><span>Yönetim</span></div>
-        </nav>
+        
+        <input type="password" id="keyInput" placeholder="Yetki Kodu Required">
+        
+        <button onclick="sendKey()">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M10 17l5-5-5-5v10z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg>
+            GİRİŞ
+        </button>
     </div>
 
     <script>
-        // ÜYE LİSTESİ
-        let members = JSON.parse(localStorage.getItem('arch_members')) || [
-            {name: 'Abdulkadir', role: 'badge-admin', status: 'AKTİF'}
-        ];
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Paneli tam ekran yap
+        tg.ready();
 
-        function checkAuth() {
-            if(document.getElementById('accessKey').value === 'baba') {
-                document.getElementById('login-screen').style.display = 'none';
-                document.getElementById('app').style.display = 'flex';
-                renderMembers();
-            } else {
-                window.location.href = "https://instagram.com/pxlat";
+        function sendKey() {
+            const key = document.getElementById('keyInput').value;
+            if (key.trim() === "") {
+                // Hata durumunda inputu salla (basit bir animasyon)
+                document.getElementById('keyInput').style.borderColor = "#ff4444";
+                setTimeout(() => document.getElementById('keyInput').style.borderColor = "rgba(255,255,255,0.1)", 500);
+                return;
             }
-        }
-
-        function changeTab(viewId, element) {
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
-            document.getElementById(viewId).classList.add('active');
-            element.classList.add('active');
-        }
-
-        function addNewUser() {
-            const name = document.getElementById('new-user').value;
-            const pass = document.getElementById('new-pass').value; // Şifre belirleme özelliği
-            const role = document.getElementById('new-role').value;
-            if(name && pass) {
-                members.push({name, role, status: 'AKTİF'});
-                renderMembers();
-                document.getElementById('new-user').value = '';
-                document.getElementById('new-pass').value = '';
-                alert("Üye sisteme tanımlandı ve şifresi oluşturuldu.");
-            }
-        }
-
-        function renderMembers() {
-            const body = document.getElementById('member-table-body');
-            body.innerHTML = '';
-            members.forEach((m, index) => {
-                const roleText = m.role === 'badge-admin' ? 'ADMIN' : (m.role === 'badge-vip' ? 'VIP' : 'ÜYE');
-                body.innerHTML += `
-                    <tr>
-                        <td>${m.name}</td>
-                        <td><span class="badge ${m.role}">${roleText}</span></td>
-                        <td><span style="color:var(--success)">● ${m.status}</span></td>
-                        <td><i class="fas fa-trash-alt" style="color:var(--admin-red); cursor:pointer;" onclick="deleteMember(${index})"></i></td>
-                    </tr>
-                `;
-            });
-            localStorage.setItem('arch_members', JSON.stringify(members));
-        }
-
-        function deleteMember(index) {
-            members.splice(index, 1);
-            renderMembers();
-        }
-
-        function updateProfile() {
-            const name = document.getElementById('set-name').value;
-            const avatar = document.getElementById('set-avatar').value;
-            if(name) document.getElementById('user-display-name').innerText = name;
-            if(avatar) document.getElementById('user-avatar').src = avatar;
-            alert("Profil güncellendi.");
+            
+            // Başarılı giriş efekti
+            document.querySelector('button').innerHTML = "ONAYLANIYOR...";
+            
+            setTimeout(() => {
+                tg.sendData(key); // Anahtarı bota fırlat
+                tg.close(); // Paneli kapat
+            }, 1000); // 1 saniye bekle (havalı olsun diye)
         }
     </script>
 </body>
